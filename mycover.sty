@@ -1,0 +1,168 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Options :
+% title
+% subtitle
+% author
+% date
+% director
+% examinator
+% reviewer
+% ecoledoctorale
+% formation
+% specialite
+% academiename
+% universitename
+% universitesubname
+% laboratory
+% laboratoryadresse
+% resume
+% abstract
+% motsclefs
+% keywords
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newif\if@submitted\@submittedfalse
+\newif\if@defended\@defendedfalse
+\newif\if@president\@presidentfalse
+\newif\if@director\@directorfalse
+\newif\if@codirector\@codirectorfalse
+\newif\if@reviewer\@reviewerfalse
+\newif\if@examinator\@examinatorfalse
+
+\DeclareOption{submitted}{\@submittedtrue}
+\DeclareOption{defended}{\@defendedtrue\@submittedtrue}
+\ProcessOptions
+
+\RequirePackage{xspace}
+
+\newcommand*{\thesisname}{Thèse}
+\newcommand*{\specialitename}{Spécialité}
+\newcommand*{\formationname}{Formation Doctorale}
+\newcommand*{\ecoledoctoralename}{École Doctorale}
+\newcommand*{\presidentname}{Président du jury}
+\newcommand*{\directorname}{Directeurs de thèse}
+\newcommand*{\codirectorname}{Co-Directeur de thèse}
+\newcommand*{\reviewername}{Rapporteurs}
+\newcommand*{\examinatorname}{Examinateurs}
+\newcommand*\resumename{Résumé}
+\newcommand*\keywordsname{Keywords:}
+\newcommand*\motsclefsname{Mots clefs :}
+
+\def\presentedname{présentée}
+\def\laboratoryprefix{à}
+\def\@laboratory{Inria Bordeaux Sud-Ouest}
+\def\laboratory#1{\def\@laboratory{#1}}
+\def\obtentionname{pour\\ obtenir le grade}
+\def\diplomeprefix{de}
+\def\diplomename{Docteur de l'Université de Bordeaux}
+
+\def\@specialite{Informatique}
+\newcommand{\specialite}[1]{\def\@specialite{#1}}
+
+\def\@formation{Informatique}
+\newcommand{\formation}[1]{\def\@formation{#1}}
+
+\def\@ecoledoctorale{Ecole doctorale de Mathématiques et Informatique de Bordeaux}
+\newcommand{\ecoledoctorale}[1]{\def\@ecoledoctorale{#1}}
+
+\def\@academiename{Académie de Bordeaux}
+\def\academiename#1{\def\@academiename{#1}}
+
+\def\@universitename{\textbf{U} n i v e r s i t é ~ D e ~ \textbf{B} o r d e a u x ~}
+\def\universitename#1{\def\@universitename{#1}}
+
+\def\@laboratoryadresse{Inria Bordeaux Sud-Ouest -- 200, Avenue de la Vieille Tour -- 33400 Talence -- France}
+\def\laboratoryadresse#1{\def\@laboratoryadresse{#1}}
+
+\def\@jury{%
+  \if@president\@president\fi
+  \if@director\@director\fi
+  \if@codirector\@codirector\fi
+  \if@reviewer\@reviewer\fi
+  \if@examinator\@examinator\fi
+}
+
+\newcommand{\@president}{}
+\newcommand{\president}[1]{%
+  \if@defended
+  \@presidenttrue\def\@president{%
+    \textbf{\presidentname}\\%
+    {\def\and{\\}#1}\\[.5em]}\fi}
+
+\newcommand{\@director}{}
+\newcommand{\director}[2]{\@directortrue\def\@director{%
+  \textbf{\directorname}\\%
+  {\def\and{\\}#1{\\}#2}\\[.5em]}}
+
+\newcommand{\@codirector}{}
+\newcommand{\codirector}[1]{\@codirectortrue\def\@codirector{%
+  \textbf{\codirectorname}\\%
+  {\def\and{\\}#1}\\[.5em]}}
+
+\newcommand{\@reviewer}{}
+\newcommand{\reviewer}[2]{\@reviewertrue\def\@reviewer{%
+  \textbf{\reviewername}\\%
+  {\def\and{\\}#1{\\}#2}\\[.5em]}}
+
+
+\newcommand{\@examinator}{}
+\newcommand{\examinator}[3]{\@examinatortrue\def\@examinator{%
+  \textbf{\examinatorname}\\%
+  {\def\and{\\}#1{\\}#2{\\}#3}\\[.5em]}}
+
+\newcommand{\@subtitle}{}
+\newcommand{\subtitle}[1]{\def\@subtitle{#1}}
+
+\renewcommand{\maketitle}{
+  \thispagestyle{empty}
+  \begin{center}
+    \null\vspace{-3cm}
+    \enlargethispage{2cm}
+    {\large\textsc{\@academiename}\par}
+    {\Large\textsc{\makebox[0.95\width][s]{\@universitename}}\par}
+    %\@universitesubname
+
+    \vfill
+
+    {\huge\textsc{\textbf{\thesisname}}}
+
+    \vspace{1cm}
+    \presentedname\xspace\laboratoryprefix\xspace\@laboratory\xspace\obtentionname\xspace\diplomeprefix\xspace\diplomename
+
+    \vspace{1cm}
+
+    \begin{tabular}{lcl}
+      \textit{\specialitename}     & : & {\bf \@specialite}\\
+      \textit{\formationname}      & : & {\bf \@formation}\\
+      \textit{\ecoledoctoralename} & : & {\bf \@ecoledoctorale}
+    \end{tabular}
+
+    \vfill
+
+    {\Large\bf\@title\par}
+    {\large\bf\@subtitle\par}
+    \vspace{0.7cm}
+    par\par
+    \vspace{0.7cm}
+    {\Large\bf\@author\par}
+
+    \vfill
+
+    {
+      \small
+      \if@defended
+        Soutenue le \@date, devant le jury composé de :
+      \else\if@submitted
+        Soutenance prévue pour le 22 décembre 2017, devant le jury composé de :
+      \else
+        Version du \@date
+      \fi\fi
+      \par
+      \vspace{0.3cm}
+      \begin{minipage}{\linewidth}
+        \noindent{\@jury}
+      \end{minipage}
+    }
+  \end{center}
+  \clearpage
+}

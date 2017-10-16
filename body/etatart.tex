@@ -1,0 +1,102 @@
+\chapter{\'Etat de l'Art}
+\section{Informatique Ubiquitaire / Contexte}
+*
+\section{Assistance à la personne au domicile}
+*\\
+déploiement écologique: longue durée, large échelle
+\section{Intervenants}
+pas grand chose concernat directement les intervenants
+\section{Services}
+*\\
+on s'occupe de fournir des services pour les utilisateurs et particulièrement les personnes agées, on s'occupe pas de la maintenance.
+\section{Évènements}
+c'est quoi le CEP, ça marche
+
+
+\section{Related work}
+There are many works aiming to simplify and support the development of context-aware applications in smart homes. Let us classify them with respect to how they approach service development: user-oriented domain-specific languages, automata-oriented event processing approaches, and middleware-oriented approaches.
+
+%according to the angle of attacking the problem in three categories: top-down, bottom-up, and middleware (see Figure \ref{fig:approaches}).
+%
+%\begin{figure}[H]
+%\centering\includegraphics[scale=0.4]{gfx/schema.png}
+%\caption{Approaches to the development of smart home services}
+%\label{fig:approaches}
+%\end{figure}
+
+\paragraph{User-oriented, domain-specific approaches}
+These approaches start from the needs of end users of smart homes, and provide a domain-specific language for developing context-aware applications, usually complemented with a dedicated development environment.  This end-user programming approach has resulted in both textual and visual languages. Scratch~\cite{Resnick:2009:SP:1592761.1592779} offers visual programming notations, covering most of a general-purpose programming language. In principle, this language would allow users to write a wide range of programs in the domain of smart homes, but would not support such development with domain-specific abstractions. IFTTT (If This Then That)\footnote{https://ifttt.com}
+offers much more specialized graphic notations for automating simple processes involving web services, sensors, and actuators. This approach lowers the end-user conceptual effort at the expense of drastically reducing the expressiveness of the language. For example, conditionals only consists of one sensor or service, and cannot be composed. Furthermore, no distinction is done between events and states, which has been shown to confuse users when defining services~\cite{Huang:2015:SMM:2750858.2805830}.
+%IFTTT ref: ~\cite{Ur:2016:TPW:2858036.2858556} 
+
+%their possible uses and 
+Improving on IFTTT, AppsGate~\cite{coutaz2016first} introduces a textual DSL, which makes a clear distinction between states and events, and allows some limited compositions of tests in rules. AppsGate provides an end-user development environment dedicated to smart homes and it has been shown to cover simple rules for comfort-oriented automation. While this extension of IFTTT is very promising, it still falls short of addressing the scope of real AAL applications. For example, the authors mention that ``expressing compound conditions [involving several events or states] was difficult''~\cite[p.13]{coutaz2016first}. Moreover, even simple temporal composition such as ``A immediately precedes B'' cannot be expressed in their language, due to the absence of boolean connectors in conditions (e.g., once A is found, wait for B but no A). Because our DSL approach is based on a domain analysis, we identified the common scenarios to be addressed and provide abstractions expressive enough to capture them.
+
+%Thus, top-down approaches offer useful domain-specific concepts for end users, but with very limited expressiveness.
+
+%\subsection{Domain specific}
+%Formulate services by composition of state, event and duration
+%\begin{itemize}
+%\item Scratch
+%\item IFTTT
+%\item OptiqueVQS
+%\end{itemize}
+
+Conceptually, an interesting case of top-down approach to context awareness is the identification of 6 top-level {\em context dimensions} having the widest used in pervasive computing \cite{bauer2012comparison}: the physical world, the cyber-world, the user, his/her activities, the social context, and their dynamics. These context dimensions result from a commonality analysis performed on 13 context meta-models formalized in the literature, and about 300 research papers on pervasive computing applications. Our approach also involved a commonality analysis but in the specific area: smart home services for aging in place. Thanks to this domain instantiation, not only were we able to elicit common concepts, but we also designed a language and tool support that revolve around these concepts.
+
+\paragraph{Automata-oriented, event processing approaches}
+
+Some approaches leverage existing models of automata and associated tools. Indeed, contexts may be modeled as particular sequences of events in the environment, constrained in their order and time delays. For instance, the situation of the unattended door may be recognized by an automaton accepting a door opening event and a door closing event, separated by a time delay greater than a given value. Such executable models of context recognition may be expressed in a DSL for automata modeling, which can be visual (StateCharts, SyncCharts) or textual (synchronous languages) \cite{Gamatie2010}. Time delays must be handled explicitly in these models by using external timers to generate timeout events.  Timed automata \cite{Bengtsson2004} add a native expression of time delays in the model.  These automata-based models are usually accompanied by formal tools for proving useful temporal properties about the model, such as state reachability. They are expressive enough for handling all cases needed by smart home services, but require users to implement common patterns such as sequencing events, recognizing a set of events during a state, {\em etc.} When implementing these base patterns as timed automata, users may introduce subtle bugs or slight variations in behaviour. This issue is of course amplified when the models are written by stakeholders with different levels of expertise.
+
+Complex event processing languages \cite{Cugola:2012:PFI:2187671.2187677} introduce event composition operators that implement some very common event patterns, such as ordered sequence of events within a time delay, event alternatives, {\em etc.} Some CEPs use interval-based semantics for complex events, and sometimes even define the Allen temporal relations between interval-based events \cite{Anicic2010, DBLP:conf/debs/LiMRL11, 7439303,  hausmann2014language}. However, there is no native notion of state in these CEPs. For instance, the state of a door being open has to be coded, as a complex event starting with a door opening and ending with a door closing, with no door action in between. This kind of encoding is error-prone and tends to yield intricate CEP formulas (as can be seen in our examples).  This encoding is exactly what our DSL compiler automatically generates, in a uniform and predictable way, thereby providing a complete set of reliable common state/event operators.
+In fact, this compilation approach sets apart our work from most works in CEP, typically introducing a
+new CEP language with its standalone implementation, rather than translating in an existing, standard CEP language.
+
+%A notable
+%exception is a scheme for translating between different CEP languages \cite{Cep2Cep}; however, this scheme is only 
+%semi-automated and sometimes produce translations which are not fully equivalent, as opposed to the present work.
+
+%\subsection{Temporal composition requests}
+%Temporal composition 
+%\begin{itemize}
+%\item CEP
+%\item temporal db
+%\item temporal automaton
+%\item synchronous language
+%\end{itemize}
+
+\paragraph{Middleware-oriented approaches}
+
+Some approaches to developing context-aware applications rely on a middleware (or a framework) to provide programmers, in a general programming language, with dedicated abstractions for operating and managing devices ({\em e.g.,} sensor discovery) and context-aware services; examples include 
+FedNet \cite{7314a34a666f457aab238595568d5390}, HomeOS \cite{HomeOS}, Gaia \cite{Gaia}, Olympus~\cite{Olympus}, and Plan B \cite{DBLP:conf/percom/BallesterosSAM06}. 
+
+Raising further the abstraction level, other approaches introduce a disciplined, declaration-based development process, dedicated to context-aware services.  These approaches go as far as automating part of the programming task by generating a programming framework. Examples of tool-based development approaches are DiaSuite~\cite{bertran2014diasuite,cassou2012toward} and IoTSuite~\cite{Patel2015}.
+
+All these approaches aim to abstract over sensor infrastructure details, but do not support the programming needed to process environment interactions. The core of context processing revolves around recognizing specific patterns of events and states.  Without specific support, this programming is low level, tedious and error-prone, even for seasoned programmers. Our approach provides the programmer with this specific support.
+
+
+\section{Related work}\label{sec:relatedwork}
+
+\myparagraph{Programming models for sensor networks.}
+Much research has been devoted to simplifying the programming of applications over a sensor infrastructure, by defining adequate programming models. Sugihara and Gupta~\cite{sugihara-gupta-08} present a comprehensive survey of such approaches. Low-level models simplify the programming of each network node, separately using very small operating systems or virtualization support. High-level models allow to program the whole sensor network as a global system, either 1) using query languages, similar to those used in databases for querying sensor data, 2) writing functional programs to hide the node state manipulations, or 3) extending existing programming languages to address the distributed programming of sensors. While our work also aims to simplify the programming of applications over a network infrastructure, our model of the infrastructure is not intended for programming, but for testing the platform as a global entity. Thus, our infrastrucuture model is complementary to the programming models of these approaches.
+
+\myparagraph{Semantic sensors.}
+Another common approach to abstracting sensor-based applications from details, such as handling failures or dealing with low-level measurements, aims to provide higher-level sensor abstractions.
+%\cite{Whitehouse-al-06}: %cited in ProgMods4SensNetSurvey08
+Semantic Streams~\cite{WHITEHOUSE-SEMANTICS-WIRELESS2006} allow applications to make semantic queries, such as ``detect a vehicle'', instead of directly querying low-level magnetometers that exceed a given threshold. The implementation is based on Prolog and allows composing sensors and inference units.
+%\cite{Lin-04}: %cited in ProgMods4SensNetSurvey08
+Stemming from a software engineering, Software Sensors~\cite{LIN-SOFTWARE-UCSD2004} abstract each hardware sensor as a service implemented in a middleware on top of Jini, a Java-based distributed systems architecture. This approach allows multiple sensors to be combined in a flexible way.  There also exist standards for exposing sensors as Web services, such as the Sensor Web Enablement (SWE) standard, promoted by the OGC consortium~\cite{ogc-swe-07}, for improving the interoperability of these services in terms of various aspects (representing measurements, discovering sensors, streaming data from sensors, {\em etc.}).
+
+These semantic sensor abstractions conceptually correspond to roles in our framework. We also recognize the importance of an abstraction layer over raw sensor measurements and characteristics, building our model at this level of abstraction. In effect, any of the semantic sensor abstractions can be used to implement our notion of role. When retrofitting HomeAssist in our approach, we simulated the semantic sensor layer using Prolog rules, similar to the implementation of Semantic Streams~\cite{WHITEHOUSE-SEMANTICS-WIRELESS2006}, discussed earlier.
+
+Based on the SWE standard cited above, the Semantic Sensor Web~\cite{ssw-08} adds semantic metadata, leveraging ontologies and inference rules (also standardized by the W3C). For instance, a declarative inference rule, expressed in the Semantic Web Rule Language may define a sensor for blizzard conditions, built on top of sensors for temperature, wind, and precipitation. Our approach also uses declarative inference rules over abstracted sensors (our roles), but with a different goal: verifying the coherence between different sensors data.  To the best of our knowledge, this approach has not been used for conformance checking with respect to a model of sensors.
+
+\myparagraph{Sensor placement.}
+There has been research efforts to check sensor placement. Hong {\em et al.}  proposed a method based on empirical mode decomposition (EMD) to automatically follow the placement of sensors in the rooms of a building~\cite{HONG-TOWARD-BUILDSYS2013}, in a context where sensors may be replaced and the physical configuration of the building may evolve. Despite the fact that a home is at a different scale than a building, this method may be helpful to build a model of sensors in an evolving home, but cannot provide information about the conformance between sensors measurements and applications requirements.
+
+Murao {\em et al.} aim to determine the best position of wearable sensors to monitor activity~\cite{MURAO-EVALUATION-UBICOMP2013}. Their proposed evaluation function allows to evaluate a sensor position with respect to both its recognition accuracy and its sensor wearability. Because of the constraints they impose, a lot users do not accept wearable sensors to measure daily activities.  Surie {\em et al.} validate a network of sensors by comparing activity performance recognition from a network of sensors with data produced by a wearable camera~\cite{SURIE-WIRELESS-INTELLIGENT2008}. Even though it provides information on the infrastructure's reliability, this approach is not scalable because analyzing videos is a time-consuming operation. Furthermore, cameras are viewed as too intrusive to be used in many environments.  Research on activity recognition has been done by Philipose {\em et al.}. Their approach consists to place RFID tags on relevant everyday objects. Thus, interaction recognition is made using an RFID glove~\cite{PHILIPOSE-INFERRING-PERVASIVE2004}.  This may avoid sensor positioning issues, but may introduce false positive due to the RFID reception range with respect to the proximity between tagged objects.
+
+\myparagraph{Do-it-yourself smart homes.}
+Much research work concerns smart home platforms. The most relevant approaches with respect to our work are those involving the end user in the installation and/or maintenance stages of the system lifecycle. In particular, Kawsar {\em et al.}  propose a framework to support deployment of sensors by the end user in a smart home~\cite{KASWAR-DEPLOY-UBICOMP2008}. Combining this framework with the five design principles to support end-user sensor installation (see Beckmann {\em et al.}~\cite{BECKMANN-SOME-UBICOMP2004}) facilitates the task of a user to position sensors and configure them independently. However, no tools are provided to ensure the appropriate positioning of the sensors and to check their reliability.
+
+Sadoun {\em et al.}~\cite{SADOUN-ONTOLOGY-MICAI2011} start from natural language descriptions of an installation and its operation scenarios to derive a model of the environment. This model consists of an OWL domain ontology and inference rules in SWRL.  Using automatic rule inference, the consistency of the model and the conformance of described operation scenarios within the model can be checked.  This checking may signal both incoherent scenarios and incoherence in the installation description itself.  The main difference with our work is that their approach only checks the installation description, and not its functioning in the wild. Thereby, their inference rules do not reason about time intervals, which is a key notion for many of our rules, such as no-ubiquity and presence dependency.

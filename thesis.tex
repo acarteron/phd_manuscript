@@ -1,0 +1,86 @@
+\documentclass[final,submitted,screen,nolof,nolol,nolot]{mythesis}
+\usepackage{mymacros}
+\usepackage[french]{babel}
+\usepackage{graphicx} % for EPS, load graphicx instead
+\usepackage{multirow}
+\usepackage{lscape}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{xspace}
+\usepackage{pdfpages}
+
+\newcommand{\ie}{\emph{i.e.,}\xspace}
+\newcommand{\etc}{\emph{etc.}\xspace}
+\newcommand{\eg}{\emph{e.g.,}\xspace}
+\newcommand{\etal}{\emph{et al.}\xspace}
+\newcommand{\insitu}{\emph{in situ}\xspace}
+\newcommand{\apriori}{\emph{a priori}\xspace}
+\newcommand\tabhead[1]{\small\textbf{#1}}
+\newcommand{\college}{\emph{Collège+}\xspace}
+
+\title{Une approche événementielle pour le développement de services multi-métiers dédiés à l'assistance domiciliaire}
+\subtitle{}
+\author{Adrien Carteron}
+\date{22 décembre 2017}
+%\president{PU-PH Manuel Bouvard}
+\director{Charles Consel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Professeur à Institut Polytechnique de Bordeaux}
+         {Nic Volanschi . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  Advanced research position à Inria Bordeaux}
+\reviewer{Sylvain Giroux  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Professeur à l'Université de Sherbrooke}{Philippe Lalanda . . . . . . . . . . . . . . . . . . . . . . . . . . . . Professeur à l'Université Joseph Fourier de Grenoble }
+\examinator{Nikolaos Georgantas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  }{}{}
+
+
+\thanks{Thank you all !}
+%l'informatique ubiquitaire/omniprésente.
+\resume{
+La notion de contexte est fondamentale dans le champ de l’informatique
+ubiquitaire  et en particulier lorsque des services sont destinés à assister un utilisateur dans ses activités quotidiennes. 
+
+Dans le domaine du maintien à domicile de personne âgées, un tel
+environnement peut  fournir des services d’assistance
+pour pallier les pertes cognitives dues au vieillissement et assurer une
+vie indépendante.
+
+Parce qu’elle  implique plusieurs disciplines, une maison équipée
+d’informatique ubiquitaire et dédiée au maintien à
+domicile de personnes âgées demande l’implication d'une variété
+d’intervenants, tant pour concevoir et développer des services
+d'assistance, que pour déployer et maintenir l'infrastructure
+sous-jacente. Cette grande diversité d’intervenants correspond à une diversité de contextes : les services de chaque intervenant repose sur des contextes spécifiques (état des capteurs pour la maintenance, utilisation du frigidaire pour l’assistance à domicile). Ces différents contextes sont généralement étudiés séparément, empêchant toute synergie.
+
+Cette thèse présente une méthodologie permettant d'unifier la conception
+et le développement de services sensibles au contexte et de répondre aux
+besoins de tout type d'intervenant.
+
+Dans un premier temps, nous traitons les besoins des intervenants
+concernant l’infrastructure de capteurs/actionneurs: installation, maintenance et  exploitation. Ce traitement est défini par le modèle d’infrastructure d’un domicile et un ensemble de règles qui permettent de superviser en continu l’infrastructure et de détecter des dysfonctionnements. Cette supervision continue simplifie le processus de développement d’applications, en faisant abstraction des problèmes d’infrastructure.
+
+Dans un second temps, nous analysons un large éventail de services d’assistance domiciliaire dédié aux personnes âgées, en considérant la variété des besoins des intervenants. Grâce à cette analyse, nous généralisons l’approche développée pour l’infrastructure à tout type de services d’assistance. Ce travail conduit à développer une  méthodologie  qui permet de définir des services de façon unifiée, à travers des règles manipulant les concepts d’états et d’évènements. Pour exprimer ces règles, nous définissons un langage spécifique à ce domaine, appelé Maloya. Nous avons développé un compilateur de notre langage vers  un langage événementiel dont l’exécution s’appuie sur un moteur de traitement d’évènements complexes (CEP).
+
+Nous avons validé notre approche en définissant avec notre langage un large éventail de services d’assistance à la personne, à partir de services existants, déjà déployés, et concernant l’ensemble des intervenants du domaine. Nous avons compilé et exécuté les services Maloya sur un moteur de traitement d’évènements complexes. Les performances obtenues sont satisfaisantes pour le domaine avec une latence de détection inférieure à une seconde et une consommation mémoire compatible avec une exécution 24 heures sur 24 sur le long terme.
+%en ligne/ suffisante pour le domaine, reactivité et execution H24 a long terme
+}
+
+\motsclefs{Context-aware, domain-specific, data-centric,
+data-driven, aging in place}
+%besoin de fiabilité de l'install parallel aux app, aspet pas couvert par les app, model pour que les app reposent sur truc stable
+
+%app pas facile donc si on peut faire la meme chose pour les app c'est cool
+\begin{document}
+
+%Partie introductive
+\input{body/introduction}
+\input{body/etatart}
+\input{body/improving}
+\input{body/domainanalysis}
+\input{body/compiler}
+\input{body/conclusion}
+%\input{test}
+% %Partie Théorique
+% \input{TSA}
+% \input{priseencharge}
+% \input{technologies}
+
+
+\bibliography{sample}
+
+\end{document}

@@ -1,0 +1,42 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Nouveaux environnements
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcounter{definition}
+\renewcommand{\thedefinition}{\thesubsection.\arabic{definition}}
+\newenvironment{definition}[1][]{%
+	\refstepcounter{definition}
+	\begin{myblock}[Définition \thedefinition]}{\end{myblock}
+}
+
+\newenvironment{summary}[1][]{%
+	\begin{myblock}[Synthèse \thesubsection]}{\end{myblock}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Nouvelles commandes
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\chapterlabel}[1]{\label{chapter:#1}}
+\newcommand{\sectionlabel}[1]{\label{section:#1}}
+\newcommand{\figurelabel}[1]{\label{figure:#1}}
+\newcommand{\listinglabel}[1]{\label{listing:#1}}
+\newcommand{\tablelabel}[1]{\label{table:#1}}
+
+\newcommand{\chapterref}[1]{Chapitre~\ref{chapter:#1}}
+\newcommand{\sectionref}[1]{Section~\ref{section:#1}}
+\newcommand{\figureref}[1]{Figure~\ref{figure:#1}}
+\newcommand{\listingref}[1]{Listing~\ref{listing:#1}}
+\newcommand{\tableref}[1]{Table~\ref{table:#1}}
+
+\newcommand{\andothers}{\textit{et al.}\xspace}
+
+\newcommand{\mathleft}{\@fleqntrue\@mathmargin0pt}
+\newcommand{\mathcenter}{\@fleqnfalse}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Pied de page pour les versions non finales
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{thesis.ver}
+\addtodef{\draftmark}{}{~---~Version \@idnumber}
