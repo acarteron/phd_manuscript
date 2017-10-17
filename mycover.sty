@@ -39,6 +39,7 @@
 \newcommand*{\specialitename}{Spécialité}
 \newcommand*{\formationname}{Formation Doctorale}
 \newcommand*{\ecoledoctoralename}{École Doctorale}
+
 \newcommand*{\presidentname}{Président du jury}
 \newcommand*{\directorname}{Directeurs de thèse}
 \newcommand*{\codirectorname}{Co-Directeur de thèse}
@@ -159,9 +160,21 @@
       \fi\fi
       \par
       \vspace{0.3cm}
-      \begin{minipage}{\linewidth}
-        \noindent{\@jury}
-      \end{minipage}
+      \vspace{.5cm}
+    
+      \begin{tabular}{rll}
+        \textit{\presidentname} &  & Professeur à Bordeaux INP\vspace{0.2cm}\\
+        \textit{\directorname} & Charles Consel, & Professeur à Bordeaux INP\vspace{0.2cm}\\
+        \textit{\codirectorname} & Nic Volanschi, & Advanced research position à Inria Bordeaux\vspace{0.2cm}\\
+        \textit{\reviewername} & Sylvain Giroux, & Professeur à l'Université de Sherbrooke\\
+                                & Philippe Lalanda, & Professeur à l'Université Joseph Fourier de Grenoble\vspace{0.2cm}\\
+        \textit{\examinatorname} & Nikolaos Georgantas, & Research Scientist\\
+                                %& Nic Volanschi, & Advanced research position à Inria Bordeaux\\
+      \end{tabular}
+
+      % \begin{minipage}{\linewidth}
+      %   \noindent{\@jury}
+      % \end{minipage}
     }
   \end{center}
   \clearpage

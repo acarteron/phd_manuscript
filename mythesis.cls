@@ -110,6 +110,11 @@
 \RequirePackage[normalem]{ulem} 
 \RequirePackage{alltt}
 \RequirePackage{fancyvrb}
+\RequirePackage{sansmath}
+\RequirePackage{multirow}
+\RequirePackage{multicol}
+\RequirePackage{color, colortbl}
+\usetikzlibrary{shapes.geometric, arrows,automata,positioning}
 %\RequirePackage{adforn}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

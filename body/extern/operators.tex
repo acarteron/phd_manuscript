@@ -1,0 +1,142 @@
+% example greater less
+%variant : precedes less, precedes greater
+\begin{figure*}[ht]
+\begin{center}
+  \begin{tikzpicture}[node distance=\dx and \dy,
+    >=latex,shorten >=2pt,shorten <=2pt,auto,
+    semithick,initial distance=1cm,
+    every initial by arrow/.style={*->} ]
+    \draw[gray!50,line width=0.1mm,dashed] (-1.5,.5) -- (-1.5,-1.2);
+    \draw[gray!50,line width=0.1mm,dashed] (1.5,.5) -- (1.5,-1.2);  
+    \draw[gray!50,line width=0.1mm,dashed] (-.5,.2) -- (-.5,-1.);
+    \draw[gray!50,line width=0.1mm,dashed] (.5,.2) -- (.5,-1.);  
+    \draw[] (-1.5,.) 
+    node[xshift=-2.8 cm,yshift=.125cm] {\scriptsize Event:} 
+    node[xshift=-1.5 cm,yshift=.25cm] {\scriptsize {\tt p {\em becomes} v}} 
+    node[xshift=-1.5 cm,yshift=. cm] {\scriptsize $p\Rightarrow v$} 
+    node[xshift=-.2 cm,yshift=0 cm] {\scriptsize {\tt e}} --(-.5,.)--(-.5,.4) -- (-.5,.) -- (1.5,.);
+    % \draw[] (-1.5,.-.6) 
+    % node[xshift=-2.8 cm,yshift=.125cm] {\scriptsize Event:} 
+    % node[xshift=-1.5 cm,yshift=.25cm] {\scriptsize {\tt p {\em becomes} v'}} 
+    % node[xshift=-1.5 cm,yshift=. cm] {\scriptsize $p\Rightarrow v$} 
+    % node[xshift=-.2 cm,yshift=0 cm] {\scriptsize {\tt e}} --(.5,-.6)--(.5,-.2) -- (.5,-.6) -- (1.5,-.6);
+    \draw[] (-1.5,-.6) 
+    node[xshift=-.12 cm,yshift=.25cm] {\scriptsize ${\tt v}$} 
+    node[xshift=-.1 cm,yshift=. cm] {\scriptsize ${\tt v'}$} 
+    node[xshift=-.25 cm,yshift=.125 cm] {\scriptsize {\tt p}} -- (-.5,-.6) -- (-.5,-.2) -- (.5,-.2) -- (.5,-.6) -- (1.5,-.6);
+    \draw[] (-1.5,-1.2) 
+    node[xshift=-2.8 cm,yshift=.125cm] {\scriptsize State:} 
+    node[xshift=-1.5 cm,yshift=.25cm] {\scriptsize {\tt p {\em is} v}} 
+    node[xshift=-1.5 cm,yshift=. cm] {\scriptsize $p=v$} 
+    node[xshift=-.2 cm,yshift=0 cm] {\scriptsize {\tt s}} -- (-.5,-1.2) -- (-.5,-.8) -- (.5,-.8) -- (.5,-1.2) -- (1.5,-1.2);
+    
+  \end{tikzpicture}
+\end{center}
+  \begin{multicols}{2}
+    \begin{tikzpicture}[node distance=\dx and \dy,
+      >=latex,shorten >=2pt,shorten <=2pt,auto,
+      semithick,initial distance=1cm,
+      every initial by arrow/.style={*->} ]   
+      \draw[gray!50,line width=0.1mm,dashed] (-1.5,.5) -- (-1.5,-1.2);
+      \draw[gray!50,line width=0.1mm,dashed] (1.5,.5) -- (1.5,-1.2);  
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \draw[gray!50,line width=0.1mm,dashed] (.5,.) -- (.5,-1.2);   
+      \draw[] (-1.5,.) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt e$_1$}}  --(-.5,.)--(-.5,.4) -- (-.5,.) -- (1.5,.);
+      \draw[] (-1.5,-.6) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt e$_2$}} -- (.5,-.6) -- (.5,-.2) -- (.5,-.6) -- (1.5,-.6);
+      \draw[] (-1.5,-1.2) 
+      node[xshift=-3.4 cm,yshift=.5cm] {\scriptsize Every time {\tt e$_1$} {\em immediately} precedes {\tt e$_2$}}
+      node[xshift=-3. cm,yshift=.25cm] {\scriptsize {\tt e$_1$ {\bf precedes} e$_2$ $\Leftrightarrow$ $Precedes(e_1,e_2)$}}
+      node[xshift=-4.5 cm,yshift=-.45cm] {\scriptsize Variants:}
+      node[xshift=-0.55 cm,yshift=-.4cm] {\scriptsize {\tt e$_1$ {\bf precedes within} t e$_2$ $\Leftrightarrow$ $Precedes\_less(t)(e_1,e_2)$}}
+      node[xshift=-0.525 cm,yshift=-.65cm] {\scriptsize {\tt e$_1$ {\bf precedes by} t e$_2$ $\Leftrightarrow$ $Precedes\_greater(t)(e_1,e_2)$}} -- (.5,-1.2) -- (.5,-.8) -- (.5,-1.2) -- (1.5,-1.2);
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+      \draw[gray!50,line width=0.1mm,dashed] (-1.5,-2.) -- (-1.5,-3.7);
+      \draw[gray!50,line width=0.1mm,dashed] (1.5,-2.) -- (1.5,-3.7);  
+      \draw[gray!50,line width=0.1mm,dashed] (-.5,-2.5) -- (-.5,-3.7);   
+      \draw[gray!50,line width=0.1mm,dashed] (.,-2.5) -- (.,-3.7);  
+      \draw[gray!50,line width=0.1mm,dashed] (.5,-2.5) -- (.5,-3.7);
+      \draw[] (-1.5,-2.5) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt e}} --(-.5,-2.5)--(-.5,-2.1)--(-.5,-2.5)--(.,-2.5)--(.,-2.1)--(.,-2.5)--(.5,-2.5)--(.5,-2.1)--(.5,-2.5) -- (1.5,-2.5);
+      \draw[] (-1.5,-3.1) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt s}} -- (-1,-3.1) -- (-1,-2.7) -- (1,-2.7) -- (1,-3.1) -- (1.5,-3.1);
+      \draw[] (-1.5,-3.7) 
+      node[xshift=-3.7 cm,yshift=.5cm] {\scriptsize Every time {\tt e} occurs during state {\tt s}}
+      node[xshift=-3. cm,yshift=.125cm] {\scriptsize {\tt e {\bf during} s $\Leftrightarrow$ $During(e,s)$}}  -- (-.5,-3.7) -- (-.5,-3.3)--(-.5,-3.7)--(.,-3.7)--(.,-3.3)--(.,-3.7)--(.5,-3.7)--(.5,-3.3)--(.5,-3.7) -- (1.5,-3.7);
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+      \draw[gray!50,line width=0.1mm,dashed] (-1.5,-4.6) -- (-1.5,-6.2);
+      \draw[gray!50,line width=0.1mm,dashed] (1.5,-4.6) -- (1.5,-6.2);
+      \draw[gray!50,line width=0.1mm,dashed] (.5,-5.) -- (.5,-6.2);
+      \draw[] (-1.5,-5) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt s$_1$}} -- (-1,-5) -- (-1,-4.6) -- (.5,-4.6) -- (.5,-5) -- (1.5,-5);
+      \draw[] (-1.5,-5.6) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt s$_2$}} -- (-.5,-5.6) -- (-.5,-5.2) -- (1,-5.2) -- (1,-5.6) -- (1.5,-5.6);
+      \draw[] (-1.5,-6.2) 
+      node[xshift=-3.3 cm,yshift=.5cm] {\scriptsize Every time state {\tt s$_1$} overlaps with state {\tt s$_2$}}
+      node[xshift=-3. cm,yshift=.25cm] {\scriptsize {\tt s$_1$ {\bf overlapping} s$_2$ $\Leftrightarrow$ $Overlapping(s_1,s_2)$}} 
+      node[xshift=-4.7 cm,yshift=-.45cm] {\scriptsize Variants:}
+      node[xshift=-.55 cm,yshift=-.4cm] {\scriptsize {\tt s$_1$ {\bf overlapping} s$_2$ {\bf within} t $\Leftrightarrow$ $Overlapping\_less(t)(s_1,s_2)$}}
+      node[xshift=-.525 cm,yshift=-.65cm] {\scriptsize {\tt s$_1$ {\bf overlapping} s$_2$ {\bf for} t $\Leftrightarrow$ $Overlapping\_greater(t)(s_1,s_2)$}} -- (-.5,-6.2) -- (.5,-6.2) -- (.5,-5.8) -- (.5,-6.2) -- (1.5,-6.2);
+    \end{tikzpicture}
+  
+    \begin{tikzpicture}[node distance=\dx and \dy,
+      >=latex,shorten >=2pt,shorten <=2pt,auto,
+      semithick, initial distance=1cm,
+      every initial by arrow/.style={*->} ]   
+      \draw[gray!50,line width=0.1mm,dashed] (-1.5,.5) -- (-1.5,-1.2);
+      \draw[gray!50,line width=0.1mm,dashed] (1.5,.5) -- (1.5,-1.2);  
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+      \draw[gray!50,line width=0.1mm,dashed] (-.5,.) -- (-.5,-1.2);   
+      \draw[] (-1.5,.) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt e}} --(-.5,.)--(-.5,.4)--(-.5,.)--(.,.)--(.,.4)--(.,.)--(.5,.)--(.5,.4)--(.5,.) -- (1.5,.);
+      \draw[] (-1.5,-.6) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt s}} -- (-1.,-.6) -- (-1.,-.2) -- (1.,-.2) -- (1,-.6) -- (1.5,-.6);
+      \draw[] (-1.5,-1.2) 
+      node[xshift=-3.5 cm,yshift=.5cm] {\scriptsize The first occurrence of event {\tt e} during state {\tt s}}
+      node[xshift=-3 cm,yshift=.125cm] {\scriptsize {\tt e {\bf occurs while} s $\Leftrightarrow$ $Occurs(e,s)$}} -- (-.5,-1.2) -- (-.5,-.8) -- (-.5,-1.2) -- (1.5,-1.2);
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+      \draw[gray!50,line width=0.1mm,dashed] (-1.5,-1.6) -- (-1.5,-3.2);
+      \draw[gray!50,line width=0.1mm,dashed] (1.5,-2.) -- (1.5,-3.2);  
+      \draw[gray!50,line width=0.1mm,dashed] (-.5,-1.6) -- (-.5,-3.2);  
+      \draw[line width=0.1mm,dashed](-1.,-1.6)--(1,-1.6) ; 
+      \draw[]  (-.5,-1.6) 
+      node[xshift=-1.25 cm,yshift=-.25cm] {\scriptsize {\tt s$_1$}}  -- (.,-1.6); 
+      \draw[] (-1.5,-2.6) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt s$_2$}} -- (-1,-2.6) -- (-1,-2.2) -- (1,-2.2) -- (1,-2.6) -- (1.5,-2.6);
+      \draw[] (-1.5,-3.2) 
+      node[xshift=-4.2 cm,yshift=.75cm] {\scriptsize The first occurrence of state {\tt s$_1$}}
+      node[xshift=-2.45 cm,yshift=.5cm] {\scriptsize (partially) superposed with state {\tt s$_2$}}
+      node[xshift=-3.2 cm,yshift=.25cm] {\scriptsize {\tt s$_1$ {\bf occurs while} s$_2$ $\Leftrightarrow$ $Occurs(${\tt s$_1$},{\tt s$_2$}$)$}}
+      node[xshift=-4.4 cm,yshift=-.45cm] {\scriptsize Variants:}
+      node[xshift=-.55 cm,yshift=-.4cm] {\scriptsize {\tt s$_1$ {\bf occurs within} t {\bf while} s$_2$ $\Leftrightarrow$ $Occurs\_less(t)(s_1,s_1)$}}
+      node[xshift=-.525 cm,yshift=-.65cm] {\scriptsize {\tt s$_1$ {\bf occurs for} t {\bf while} s$_2$ $\Leftrightarrow$ $Occurs\_greater(t)(s_1,s_1)$}}  -- (-.5,-3.2) -- (-.5,-2.8) -- (-.5,-3.2) -- (1.5,-3.2) ;
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \draw[gray!50,line width=0.1mm,dashed] (-1.5,-4.4) -- (-1.5,-5.4);
+      \draw[gray!50,line width=0.1mm,dashed] (1.5,-4.4) -- (1.5,-5.4);  
+      \draw[gray!50,line width=0.1mm,dashed] (-.5,-4.5) -- (-.5,-5.8);  
+      \draw[gray!50,line width=0.1mm,dashed] (.5,-4.5) -- (.5,-7.); 
+      
+      \draw[] (-1.5,-4.8) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt e$_1$}} -- (.5,-4.8)--(.5,-4.4)--(.5,-4.8)--(1.5,-4.8);
+      \draw[] (-1.5,-5.4) 
+      node[xshift=-.25 cm,yshift=.125cm] {\scriptsize {\tt e$_n$}} -- (-.5,-5.4) -- (-.5,-5.) -- (-.5,-5.4) -- (1.5,-5.4);
+
+      \draw[gray!50,line width=0.1mm,dashed] (-1.5,-5.6) -- (-1.5,-6.);
+      \draw[gray!50,line width=0.1mm,dashed] (1.5,-5.6) -- (1.5,-6.);  
+      \draw[] (-1.5,-6.2) 
+      node[xshift=-3.5 cm,yshift=.5cm] {\scriptsize Trigger whenever any of the events happens}
+      node[xshift=-3. cm,yshift=.125cm] {\scriptsize {\tt {\bf \{}e$_1$ {\bf or} $\dots$ {\bf or} e$_n${\bf\}} $\Leftrightarrow$ $Or(e_1,\dots , e_n)$ }} -- (-.5,-6.2) -- (-.5,-5.8) -- (-.5,-6.2) -- (.5,-6.2) -- (.5,-5.8) -- (.5,-6.2) -- (1.5,-6.2);
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+      \draw[gray!50,line width=0.1mm,dashed] (-1.5,-6.6) -- (-1.5,-7.);
+      \draw[gray!50,line width=0.1mm,dashed] (1.5,-6.6) -- (1.5,-7.);  
+      \draw[] (-1.5,-7.) 
+      node[xshift=-3.8 cm,yshift=.5cm] {\scriptsize Trigger as soon as every event happens}
+      node[xshift=-3. cm,yshift=.125cm] {\scriptsize {\tt {\bf\{}e$_1$ {\bf and} $\dots$ {\bf and} e$_n${\bf\}} $\Leftrightarrow$ $And(e_1,\dots , e_n)$ }} -- (.5,-7.) -- (.5,-6.6) -- (.5,-7.) -- (1.5,-7.);
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+    \end{tikzpicture}
+  \end{multicols}
+  \caption{DSL syntax and informal semantics}
+  \label{fig:operators}
+  \normalsize
+\end{figure*}

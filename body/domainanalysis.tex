@@ -1,6 +1,6 @@
 \chapter{Analyse de domaine}
 \begin{preamble}
-Dans ce chapitre nous analysons une variété de couches de traitement de données dans le domaine du vieillissement à domicile pour identifier les concepts clés et les opérations spécifiques pour le traitement de la sensibilité au contexte. Reposant sur cette analyse, nous proposons un langage sensible au contexte, dédié, et son architecture logicielle, qui permet de mettre en synergie les intervenants d'une maison sensible au contexte, en leur fournissant une approche unifiée pour concevoir et développer des services.
+Dans ce chapitre nous analysons un large éventail de services d'assistance domiciliaire dédié aux personnes âgées, en considérant la variété des besoins des intervenants, pour identifier les concepts clés et les opérations spécifiques pour le traitement de la sensibilité au contexte. Reposant sur cette analyse, nous proposons un langage dédié et sensible au contexte avec son architecture logicielle. Cette approche permet de mettre en synergie les intervenants d'une maison sensible au contexte, en leur fournissant une approche unifiée pour concevoir et développer des services.
 \end{preamble}
 \chpsummary{Contributions}
 {
@@ -12,55 +12,71 @@ Underlying this language is a data-centric and data-driven paradigm that allows 
 }
 
 
-La notion de {\em contexte} est fondamentales dans les champ de l'informatique ubiquitaire et englobe de beaucoup de dimensions, 
-
-
-The notion of {\em context} is fundamental to the field of pervasive computing and encompasses a range of dimensions, including the physical world, an individual, their activities, and their technologies~\cite{bauer2012comparison}. 
+La notion de {\em contexte} est fondamentales dans les champ de l'informatique ubiquitaire et englobe de beaucoup de dimensions, le monde physique, un individu, ses activités, les technologies déployées, etc~\cite{bauer2012comparison}.
 % This wide range of dimensions is reflected in the host of application areas that leverages context awareness, spanning infrastructures ({\em e.g.,} railways), premises ({\em e.g.,} buildings), and health ({\em e.g.,} physiological status). 
-A major focus of the research on context awareness has been the {\em home} ({\em e.g.,}~\cite{cook2013casas,feminella2014piloteur}). This scope involves many context dimensions, including physical interactions with the environment ({\em i.e.,} sensors), digital interactions with the user environment ({\em e.g.,} email, calendar), status of the many components of the pervasive computing infrastructure (hardware, software, and network), application-specific concerns ({\em e.g.,} activity detection). When it comes to context-aware homes for the general population, a recurring challenge is to identify what services users would need~\cite{brush2011home}, and more generally, to develop methods to gather and analyze these needs~\cite{coutaz2010disqo}.
+Une attention particulière de la recherche a été portée sur le {\em domicile} ({\em e.g.,}~\cite{cook2013casas,feminella2014piloteur}). Ce périmètre implique beaucoup de dimensions contextuelles, notamment les interactions physiques avec l'environnement ({\em i.e.,} capteurs), les interactions numériques avec l'environnement de l'utilisateur ({\em i.e.,} email, agenda), l'état des nombreux composants de l'infrastructure de l'informatique ubiquitaire (matériel, logiciel et réseau), les préoccupations relatives aux applications ({\em i.e.,} détection d'activité). Concernant la population générale, le défit récurant est d;identifier de quels services ont besoins les utilisateurs~\cite{brush2011home}, et plus généralement, de développer de méthodes pour recueillir et analyser ces besoins~\cite{coutaz2010disqo}.
 
-% explores usage scenarios that do not necessarily apply to the pressing needs of a given population and involves studies that are mostly conducted in an experimental setting. Towards validating context-aware home, a realistic setting is required, involving daily scenarios that revolve around context awareness.
+Toutefois, dans le domaine du maintien à domicile de personne âgées, un tel environnement peut fournir
+des services d’assistance pour pallier les pertes cognitives dues au vieillissement et assurer une vie
+indépendante({\em e.g.,} ~\cite{rashidi2013survey}). Ces services sont principalement: (1) détecter et rappeler les activités du quotidien ({\em e.g.,} préparation de repas, toilette, se coucher) pour maintenir le status fonctionnel de l'utilisateur~\cite{caroux2014verification} et (2) surveiller les situations potentiellement dangereuses ({\em e.g.,} cuisinière, porte d'entrée) pour garantir la sécurité de l'utilisateur~\cite{rashidi2013survey}. 
+Parce qu’elle implique plusieurs disciplines, une maison équipée d’informatique ubiquitaire et
+dédiée au maintien à domicile de personnes âgées demande l’implication d’une variété d’intervenants, tant pour concevoir et développer des services d’assistance, que pour déployer et maintenir l’infrastructure sous-jacente. De ce fait parmi ces intervenants on retrouve les personnes âgées elle-même, les aidants, les expets en vieillissement, les professionnels de santé, les développeurs d'applications ainsi que les techniciens de maintenance. 
+Cette grande diversité d’intervenants correspond à une diversité
+de contextes : les services de chaque intervenant repose sur des contextes spécifiques (état des
+capteurs pour la maintenance, utilisation du frigidaire pour l’assistance à domicile). Ces différents
+contextes sont généralement étudiés séparément, en silo. Typiquement, chaque intervenant développe sa propre approche, pour extraire ses informations contextuelles, empêchant toute synergie.
 
-% a major societal challenge where pervasive computing can play a key role
+Nous avons analysé un large éventail de services d'assistance domiciliaire dédié aux personnes âgées, en considérant la variété des besoins des intervenants. Ces services sont installés sur une plate-forme d'assistance domiciliaire déployée chez 129 personnes âgées vivant seules et âgées de 82 ans en moyenne~\cite{consel2017homeassist}. 
+Cette analyse a permis d'identifier les concepts commun et les variations
+entre différentes couches de services déployés et utilisés au quotidien,
+pour en extraire des concepts clés et des opérations spécifiques aux
+traitements sensibles au contexte.
 
-However, when focusing on older adults, this population is ready to benefit from context-aware homes to support aging in place. A pervasive computing environment has the potential to deliver assistive services 24/7 and address the needs of older adults, whose nature can be of utmost importance to ensure independent living ({\em e.g.,} ~\cite{rashidi2013survey}). These services mainly consist of 1) detecting and reminding daily activities ({\em e.g.,} meal preparation, self-care, going to bed) to maintain the user's functional status~\cite{caroux2014verification} and 2) monitoring potentially hazardous situations ({\em e.g.,} cooker, entrance door) to make the user safe~\cite{rashidi2013survey}. Because it crosscuts various fields, a context-aware home dedicated aging in place involves a variety of stakeholders to design and develop assistive services, as well as to deploy and maintain the underlying infrastructure. Stakeholders include older users, caregivers, aging experts, health professionals, application developers, and maintenance technicians. This considerable diversity of stakeholders raises correspondingly diverse context dimensions. Typically, each stakeholder develops their own, silo-based approach to extracting their specific context information from sensed data.
+%\subsection*{Our Approach}
 
-We analyzed existing data processing layers of multiple stakeholders, extracted from an assisted living platform, deployed in 129 single-occupant homes of older adults, aged 82 years old on average~\cite{consel2017homeassist}. This case study thus consists of a range of services, whose usefulness has been validated in practice on a daily basis. Our analysis identifies commonalities and variabilities of these layers, revealing key concepts and operations specific to context-aware processing. 
+Nous basant sur cette analyse, nous proposons un langage de spécifique, sensible au contexte, appelé Maloya et son architecture logiciel, qui fournie un cadre de conception et les outils pour concevoir et développer des services domiciliaires. Pour unifier les source hétérogènes de données, de composants matériels aux composant logiciels, notre approche promeut un paradigme ``centré données'' et ``orienté données''. Notre approche est {\em centrée données} pour fournir une vue canonique des données mesurée à l'ensemble des services, couvrant les services de maintenance requérant l'état bas niveau des capteurs, jusqu'aux services spécifiques aux aidants nécessitants des mesures d'activités de haut niveau. Notre approche est {\em orientée données} avec des services définis en terme de règles traitant des évènements et des états.
 
-\subsection*{Our Approach}
-Based on this analysis, we propose a context-aware, domain-specific language and its software architecture, which provide a conceptual framework and a tool to unify the design and the development of home services. To unify heterogeneous sources of sensed data, ranging from hardware devices to software components, our approach promotes a processing paradigm, which is data centric and data driven. Specifically, our approach is {\em data centric} to provide a canonical view of sensed data to a range of services, spanning maintenance services consuming low-level device status, to caregiving-specific services using high-level activity measures. Our approach is {\em data driven} in that services are defined in terms of rules processing events and states.
 
 To unify the way services are developed, our approach introduces abstractions and notations that are specific to context-aware processing. The resulting {\em domain-specific language} (DSL) covers the needs of the stakeholders and provides an abstraction layer over underlying, well-established concepts and technologies, such as Allen's algebra to express sequences of interactions~\cite{Allen} and complex-event-processing engines to efficiently process the rules generated from DSL services ({\em e.g.,}~\cite{Cugola:2012:PFI:2187671.2187677}). Furthermore, we envision that our language can serve as a high-level stepping stone to introduce end-user programming languages for stakeholders with no computer-programming background.
 
 To validate our approach, we have re-implemented 55 services ranging over all the stakeholders of the assisted living platform under study. These new services were deployed and successfully tested for their effectiveness in performing the specific tasks of the stakeholders: detection of daily activities, detection of user risks, sensor failure, {\em etc.}
 
-\subsection*{Contributions}
-To summarize, this paper makes the following contributions.
+% \subsection*{Contributions}
+% To summarize, this paper makes the following contributions.
 
-\myparagraph {Domain analysis} We provide an analysis of context-aware processing layers in the domain of aging in place. From this analysis, we identify key concepts and operations specific to context-aware processing.
+% \myparagraph {Domain analysis} We provide an analysis of context-aware processing layers in the domain of aging in place. From this analysis, we identify key concepts and operations specific to context-aware processing.
 
-\myparagraph {Domain-specific language} We introduce a language, specific to developing context-aware services, providing high-level abstractions and notations. 
-Underlying this language is a data-centric and data-driven paradigm that allows services from a range of stakeholders to uniformly process heterogeneous sources of sensed data.
+% \myparagraph {Domain-specific language} We introduce a language, specific to developing context-aware services, providing high-level abstractions and notations. 
+% Underlying this language is a data-centric and data-driven paradigm that allows services from a range of stakeholders to uniformly process heterogeneous sources of sensed data.
 
-\myparagraph{Compiler} We have implemented a compiler for our DSL that maps high-level rules into low-level requests, crunched by an event-processing engine.
+% \myparagraph{Compiler} We have implemented a compiler for our DSL that maps high-level rules into low-level requests, crunched by an event-processing engine.
 
-\myparagraph {Validation} We applied our approach to re-implement 55 services, ranging over all the stakeholders of an assisted living platform dedicated to aging in place. The resulting services are expressed at a high level and are effective in performing the tasks of the stakeholders.
+% \myparagraph {Validation} We applied our approach to re-implement 55 services, ranging over all the stakeholders of an assisted living platform dedicated to aging in place. The resulting services are expressed at a high level and are effective in performing the tasks of the stakeholders.
 
 
 
 
 
 \section{Domain analysis}
-Context-aware homes for aging in place are still in their infancy and the path to adoption is being actively researched~\cite{kaye2017making}. The literature include few articles reporting on the deployment of assisted living platforms in the wild ({\em e.g.,} \cite{kaye2011intelligent}). Fortunately, we have been able to leverage the {\em HomeAssist} project to conduct a domain analysis of context-aware homes for aging in place. 
+La sensibilité au contexte dans le maintien à domicile des personnes âgées reste jeune et le chemin vers l'adoption est encore en étude~\cite{kaye2017making}. La littérature comporte encore peu d'articles concernant le déploiement de solutions d'assistances dans le domicile réel d'utilisateurs ({\em e.g.,} \cite{kaye2011intelligent}). Heureusement, nous avons pu faire levier sur le projet DomAssist pour conduire notre analyse du domaine sur les domiciles sensibles au contexte pour le maintien à domicile des personnes âgées.
 
-\subsection{HomeAssist: A Context-Aware Home for Aging in Place}
-HomeAssist is an assisted living platform that provides a catalog of assisted applications, supporting daily activities, safety and social participation~\cite{consel2017homeassist}. HomeAssist has been deployed in 129 single-occupant homes of community-dwelling older adults, 82 years old on average. The duration of this field study is 12 months.
+\subsection{DomAssist: Un domicile sensible au contexte pour le maintien à domicile des personnes âgées}
 
-HomeAssist is a perfect case study on which to build a unifying approach to developing context-aware home services dedicated to aging in place. It matches all the requirements to pursue our goal: 1) it is deployed in the wild in real homes; 2) it supports aging in place for frail users with pressing needs; 3) the field study is long enough that maintenance and evolution problems must be properly handled; 4) it is deployed at a large enough scale that administering context-aware homes need to be supported by services; 5) existing services reflect a range of needs expressed by stakeholders, spanning older users, caregivers, occupational therapists, psychologists, human factors experts, installation and maintenance technicians, and computer scientists.
+DomAssist est une plate-forme d'assistance qui fournit un catalogue d'applications d'assistance, pour le support des activités du quotidien, la sécurité de l'utilisateur et ses interactions sociales~\cite{consel2017homeassist}. DomAssist est déployée les domiciles de 129 personnes vivants seule âgées de 82 ans en moyenne, pour une durée de 12 mois.
 
-Let us further describe this platform to delimit the scope of the issues raised by the context-aware services. HomeAssist consists of a client-server architecture, where the server runs as many virtual machines as they are context-aware homes. Each virtual machine executes the assistive services selected by the user and their caregiver. These assistive services are fed with sensing data sent via Internet by a gateway, deployed in the context-aware home. This gateway gathers information from the sensors placed at strategic locations in the older adult's home to monitor their daily activities (see Caroux {\em et al.} for more details~\cite{caroux2014verification}). As well, the gateway channels actions from the services to the home's actuators. In the HomeAssist field study, a typical home consists of 4 contact sensors (entrance door, drawers, cabinets, {\em etc.}), 6 motion detectors (entrance area, kitchen, bathroom, {\em etc.}), and 2 smart plugs, which measure the electricity consumption and turn on/off a connected appliance (microwave, light path, coffeemaker, {\em etc.}). The number and type of devices can vary depending on the configuration of the home and the activities to be monitored. Finally, the home is equipped with a stationary tablet, placed at a central location in the home and always connected to a power outlet. This tablet is dedicated to interacting with the user via notifications emitted by assistive applications, which need to alert the user of a given situation ({\em e.g.} unattended entrance door left open)~\cite{consel2015unifying}.
+DomAssist est un parfait cas d'étude sur lequel construire une approche unifier pour développer des services pour domiciles sensibles au contexte dédié au maintien a domicile. Il rassemble tout les besoins pour viser notre but: (1) il est déployé dans des environnements réels; (2) il supporte le maintien a domicile de personnes âgées avec des utilisateur fragiles et des besoins immédiats; (3) l'étude conduite est suffisamment longue pour que les problèmes de maintenances et d'évolution aient à être traité rigoureusement; (4) la plate-forme est déployée à une échelle suffisamment large pour que l'administration des domiciles sensibles au contexte ait besoin d'être supporté par des services; (5) les services existant reflètent un large éventail de besoins exprimés par les intervenants, couvrant les utilisateurs, les aidants, les ergothérapeutes, les psychologues, les experts en facteurs humains, les techniciens d'installation et de maintenance, et les informaticiens.
+
+Décrivons maintenant la plate-forme pour délimiter la courverture des services sensibles au contexte. DomAssist se compose d'une architecture client-serveur, pour laquelle le serveur instancie autant de machine virtuelle qu'il y a de domicile sensible au contexte. Chaque machine virtuelle exécute les services d'assistance selectionnés par l'utilisateur et ses aidants. Ces services d'assistance sont alimentés par des données envoyées par Internet via une passerelle déployée dans le domicile. Cette passerelle rassemble les informations en provenance des capteurs placés dans des endroits stratégiques pour surveiller les activités. 
+ As well, the gateway channels actions from the services to the home's actuators. In the HomeAssist field study, a typical home consists of 4 contact sensors (entrance door, drawers, cabinets, {\em etc.}), 6 motion detectors (entrance area, kitchen, bathroom, {\em etc.}), and 2 smart plugs, which measure the electricity consumption and turn on/off a connected appliance (microwave, light path, coffeemaker, {\em etc.}). The number and type of devices can vary depending on the configuration of the home and the activities to be monitored. Finally, the home is equipped with a stationary tablet, placed at a central location in the home and always connected to a power outlet. This tablet is dedicated to interacting with the user via notifications emitted by assistive applications, which need to alert the user of a given situation ({\em e.g.} unattended entrance door left open)~\cite{consel2015unifying}.
 
 % Let us now illustrate the diversity of issues addressed by HomeAssist with a set of existing scenarios dedicated to support aging in place.
+
+
+
+
+%**********************************************
+\subsection{Scénarios pour le maintien à domicile}\label{domain:scenario}
+Nous présentons maintenant quatre scénarios illustrant la variété d'intervenants et de préoccupations nécessaires au support du maintien à domicile de personnes âgées à l'aide d'une maison sensible au contexte (voir Figure~\ref{scenario-fig}). Le premier scénario adresse la sécurité de l'utilisateur. Ce scénario surveille la porte d'entrée pour s'assurer qu'elle ne reste pas ouverte trop longtemps sans être surveillée. Le deuxième scénario, se rapporte au besoin de l'aidant en terme de surveillance des activités du quotidien, en particulier, les routines de préparation de repas. Les deux dernier scénarios concernent des besoins exprimés par les techniciens pour garder les domiciles sensible au contexte opérationnels. Le premier scénario de maintenance détecte l'utilisation d'un placard sans que celle-ci soit recouverte par la détection d'une présence. Le second scénario de maintenance détecte quand un capteur échoue à communiquer; cette situation se produit lorsque le capteur n'a plus de batterie ou dysfonctionne.
 
 \begin{figure*}[t]
 \begin{tabular}{| l | l | l | p{7cm} |} \hline
@@ -82,79 +98,51 @@ during \uline{lunch time} (or dinner time) \\ \hline
 \label{scenario-fig}
 \end{figure*}
 
+Ces scénario offre un apperçu sur les type de services sensibles au contexte nécessaire pour supporter le maintien à domicile de personnes âgées. Certains services tels que ``Door Alert'', peuvent convenir à la plupart des utilisateur. En revanche d'autres services, typiquement, les services concernant les activités du quotidien nécessite un certain degrée de personnalisation pour être efficace. Ceci est illustré par l'activité de préparation de repas et le scénario ``Reheating a Frozen Meal''.
 
-%**********************************************
-\subsection{Scenarios To Support Aging In Place}\label{domain:scenario}
-%\cc{Remplacer les couleurs par des soulignes pleins et pointilles (par ex) pour ne pas dependre de la couleur.}
+De la même manière, ``Communication Failure'' peut s'appliquer à n'importe quel domicile sensible au contexte, alors que ``Presence Dependency'' demande d'instancier les règles en fonction de la localisation des capteurs. 
 
-We now present four scenarios that illustrate the spectrum of stakeholders and concerns involved in supporting aging in place with a context-aware home (see Figure~\ref{scenario-fig}). The first scenario addresses the safety concern of the older adult. It consists of monitoring the entrance door to ensure that it is not left open for too long without being attended. The second scenario relates to a caregiver's need to monitor a user's daily activities, and in particular, their eating routines. The last two scenarios address the home technician's concerns to keep the context-aware home in an operational state. The first maintenance scenario detects inconsistent values produced, or values omitted, by the motion detector of the kitchen. This situation is discovered by cross-checking the motion detector information  with that of the contact sensor of the cupboard (or any other sensor located in that room). The second maintenance scenario detects whether a sensor fails to communicate; this situation occurs when the sensor has a drained battery or is malfunctioning.
-
-These scenarios offer a glimpse at the kind of context-aware services needed to support aging in place. Some services, such as ``Door Alert'', can fit most older users. Other services may target daily activities that require a level of personalization for an effective monitoring. This is illustrated by the meal preparation activity and the ``Reheating a Frozen Meal'' scenario. 
-
-Similarly, for maintenance scenarios, ``Communication Failure'' applies to any context-aware home, whereas ``Presence Dependency'' requires to instantiate the consistency rules with respect to the locations of sensors.
-
-% We are now ready to further examine home services for aging in place, as illustrated in Figure~\ref{scenario-fig}, to extract their commonalities and variabilities, as a basis to raise the level of abstraction to express such services.
-
-% We defined scenarios from stakeholders requirements that daily use a computing assistive platform.
-% \subsubsection*{Home safety: Door alert}
-% Entrance door \colorbox{teal!15}{is unattended} \colorbox{blue!5}{for 5 minutes}
-% \subsubsection*{Infrastructure status: Presence dependency}
-% When the cupboard \colorbox{checked!10}{gets opened} in the kitchen, a presence in the kitchen \colorbox{teal!15}{is true} 
-% \subsubsection*{Activity monitoring: Lunch Warmup}
-% Freezer \colorbox{checked!10}{gets used} and stove \colorbox{checked!10}{gets turned on} \colorbox{blue!5}{within 10 minutes} or Freezer \colorbox{checked!10}{gets used} during stove \colorbox{checked!10}{is on} \\
-% during \colorbox{teal!15}{lunch time}
-% \subsubsection*{Sensor monitoring: Commfailure alert}
-% A sensor \colorbox{teal!15}{is in commfailure} \colorbox{blue!5}{for 24 hours} and its status does not \colorbox{checked!10}{get updated}
-% Caption:
-% \begin{itemize}
-% \itshapeem\colorbox{teal!15}{State}, \colorbox{checked!10}{event}, \colorbox{blue!5}{duration}
-% \end{itemize}
-
-
-\subsection{Commonality and Variability Analysis}
-To conduct our domain analysis, we have examined a range of services offered by HomeAssist to identify their commonalities and variabilities. These services were developed in Java using a tool-based design methodology~\cite{bertran2014diasuite,cassou2012toward}.
+\subsection{Analyse de commonalités et variabilités}
+Pour conduire notre analyse du domaine, nous avons examiné un éventail de services offert par DomAssist pour identifier leurs commonalités et leurs variabilités. Ces services sont développés en Java en utilisant une méthodologie de conception outillée~\cite{bertran2014diasuite,cassou2012toward}.
 
 We now present the outcomes of this analysis that take the form of high-level, domain-specific concepts. These concepts will pave the way to our domain-specific approach presented in the next section.
 
-\myparagraph{Commonalities} All services refer to a notion of {\em environment} from which to perform measures. These measures encompass interactions in both a physical environment ({\em e.g.,} a motion detected) and  a digital one ({\em e.g.,} an event reminder issued by a calendar). Additionally, we identified two complementary concepts related to an environment: events and states. On the one hand, an {\em event} defines an environment measure that changes ({\em e.g.,} door {\em gets} closed/open) -- events are underlined with a dashed line in the scenarios of Figure~\ref{scenario-fig}. On the other hand, a {\em state} makes an event persistent across time ({\em e.g.,} door {\em is} open) -- states are underlined with a solid line in Figure~\ref{scenario-fig}. Once these unitary concepts were identified, we found specific ways in which they can be combined, revealing {\em composition} commonalities. Specifically, the combination of environment measures can define an {\em order} in which interactions must occur and their {\em duration} -- these constraints are underlined with a dotted line in Figure~\ref{scenario-fig}.
+\myparagraph{Commonalités} Tous les services se réfèrent à une notion d'{\em environnement} à partir duquel effectuer les mesures. Ces mesures englobent les interactions à la fois dans l'environnement physique ({\em e.g.,} un mouvement détecté) et dans l'environnement numérique ({\em e.g.,} un rappel d'évènement délivré par un agenda). De plus, nous avons identifié deux concepts complémentaires associé à l'environnement: évènements et états. D'un côté, un {\em évènement} définie une mesure d'environnement qui change ({\em e.g.,} une porte devient ouverte/fermée) -- les évènements sont soulignés avec des pointillés dans les scénarios de la Figure~\ref{scenario-fig}. D'un autre côté, un {\em état} rend un évènements persistant à travers le temps ({\em e.g.,} la porte {\em est} ouverte) -- les états sous soulignés avec une ligne pleine dans la Figure~\ref{scenario-fig}. Une fois ces concepts identifiés, nous définissons les façons spécifiques de les combiner, exposant les commonalités de {\em composition}. Spécifiquement, la combinaison de mesures d'environnement peut définir un {\em ordre} dans lequel les interaction doivent arriver et leur {\em durée} -- ces contraintes sont soulignées avec des points dans la Figure~\ref{scenario-fig}.
 
-Let us further study these commonalities by examining their range of variability.
+Étudions plus en détail ces points communs en examinant leur spectre de variabilité.
 
-\myparagraph{Variabilities} Environmental measures may be realized by a variety of entities, hardware ({\em e.g.,} sensor), software ({\em e.g.,} calendar), local ({\em e.g.,} door), remote ({\em e.g.,} new email messages), {\em etc.} The abstraction level of the environmental measures varies widely. For example, an event may be produced by a sensor, as soon as a motion is detected in a room. Alternatively, a sensor may detect the state of a room being occupied, excluding room-to-room transfers.
+\myparagraph{Variabilités} Les mesures environnementales peuvent être réalisées par une variété d'entités, matérielles ({\em e.g.,} capteurs), logicielles ({\em e.g.,} agenda), locales ({\em e.g.,} porte), distante ({\em e.g.,} nouvel email), {\em etc.} Le niveau d'abstraction énormément selon les mesures environnementales. Par exemple, un évènement peut être produit par un capteur, sitôt qu'un mouvement est détecté dans une pièce. Parallèlement, un capteur peut détecter l'état d'une pièce occupée, en excluant les transferts d'une pièce à l'autre.
 
-Regarding composition, several order constraints were observed between interactions, including an interaction {\em preceding} another one, an interaction occurring {\em during} another one, and an interaction {\em overlapping} another one. Not all of these constrains are applicable to any kind of interactions ({\em i.e.,} event and state). For example, only two states may overlap, whereas two events cannot. Indeed, in practical scenarios, events are viewed as occurring sequentially, not simultaneously.
+En ce qui concerne la composition, plusieurs contraintes d'ordre ont été observées en ce qui concerne les interactions. Une interaction peut en {\em précéder} une autre, une interaction arrive {\em durant} une autre, et une interaction en {\em chevauche} une autre. Cependant toutes ces contraintes ne sont pas applicables à tout types d'interactions ({i.e.,} évènements et états). Par exemple, seulement deux évènements peuvent se chevaucher, alors que les évènements ne peuvent pas. 
+%Indeed, in practical scenarios, events are viewed as occurring sequentially, not simultaneously.
 
+\section{Un langage spécifique dédié aux services sensibles au contextes}\label{sec:dsl}
 
+In this section, we introduce our DSL for developing context-aware services. This DSL is dedicated to describing contexts in terms of states and events, and operators to combine them. Figure~\ref{fig:operators}  presents the syntax of our DSL, as well as its informal semantics. Each construct of the language is presented on the left-hand side; its corresponding graphical representation is displayed on the right-hand side. This graphical representation visualizes events and states, and how operators combine them. A state is represented as a rectangle-shaped signal, visualizing the starting and ending points of the occurrence of an event. An event is represented as a spike signal, with merged starting and ending points. Underneath each DSL construct is its translation into a core DSL, which can be viewed as an abstract syntax.
 
-\section{A DSL For Context-Aware Services}\label{sec:dsl}
-
-We now present the main stages of our domain-specific approach to developing context-aware services dedicated to aging in place. This approach is depicted in Figure~\ref{fig:functionalarchi}.
+Nous présentons également les étapes principales de notre approche spécifique au domaine pour développer des services sensibles au contexte dédié au maintien à domicile des personnes âgées. Cette approche est décrite en Figure~\ref{fig:functionalarchi}.
 
 \begin{figure}[h]
 \centering
-  \includegraphics[scale=0.13]{gfx/approach}
+  \includegraphics[scale=0.2]{gfx/approach}
 \caption{Overall view of our domain-specific approach}
 \label{fig:functionalarchi}
 \end{figure}
 
+\subsubsection{Définition du service}
+La première étape est initiée avec les intervenants qui expriment les scénarios de services, comme illustré plus tôt. Ces scénarios sont directement écrit dans notre langage dédié par l'intervenant, si ils ont le bagage nécessaire ou par un développeur de services.
 
-\subsubsection{Service definition}
-The first step is initiated with the stakeholders that express scenarios of services, as illustrated earlier. These scenarios are directly written in our domain-specific language (see next section) by the stakeholders, if they have the proper background, or by a service developer. 
+\subsubsection{Compilation du service}
+Les services de haut niveau sont compilés dans des règles de plus bas niveau dans un langage de traitement d'évènement. Ces règles rendent explicite les concepts spécifiques au domaine, tels que les états qui sont compilés vers des combinaisons d'évènements et les opérations relatives.
 
-\subsubsection{Service compilation}
-The high-level service is compiled into low-level rules written in an event processing language. These rules make explicit the domain-specific concepts, such as states that are compiled into a combination of events and related operations.
+\subsubsection{Exécution du service}
+Pour être déployées, les règles sont ajoutés à un moteur de traitement d'évènement complexe (CEP). Notre moteur d'exécution de règle est basé sur Esper, un CEP open-source développé par EsperTech\footnote{http://www.espertech.com/esper/}. Esper propose des interface Java et C\# pour développer des programmes événementiels. Nous avons choisis Esper parce qu'il s'agit d'un moteur CRP populaire utilisé à la fois dans l'industrie et dans la recherche. Esper fournie un langage specifique et déclaratif pour le traitement d'évènement complexes, appelé EPL (pour Event Processing Language). EPL permet de décrire des motifs d'évènements à identifier dans un flux d'évènements temps réel, en utilisant des opérateurs pour ordonner les évènnements, des contraintes temporelles, {\em etc.} Esper ne permet pas de manipuler le concept d'état; il permet uniquement de traiter des évènements et nécessite donc quelques manipulations pour gérer un état. Dans notre implémentation, nous utilisons Esper avec règles EPL, compilées depuis des règles écrites en langage Maloya, et un flux d'évènement issue de domiciles sensibles au contexte, formattés en une forme canonique.
 
-\subsubsection{Service execution}
-When deployed, the rules are added to a Complex Event-Processing (CEP) engine.  Our rule execution engine is based on Esper, an open source CEP developed by EsperTech.\footnote{http://www.espertech.com/esper/}  It offers Java and C\# interfaces to develop event-based programs.  We chose Esper because it is a popular CEP engine, used both in industry and research.  Esper contains a declarative domain-specific language for CEP, called EPL (for Event Processing Language).  EPL allows to describe patterns of events to be recognized in an online stream of events, using operators for ordering events, time constraints, alternatives, {\em etc.} Esper does not offer a concept of state; it only handles events and requires extra machinery to manage a state.  In our implementation, we run the Esper engine with respect to EPL rules, compiled from our DSL rules, and a stream of events from the context-aware home, formatted in a canonical form.
-
-\subsubsection*{Canonical form}
-The canonical form of sensed data produced by context-aware homes allows to process them uniformly, disregarding their original heterogeneous formats.  In our implementation, the canonical form of data, called {\em StreamEvent}, is introduced as an abstraction layer above the flow of sensed data events. In this representation, each event consists in a 4-tuple consisting of the kind of event, its location, its value, and the timestamp of its occurrence.
-
+\subsubsection{Forme canonique}
+La forme canonique de données produites par un domiciles sensibles au contexte permet de faire les traitement de façon uniforme, indépendemment de leur format hétérogène original. Dans notre implémetation, la forme canonique de données, appelée {\em StreamEvent}, est introduite comme couche d'abstraction sur le flux d'évènements de données. Dans cette représentation, chaque évènement est un 4-tuple du type d'évènements, sa localisation, sa valeur, et l'horodatage de son occurrence.
 
 
-In this section, we introduce our DSL for developing context-aware services. This DSL is dedicated to describing contexts in terms of states and events, and operators to combine them. Figure~\ref{fig:operators}  presents the syntax of our DSL, as well as its informal semantics. Each construct of the language is presented on the left-hand side; its corresponding graphical representation is displayed on the right-hand side. This graphical representation visualizes events and states, and how operators combine them. A state is represented as a rectangle-shaped signal, visualizing the starting and ending points of the occurrence of an event. An event is represented as a spike signal, with merged starting and ending points. Underneath each DSL construct is its translation into a core DSL, which can be viewed as an abstract syntax.
-
-%\input{operators} 
+\input{body/extern/operators} 
 
 \subsection{Events and States}
 In our DSL, testing an event or a state is expressed as follows: for an event, {\ttfamily p {\em becomes} v} ; for a state, {\ttfamily p {\em is} v}. Where, in both cases, {\ttfamily p} is a sensor name (hardware or software) and {\ttfamily v} is a value in the range of the sensor.  The event {\ttfamily p {\em becomes} v} occurs when the sensor {\ttfamily p} signals a value {\ttfamily v}, if its previous value was different. The state {\ttfamily p {\em is} v} starts precisely when the event {\ttfamily p {\em becomes} v} occurs; it ends when the event {\ttfamily p {\em becomes} v'} occurs, where {\ttfamily v'} $\neq$ {\ttfamily v}. We view the period during which a state holds as the {\em time interval} of a state. This notion is generalized for events by viewing them as defining a zero-length time interval. The notion of time interval is used to define operators and their semantics.
@@ -311,3 +299,61 @@ select Cal_L_b,Fre_K_o,Sto_K_o from pattern [
 \end{footnotesize}
 
 Note that, even though these transformation steps may seem straightforward, there are several subtleties involved, such as the complex operator compositions, which require introducing new stream variables (``named windows'' in EPL). The details of our compiler scheme are outside the scope of this paper, and will be described elsewhere.
+
+\section{Validation}\label{sec:validation}
+This section presents the validation of our approach on the HomeAssist platform.  The expressiveness of our DSL is validated by re-defining existing services in it. The correctness of our compiler is validated by comparing the results of executing the compiled rules with the results of existing services deployed in the platform. Finally, the efficiency of our DSL is validated by measuring some performance figures of our running implementation.
+
+\input{body/extern/appexampletab}
+
+\subsection{Expressiveness}\label{validation:expressiveness}
+To validate the expressiveness of our DSL, we re-implemented 55 services already deployed in HomeAssist. These services are variations of 13 families of rules, which are listed in Figure~\ref{app_examples}. Variations within each family were required to match the specificities of older adults. For example, detecting daily activities, such as meal preparation and sleep/wa\-keup, have to be customized for each user with respect to sensing capabilities to detect environment interactions, time slots of activities, and time delays between sequences of interactions. For example, to prepare breakfast, an older adult may use an electric juicer and take a glass from a specific cupboard, whereas another one may turn on a kettle and opens the fridge to take the milk bottle.
+
+Rewriting an extended range of services allowed us to validate that our DSL and its underlying concepts (event, state, Allen's operators) are expressive enough to cover realistic services in the domain of aging in place.
+
+
+%\subsection{Compilation}\label{validation:compilation}
+\subsection{Correctness}\label{validation:results}
+
+We did not attempt to prove the correctness of our DSL compiler with respect to a formal semantics of its operators, although this work would be of interest. Instead, we empirically validated the correctness of the compiled services by a combination of visual code inspection and extensive testing. We performed manual inspection of all the intermediate forms described earlier (core DSL, EPL pseudo-code, Esper EPL) to ensure that they remain consistent with their original counterparts.
+
+% More specifically, the services written in our DSL were compiled in several steps, as discussed in Section~\ref{dsl:compilation}: core DSL, EPL pseudo-code, Esper EPL.
+
+Then, we validated the compiler output ({\em i.e.,} resulting EPL rules) in two phases. First, we tested the rules by executing them on log files from the HomeAssist project. These logs contain the timestamped events produced by all the sensors in the infrastructure, whether hardware or software. The results were checked automatically for correctness using Perl scripts, implementing the same service specifications. Note that these scripts are much simpler to write than the real applications, as they execute on log histories of sensed data, so they do not have to compute results online, and must not deal with the sensor infrastructure.
+
+We repeatedly compared the results produced by the compiled DSL services and the scripted specifications on extended log histories. This iterative process allowed us to refine our compilation schemas until it produced the same results as the scripted specifications.
+
+In a second phase, we connected the compiled DSL services to the online stream of events in the production platform for 9 users during 1 month, in parallel with the existing services written in Java. No difference was observed between the results of both systems (Java and DSL). Furthermore, this phase allowed us to assess the runtime performance of our approach, as discussed next.
+
+
+\subsection{Performance}\label{validation:performance}
+To validate the applicability of our DSL approach in practice, we measured in real conditions the performance of the EPL rules produced by our DSL compiler with respect to two indicators: the response time to online events, and the memory consumption of our execution engine. The rules were executed on the production server of the platform, which is a quad-core Intel(R) Xeon(R) E5-2407 v2 2.4 GHz CPU and 125GB RAM.
+
+The response time of a rule indicates the time between the last event that should trigger a rule, and its effective triggering. A low response time means that the rule is sufficiently reactive for practical use. According to our measurements, the response time of all our rules were always less than a second. This order of magnitude is perfectly compatible with the kind of rules that are implemented in this platform for aging in place.
+
+We also measured the memory consumption of our implementation to ensure that it can scale up to hundreds of users and to tens of implemented services. According to our measurements, the memory consumption was found to be 352MB on average, for 55 rules, processing data from 129 homes, and running 24/7 for one month. Encouraged by these figures, we further explored the applicability of our DSL by testing it on a smaller-scale architecture that is commonly used in pervasive computing environments, namely a Raspberry Pi 3 with a quad-core ARM Cortex-A53 1.2 GHz CPU and 1GB RAM. In this experiment, we ran the same 55 rules on the same 129 installations, online during 5 days. Memory consumption was found to be 173MB on average. 
+The lower memory consumption on the Raspberry Pi is due to the fact that it is a 32-bit architecture.
+These measurements indicate that our approach is both applicable for processing in the cloud 
+and for embedded processing within the homes.
+
+\section{Discussion}
+
+Our DSL bridges the gap between high-level domain concepts and low-level mechanisms of event handling. As a consequence, it contributes to making rules more concise and  to simplify their development, by encapsulating details of event handling in a compiler.  Indeed, the original Java applications implementing HomeAssist services contain manually implemented timed automata, which recognize the sequences of events corresponding to each DSL rule.  Timing constraints are explicitly handled by using a timer service, producing timeout events that are inserted in the stream of events, produced by the sensor infrastructure.  In our DSL rules, these low-level details of state and time handling are included in the semantics of operators.  For instance, the role of explicit timers corresponds the parameters of our time-constrained operator variants. This lowers the efforts to write rules and to make them more predictable.
+
+\subsection*{Limitations}
+
+Our approach is a first step towards simplifying the development of context-aware applications in the domain of aging in place, and presents a number of limitations.
+
+First of all, our DSL only is dedicated to recognizing contexts. It provides no constructs for performing actions on the environment. These must be currently programmed in a generic programming language. It would be useful to extend our domain analysis to also cover the control part of typical applications, and to derive domain-specific concepts and notations to perform actions.
+
+As far as applications are concerned, we have designed and tested our DSL only on services in the domain of aging in place, which involves a specific set of composition operators. However, our DSL can express rich, arbitrarily nested combinations. It would be interesting to apply it to other domains of context-aware applications in the future.
+
+Finally, our rules always return boolean values. However, context-aware information may sometimes be more general than strictly binary. For instance, a daily activity such as meal preparation might be detected in a more nuanced way as a probability between 0 and 1, to cope with some amount of deviations from the user's routine. Currently, in our DSL the different routine variations must be coded as different rules, which is not always practical. In the future, it would be interesting to consider extending our approach with operators returning non-boolean values.
+% Such fuzzy detectors are sometimes used in the domain of aging in place.
+
+\section{Conclusion}
+%**********************************************
+%**********************************************
+
+We have proposed a new approach for developing context-aware services in a smart home, by
+analyzing a range of existing data processing layers in the domain of aging in place. We have identified key concepts and operations specific to context-aware processing. Based on this analysis, we have introduced a context-aware, domain-specific language and its software architecture, which allow to put in synergy the stakeholders of a context-aware home by providing them with a unified approach to designing and developing services. Our approach offers context aware-specific abstractions and notations, within a data-centric and data-driven paradigm.
+We have validated our approach by applying it to an assisted living platform for aging in place. In particular, we have used our domain-specific language to re-implement existing services of the assisted living platform. These services were deployed and successfully tested for their effectiveness in performing the specific tasks of the stakeholders: detection of daily activities, detection of user risks, sensor failure, {\em etc.}
