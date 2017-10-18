@@ -1,4 +1,4 @@
-\chapter{Analyse de domaine}
+\chapter{Unifier la définition de services sensibles au contexte}
 \begin{preamble}
 Dans ce chapitre nous analysons un large éventail de services d'assistance domiciliaire dédié aux personnes âgées, en considérant la variété des besoins des intervenants, pour identifier les concepts clés et les opérations spécifiques pour le traitement de la sensibilité au contexte. Reposant sur cette analyse, nous proposons un langage dédié et sensible au contexte avec son architecture logicielle. Cette approche permet de mettre en synergie les intervenants d'une maison sensible au contexte, en leur fournissant une approche unifiée pour concevoir et développer des services.
 \end{preamble}
@@ -36,9 +36,9 @@ traitements sensibles au contexte.
 Nous basant sur cette analyse, nous proposons un langage de spécifique, sensible au contexte, appelé Maloya et son architecture logiciel, qui fournie un cadre de conception et les outils pour concevoir et développer des services domiciliaires. Pour unifier les source hétérogènes de données, de composants matériels aux composant logiciels, notre approche promeut un paradigme ``centré données'' et ``orienté données''. Notre approche est {\em centrée données} pour fournir une vue canonique des données mesurée à l'ensemble des services, couvrant les services de maintenance requérant l'état bas niveau des capteurs, jusqu'aux services spécifiques aux aidants nécessitants des mesures d'activités de haut niveau. Notre approche est {\em orientée données} avec des services définis en terme de règles traitant des évènements et des états.
 
 
-To unify the way services are developed, our approach introduces abstractions and notations that are specific to context-aware processing. The resulting {\em domain-specific language} (DSL) covers the needs of the stakeholders and provides an abstraction layer over underlying, well-established concepts and technologies, such as Allen's algebra to express sequences of interactions~\cite{Allen} and complex-event-processing engines to efficiently process the rules generated from DSL services ({\em e.g.,}~\cite{Cugola:2012:PFI:2187671.2187677}). Furthermore, we envision that our language can serve as a high-level stepping stone to introduce end-user programming languages for stakeholders with no computer-programming background.
+% To unify the way services are developed, our approach introduces abstractions and notations that are specific to context-aware processing. The resulting {\em domain-specific language} (DSL) covers the needs of the stakeholders and provides an abstraction layer over underlying, well-established concepts and technologies, such as Allen's algebra to express sequences of interactions~\cite{Allen} and complex-event-processing engines to efficiently process the rules generated from DSL services ({\em e.g.,}~\cite{Cugola:2012:PFI:2187671.2187677}). Furthermore, we envision that our language can serve as a high-level stepping stone to introduce end-user programming languages for stakeholders with no computer-programming background.
 
-To validate our approach, we have re-implemented 55 services ranging over all the stakeholders of the assisted living platform under study. These new services were deployed and successfully tested for their effectiveness in performing the specific tasks of the stakeholders: detection of daily activities, detection of user risks, sensor failure, {\em etc.}
+% To validate our approach, we have re-implemented 55 services ranging over all the stakeholders of the assisted living platform under study. These new services were deployed and successfully tested for their effectiveness in performing the specific tasks of the stakeholders: detection of daily activities, detection of user risks, sensor failure, {\em etc.}
 
 % \subsection*{Contributions}
 % To summarize, this paper makes the following contributions.
@@ -56,8 +56,9 @@ To validate our approach, we have re-implemented 55 services ranging over all th
 
 
 
-\section{Domain analysis}
-La sensibilité au contexte dans le maintien à domicile des personnes âgées reste jeune et le chemin vers l'adoption est encore en étude~\cite{kaye2017making}. La littérature comporte encore peu d'articles concernant le déploiement de solutions d'assistances dans le domicile réel d'utilisateurs ({\em e.g.,} \cite{kaye2011intelligent}). Heureusement, nous avons pu faire levier sur le projet DomAssist pour conduire notre analyse du domaine sur les domiciles sensibles au contexte pour le maintien à domicile des personnes âgées.
+\section{Analyse du domaine}
+Pour vérifier s'il est possible d'unifier la conception de services sensibles au contexte dans le cadre du maintien a domicile des personnes âgées, il est indispensable d'analyser le domaine afin d'identifier, le cas échéant, les implications d'une telle approche et quels sont les éléments indispensables à prendre en compte.
+Le domaine de la sensibilité au contexte dans le maintien à domicile des personnes âgées reste jeune et le chemin vers l'adoption est encore en étude~\cite{kaye2017making}. La littérature comporte encore peu d'articles concernant le déploiement de solutions d'assistances dans le domicile réel d'utilisateurs ({\em e.g.,} \cite{kaye2011intelligent}). Cependant, nous avons pu faire levier sur le projet DomAssist pour conduire notre analyse du domaine.
 
 \subsection{DomAssist: Un domicile sensible au contexte pour le maintien à domicile des personnes âgées}
 
@@ -126,6 +127,8 @@ Notre langage a pour but d'être exploité par tous types d'intervenant. Il exis
 \subsection{Évènements et États}
 Dans notre langage, un évènement est exprimé ainsi: {\ttfamily p {\em becomes} v} en langage textuel et  $p=>v$ en langage coeur. Un état est exprimé comme suit: {\ttfamily p {\em is} v} en langage textuel et $p=v$ en langage coeur. Dans chaque cas, {\ttfamily p} est le nom du capteur (matériel ou logiciel) et {\ttfamily v} est la valeur dans le champ de valeurs applicables au capteur. L'évènement {\ttfamily p {\em becomes} v} survient quand le capteur {\ttfamily p} signale une valeur {\ttfamily v}, si sa précédente valeur était différente. L'état {\ttfamily p {\em is} v} commence précisément quand l'évènement {\ttfamily p {\em becomes} v} se produit; il se termine quand l'évènement {\ttfamily p {\em becomes} v'} se produit, où {\ttfamily v'} $\neq$ {\ttfamily v}. Nous voyons la période durant laquelle un état se maintien comme l'{\em intervalle de temps} d'un état. Cette notion est généralisée pour les évènement en les considérant comme des intervalles de temps nuls. La notion d'intervalle de temps est utilisée pour définir les opérateurs et leur sémantique.
 
+Les états disposent également de filtres sur leurs durée. Ces filtres sont exprimés avec le paramètre $delta$ dans le langage coeur. $p=v\_delta(<t)$ pour une durée inférieure à une durée $t$ ou bien $p=v\_delta(>t)$ pour une durée supérieure à $t$.
+
 Une {\em règle} dans notre langage est constituée d'opérateurs appliqués sur des états et/ou des évènements. Tous les opérateurs retournent des évènements.
 Plus précisément, un opérateur produits un évènement de succès quand le contexte décrit par l'application d'un opérateur est détecté.
 Parce qu'un opérateur retourne un évènement, les opérateurs qui prennent un évènement comme argument peuvent prendre un opérateur comme argument.
@@ -148,6 +151,8 @@ La règle {\ttfamily e {\bf during} s} réussie chaque fois que l'évènement {\
 La règles {\ttfamily s$_1$ {\bf overlapping} s$_2$} réussie chaque fois que l'état {\ttfamily s$_1$} chevauche l'autre état {\ttfamily s$_2$}. L'état {\ttfamily s$_1$} commence avant le début de l'état {\ttfamily s$_2$}, et termine durant {\ttfamily s$_2$}, comme montré en Figure~\ref{fig:operators}. Les versions avec contraintes temporelles définissent les limites hautes et basses de la durée de chevauchement des occurrences de ces états.
 
 La règle {\ttfamily e {\bf occurs while} s} est similaire à la règle {\ttfamily e {\bf during} s}, mais réussie seulement pour la première occurrence de l'évènement {\ttfamily e} durant l'état {\ttfamily s}. Une variante de cette règle est {\ttfamily s$_1$ {\bf occurs while} s$_2$}. Dans ce cas, la règle réussie la première fois que l'état {\ttfamily s$_1$} superpose au moins partiellement {\ttfamily s$_2$}. Les versions avec contraintes temporelles donnes les limites hautes et basses sur la superposition des états.
+
+En langage coeur les contraintes temporelles sont exprimés avec les marqueurs $greater(t)$ ou $less(t)$ ajouté aux opérateur à dériver.
 
 Bien que les opérateurs d'Allen expriment un large éventail de situation, ils ne couvrent pas tous les besoins révélés par notre analyse de domaine; plus d'opérateurs sont requis. En particulier, une disjonction d'événements est nécessaire pour permettre l'expression de contextes alternatifs. Une règle disjonctive est de la forme {\ttfamily \{e$_1$ {\bf or} \ldots~{\bf or} e$_n$\}}; elle réussie quand n'importe quel des {\ttfamily e$_i$} se produit. Également, nous introduisons une règle de conjonction de la forme {\ttfamily \{e$_1$ {\bf and} \ldots~{\bf and} e$_n$\}}. Cette règle réussie lorsque chacun des {\ttfamily e$_i$} s'est produit.
 
@@ -195,7 +200,7 @@ Où ``{\em =$>$}'' désigne un évènement qui se produit et ``{\em =}'' désign
 \subsubsection{Pseudo-code EPL}
 
 L'étape de compilation suivante génère un pseudo-code EPL. Ce pseudo-code utilise seulement des opérateur EPL, mais n'instancie pas les attributs des évènements; cette instanciation est faite ultérieurement. Cette étape implique plusieurs transformations. Premièrement, comme EPL ne supporte pas la notion d'état, chaque état dans une règle est traduit vers une séquence correspondants aux évènements qui marquent le début et la fin de l'état, ordonné avec des opérateurs EPL standards. De cette façon, l'état exprimant le four comme étant allumé est traduit en une séquence EPL correspondant au four devenant allumé, suivi par n'importe quel évènement d'intérêt mais sans que le fous n'ait été éteint. Par conséquent, l'opérateur ``{\em Occurs(\dots, stove = on)}'' est traduit en EPL par 
-\begin{quote} {\em stove $=>$ on $=>$ \dots\ and\ not\ (stove $=>$ off)} \end{quote}
+\begin{quote} {\em stove $=>$ on $\rightarrow$ \dots\ and\ not\ (stove $=>$ off)} \end{quote}
 \noindent 
 utilisant les opérateurs EPL ``{\em and}'', ``{\em or}'' et ``$\rightarrow$'', qui veut dire {\em followed by} (suivi de). De plus, dans cette phase de compilation, les contraites temporelles sont traduites par l'utilisation explicite de construction EPL de ``{\em timer:within}'' pour exprimer la limite haute, et l'utilisation explicite de ``{\em timer:interval}'' pour exprimer la limite temporelle basse. Suivant notre exemple, le résultat de cette phase de compilation en pseudo-code EPL se retrouve ainsi:
 
@@ -289,16 +294,16 @@ Nous présentons les étapes principales de notre approche spécifique au domain
 \label{fig:functionalarchi}
 \end{figure}
 
-\subsection{Définition du service}
-La première étape est initiée avec les intervenants qui expriment les scénarios de services, comme illustré plus tôt. Ces scénarios sont directement écrit dans notre langage dédié par l'intervenant, si ils ont le bagage nécessaire ou par un développeur de services.
+\subsection*{Définition du service}
+La première étape est initiée avec les intervenants qui expriment les scénarios de services, comme illustré plus tôt. Ces scénarios sont directement écrit dans notre langage dédié par l'intervenant, si ils ont le bagage nécessaire ou par un développeur de services en langage coeur.
 
-\subsection{Compilation du service}
+\subsection*{Compilation du service}
 Les services de haut niveau sont compilés dans des règles de plus bas niveau dans un langage de traitement d'évènement. Ces règles rendent explicite les concepts spécifiques au domaine, tels que les états qui sont compilés vers des combinaisons d'évènements et les opérations relatives.
 
-\subsection{Exécution du service}
+\subsection*{Exécution du service}
 Pour être déployées, les règles sont ajoutés à un moteur de traitement d'évènement complexe (CEP). Notre moteur d'exécution de règle est basé sur Esper, un CEP open-source développé par EsperTech\footnote{http://www.espertech.com/esper/}. Esper propose des interface Java et C\# pour développer des programmes événementiels. Nous avons choisis Esper parce qu'il s'agit d'un moteur CRP populaire utilisé à la fois dans l'industrie et dans la recherche. Esper fournie un langage spécifique et déclaratif pour le traitement d'évènement complexes, appelé EPL (pour Event Processing Language). EPL permet de décrire des motifs d'évènements à identifier dans un flux d'évènements temps réel, en utilisant des opérateurs pour ordonner les évènements, des contraintes temporelles, {\em etc.} Esper ne permet pas de manipuler le concept d'état; il permet uniquement de traiter des évènements et nécessite donc quelques manipulations pour gérer un état. Dans notre implémentation, nous utilisons Esper avec règles EPL, compilées depuis des règles écrites en langage Maloya, et un flux d'évènement issue de domiciles sensibles au contexte, formattés en une forme canonique.
 
-\subsection{Forme canonique}
+\subsection*{Forme canonique}
 La forme canonique de données produites par un domiciles sensibles au contexte permet de faire les traitement de façon uniforme, indépendemment de leur format hétérogène original. Dans notre implémetation, la forme canonique de données, appelée {\em StreamEvent}, est introduite comme couche d'abstraction sur le flux d'évènements de données. Dans cette représentation, chaque évènement est un 4-tuple du type d'évènements, sa localisation, sa valeur, et l'horodatage de son occurrence.
 
 \section{Validation}\label{sec:validation}
