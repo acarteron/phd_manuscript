@@ -1,0 +1,25 @@
+\subsubsection*{Followed-by}
+``$\rightarrow$'' operator specifies that first the left hand expression must turn true and only then is the right hand expression evaluated for matching events.
+
+$X\rightarrow Y$ because of CEP, $Y$ is the first event of its nature that succeeds to $X$.\\
+\newline
+$Followed$-\(by(E_1,E_2)(t)=(\exists t_1)(\forall t_2)(E_1(t_1)\wedge E_2(t)\wedge (t_1<t)\wedge ((t_1<t_2<t)\rightarrow \thicksim E_2(t_2)) )\)
+
+\subsubsection*{not}
+``$not$'' operator negates the truth value of an expression. Pattern expressions prefixed with ``$not$'' are automatically defaulted to true upon start, and turn permanantly false when the expression within thurns true. 
+
+``$not$'' operator is generally used in conjuction with the ``$and$'' operator.
+
+$X\ and\ not\ Y$ means that there must not have $Y$ events before $X$ event.\\
+\newline
+$And$-\(not(E_1,E_2)(t)=(\forall t_1)(\thicksim E_2(t)\wedge E_1(t)\wedge ((t_1<t)\rightarrow \thicksim E_2(t_1)))\)
+
+\subsubsection*{every}
+``$every$'' operator indicates that the pattern subexpression should restart when the subexpression qualified by the every keyword evaluates true or false.\\
+\newline
+\(Every(E)(t)=E(t)\)
+
+\subsubsection*{first}
+
+\(First(E)(t)=(\forall t_1)(E(t)\wedge ((t_1<t)\rightarrow \thicksim E(t_1)))\)
+
