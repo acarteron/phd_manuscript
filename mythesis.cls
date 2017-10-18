@@ -96,7 +96,7 @@
 \RequirePackage{calc}
 \RequirePackage{color}
 \RequirePackage{fourier}
-\RequirePackage{listings}
+\RequirePackage{listings,lstautogobble}
 \RequirePackage[framemethod=tikz]{mdframed}
 \RequirePackage{soul}
 \RequirePackage{url}

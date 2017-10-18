@@ -1,114 +1,93 @@
 %\begin{landscape}
 \begin{figure*}[h]
-  \scriptsize
-  \begin{tabular}{|l|p{7cm}|c|c|c|c|l|} 
+  \tiny
+  \begin{tabular}{|p{1.45cm}|p{8cm}|c|c|c|c|p{1.65cm}|} 
     \hline
-    \multirow{3}{*}{\textbf{Name}}&\multirow{3}{*}{\textbf{Description / DSL}}&\multicolumn{4}{|c|}{\textbf{Metrics}}&\multirow{3}{*}{\textbf{Stakeholders}}\\
+    \multirow{3}{*}{\textbf{Name}}&\multirow{3}{*}{\textbf{Description / DSL}}&\multicolumn{4}{c|}{\textbf{Metrics}}&\multirow{3}{*}{\textbf{Stakeholders}}\\
     \cline{3-6}
-                                  &                 &\multicolumn{2}{|c|}{\textbf{DSL}}&\multicolumn{2}{|c|}{\textbf{EPL}}&\\
-                                  & & \# events & \# states & \# events & \# not &\\
+                                  &                 &\multicolumn{2}{c|}{\textbf{DSL}}&\multicolumn{2}{c|}{\textbf{EPL}}&\\
+                                  & & \#events & \#states & \#events & \#not &\\
     \hline
 %**********************************************
-    Presence & \cellcolor{gray!15}Detect if cupboard status changes while no presence in kitchen& \multirow{2}{*}{1}& \multirow{2}{*}{1} & \multirow{2}{*}{2}& \multirow{2}{*}{1} & Sensor\\ % \cline{2-2}
-    dependency  & \begin{lstlisting}             
+     & \cellcolor{gray!15}Detect if cupboard status changes while no presence in kitchen& & & & & \\ % \cline{2-2}
+    Presence dependency  & \begin{mtext}             
       Cupboard becomes open $\textbf{occurs}$ $\textbf{while}$ Presence(Kitchen) is false 
-    \end{lstlisting} & & & && installer\\
-    % &  & & && &\\
-    % &  & & & &&\\
+    \end{mtext} & 1 & 1 & 2 & 1 & Sensor installer\\
     \hline
 %**********************************************
-    Departure & \cellcolor{gray!15} Detect if entrance door is opened at least for 5 minutes during calendar night time & \multirow{4}{*}{1} & \multirow{4}{*}{1} & \multirow{4}{*}{2}& \multirow{4}{*}{2} & Occupational\\
-                                 alert & \begin{lstlisting}  
-                                    Door is open $\textbf{for}$ 5 minutes $\textbf{occurs}$ $\textbf{while}$ Night time
-                                  \end{lstlisting} & & & &&  therapist \\ 
-                                 &  & & & && Caregiver \\
+     & \cellcolor{gray!15} Detect if entrance door is opened at least for 5 minutes during calendar night time & & & & & Occupational therapist\\
+    Departure alert & \begin{mtext}  
+      Door is open $\textbf{for}$ 5 minutes $\textbf{occurs}$ $\textbf{while}$ Night time
+    \end{mtext} & 1 & 1 & 2 & 2 & Caregiver  \\ 
     \hline
 %**********************************************
-    \multirow{2}{*}{Door alert} &\cellcolor{gray!15} Detect if entrance door is opened at least for 5 minutes during their is no presence in entrance& \multirow{4}{*}{0} & \multirow{4}{*}{2} & \multirow{4}{*}{4}& \multirow{4}{*}{6} &User \\
-                                  & \begin{lstlisting}
+    & \cellcolor{gray!15} Detect if entrance door is opened at least for 5 minutes during their is no presence in entrance& & & & &User \\
+                                  Door alert & \begin{mtext}
                                     Door is open $\textbf{occurs}$ $\textbf{for}$ 5 min $\textbf{while}$ Presence(Entrance) is false
-                                  \end{lstlisting} & &  && &  Caregiver \\
-                                  &  & & && & \\
+                                  \end{mtext} & 0 & 2 & 4 & 6 &  Caregiver \\
     \hline
 %**********************************************
-    Long &\cellcolor{gray!15} Detect if no movement in Bedroom since 24 hours & \multirow{3}{*}{0} &\multirow{3}{*}{1} & \multirow{3}{*}{1}& \multirow{3}{*}{1} & Occupational\\ %\cline{2-2}
-    inactivity & \begin{lstlisting}
+     &\cellcolor{gray!15} Detect if no movement in Bedroom since 24 hours & & & & & Occupational therapist \\ %\cline{2-2}
+    Long inactivity & \begin{mtext}
       Presence(Bedroom) is false $\textbf{for}$ 24 hours
-    \end{lstlisting} & & & &&  therapist \\
-                                  & & & & && Caregiver \\
+    \end{mtext} & 0 & 1 & 1 & 1& Caregiver \\                              
     \hline
 %**********************************************
-    Fridge &\cellcolor{gray!15} Detect if fridge remains open at least 5 minutes &\multirow{2}{*}{0} &\multirow{2}{*}{1} & \multirow{2}{*}{1} & \multirow{2}{*}{1} & User\\% \cline{2-2}
-    opened & \begin{lstlisting} 
+    &\cellcolor{gray!15} Detect if fridge remains open at least 5 minutes & & & & & User\\% \cline{2-2}
+    Fridge opened & \begin{mtext} 
       Fridge is open $\textbf{for}$ 5 minutes
-    \end{lstlisting}& & & && Caregiver \\
+    \end{mtext}& 0 & 1 & 1 & 1 & Caregiver \\
     \hline
 %********************************************** 
-    \multirow{2}{*}{Breakfast} &\cellcolor{gray!15} Detect cupboard and coffeemaker opening (any order) during breakfast period & \multirow{3}{*}{2} & \multirow{3}{*}{1}&\multirow{3}{*}{3}&\multirow{3}{*}{1} & User\\% \cline{2-2}
-                                  &  \begin{lstlisting} 
-                                    $\textbf{\{}$Cupboard becomes open $\textbf{and}$ CoffeeMaker becomes on$\textbf{\}}$ 
-                                    $\textbf{occurs}$ $\textbf{while}$ BreakfastTime 
-                                  \end{lstlisting} & & & && Caregiver \\
+     &\cellcolor{gray!15} Detect cupboard and coffeemaker opening (any order) during breakfast period &&&&& User\\% \cline{2-2}
+                                 Breakfast &  \begin{mtext} 
+                                    $\textbf{\{}$Cupboard becomes open $\textbf{and}$ CoffeeMaker becomes on$\textbf{\}}$ $\textbf{occurs}$ $\textbf{while}$ BreakfastTime 
+                                  \end{mtext} &2 &1 &3 &1& Caregiver \\
     \hline
 %**********************************************
-    Lunch &\cellcolor{gray!15} Detect freezer opening and stove use in the 10 minutes following or freezer opening during stove use & \multirow{8}{*}{3} & \multirow{8}{*}{2} & \multirow{8}{*}{5}& \multirow{8}{*}{3} & Caregiver \\ %\cline{2-2}
-    reheat &\cellcolor{gray!15} all during lunch period & & & & & User \\ %\cline{2-2}
-     & \begin{lstlisting}  
-      $\textbf{\{}$ ( Freezer becomes open $\textbf{precedes}$ $\textbf{within}$ 10 minutes 
-          Stove becomes on ) 
-        $\textbf{or}$ 
-        ( Freezer becomes open $\textbf{occurs}$ $\textbf{while}$ 
-          Stove is on ) $\textbf{\}}$
-      $\textbf{occurs}$ $\textbf{while}$ Lunch Time
-    \end{lstlisting}& & & & & \\                              
+     &\cellcolor{gray!15} Detect freezer opening and stove use in the 10 minutes following or freezer opening during stove use all during lunch period & & & & & Caregiver \\ %\cline{2-2}
+     Lunch reheat& \begin{mtext}  
+      $\textbf{\{}$ ( Freezer becomes open $\textbf{precedes}$ $\textbf{within}$ 10 minutes Stove becomes on ) $\textbf{or}$ ( Freezer becomes open $\textbf{occurs}$ $\textbf{while}$ Stove is on ) $\textbf{\}}$ $\textbf{occurs}$ $\textbf{while}$ Lunch Time
+    \end{mtext}&3 &2 &5 &3 &User \\                              
     \hline
 %**********************************************
-    \multirow{2}{*}{Dinner} & \cellcolor{gray!15} Detect fridge opening and microwave use (any order) during dinner period & \multirow{3}{*}{2} & \multirow{3}{*}{1} &\multirow{3}{*}{2} & \multirow{3}{*}{1} & User\\ %\cline{2-2}
-                                  & \begin{lstlisting}  
-                                    $\textbf{\{}$Fridge becomes open $\textbf{and}$ Microwave becomes on$\textbf{\}}$
-                                    $\textbf{occurs}$ $\textbf{while}$ Dinner Time
-                                   \end{lstlisting} & & & && Caregiver \\
+     & \cellcolor{gray!15} Detect fridge opening and microwave use (any order) during dinner period & & & & & User\\ %\cline{2-2}
+    Dinner& \begin{mtext}  
+      $\textbf{\{}$Fridge becomes open $\textbf{and}$ Microwave becomes on$\textbf{\}}$ $\textbf{occurs}$ $\textbf{while}$ Dinner Time
+    \end{mtext} & 2& 1& 2&1& Caregiver \\
     \hline
 %**********************************************
-    Go &\cellcolor{gray!15} Detect end of presence in bathroom and begin of presence in bedroom in the 10 minutes following & \multirow{5}{*}{2} & \multirow{5}{*}{1} & \multirow{5}{*}{3} & \multirow{5}{*}{2} &Caregiver \\ % \cline{2-2}
-    to bed  &\cellcolor{gray!15} during go-to-bed period & & & & &User \\ 
-    &  \begin{lstlisting} 
-      ( Presence(Bathroom) becomes false $\textbf{precedes}$ $\textbf{within}$ 10 minutes 
-        Presence(Bedroom) becomes true ) 
-      $\textbf{occurs}$ $\textbf{while}$ Go-to-bed Time
-    \end{lstlisting} & & & && \\
+    &\cellcolor{gray!15} Detect end of presence in bathroom and begin of presence in bedroom in the 10 minutes following during go-to-bed period & & & & &Caregiver \\ % \cline{2-2}
+    to bed  &\cellcolor{gray!15}  & & & & &User \\ 
+     Go to bed&  \begin{mtext} 
+      ( Presence(Bathroom) becomes false $\textbf{precedes}$ $\textbf{within}$ 10 minutes Presence(Bedroom) becomes true ) $\textbf{occurs}$ $\textbf{while}$ Go-to-bed Time
+    \end{mtext} & 2& 1& 3& 2& User\\
     \hline
 %**********************************************
-    \multirow{2}{*}{Wake-up} &\cellcolor{gray!15} Detect end of presence in bedroom and begin of presence in kitchen in the 10 minutes following & \multirow{5}{*}{2} & \multirow{5}{*}{1} & \multirow{5}{*}{3} & \multirow{5}{*}{2} & Caregiver \\ %\cline{2-2}
-                                  &\cellcolor{gray!15} during go-to-bed period & & & & &User \\ 
-                                  & \begin{lstlisting} 
-                                    ( Presence(Bedroom) becomes false $\textbf{precedes}$ $\textbf{within}$ 10 minutes
-                                      Presence(Kitchen) becomes true )
-                                    $\textbf{occurs}$ $\textbf{while}$ Wake-up Time
-                                  \end{lstlisting}& & & && \\
-                                  % &  precedes within 10 min& & & && User\\
-                                  % &  Presence(Kitchen) becomes true ) & & & && \\
-                                  % &  occurs while Wake-up-time & & & && \\
+     &\cellcolor{gray!15} Detect end of presence in bedroom and begin of presence in kitchen in the 10 minutes following during go-to-bed period & & & &  & Caregiver \\ %\cline{2-2}
+    Wake-up& \begin{mtext} 
+      ( Presence(Bedroom) becomes false $\textbf{precedes}$ $\textbf{within}$ 10 minutes Presence(Kitchen) becomes true ) $\textbf{occurs}$ $\textbf{while}$ Wake-up Time
+    \end{mtext}&2 &1 &3 &2&User \\
     \hline
 %**********************************************
     Commfailure &\cellcolor{gray!15} Detect any sensor that fails to communicate & \multirow{2}{*}{1} & \multirow{2}{*}{0} & \multirow{2}{*}{1} & \multirow{2}{*}{0} & Platform \\% \cline{2-2}
-      warning& \begin{lstlisting}  
+      warning& \begin{mtext}  
         Commfailure( Any ) becomes true 
-        \end{lstlisting}& & & && maintainer \\
+        \end{mtext}& & & && maintainer \\
     \hline
 %**********************************************
     Commfailure &\cellcolor{gray!15} Detect any sensor that has failed to communicate since 24 hours & \multirow{4}{*}{0} & \multirow{4}{*}{1} & \multirow{4}{*}{1} & \multirow{4}{*}{1} & Platform\\ %\cline{2-2}
-      alert&  \begin{lstlisting} 
+      alert&  \begin{mtext} 
         Commfailure( Any ) is true $\textbf{for}$ 24 hours 
-        \end{lstlisting}& & & &&  maintainer \\
+        \end{mtext}& & & &&  maintainer \\
                                   & & & & && Sensor \\
                                   & & & & && installer \\
     \hline
 %**********************************************
     Battery & \cellcolor{gray!15} Detect battery level of any senser that become less than 5\% & \multirow{2}{*}{1} & \multirow{2}{*}{0} & \multirow{2}{*}{1} & \multirow{2}{*}{0} & Sensor\\ %\cline{2-2}
-    alert & \begin{lstlisting}
+    alert & \begin{mtext}
       BatteryLevel( Any ) becomes $\textit{less than}$ 5 
-      \end{lstlisting}& & & && installer\\
+      \end{mtext}& & & && installer\\
     \hline
   \end{tabular}
   \caption{Services examples}

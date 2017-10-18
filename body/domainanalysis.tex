@@ -4,11 +4,10 @@ Dans ce chapitre nous analysons un large éventail de services d'assistance domi
 \end{preamble}
 \chpsummary{Contributions}
 {
-{\em Domain analysis} We provide an analysis of context-aware processing layers in the domain of aging in place. From this analysis, we identify key concepts and operations specific to context-aware processing.;
-{\em Domain-specific language} We introduce a language, specific to developing context-aware services, providing high-level abstractions and notations. 
-Underlying this language is a data-centric and data-driven paradigm that allows services from a range of stakeholders to uniformly process heterogeneous sources of sensed data.;
+{\em Analyse de domain} Identification des concepts clés et des opérations spécifiques au traitement sensible au contexte.;
+{\em Langage dédié} Un langage spécifique pour développer un large spectre de services sensibles au contexte, avec un haut niveau d'asbtraction et un traitement uniforme de source de données hétérogènes.;
 %\myparagraph{Compiler} We have implemented a compiler for our DSL that maps high-level rules into low-level requests, crunched by an event-processing engine.
-{\em Validation} We applied our approach to re-implement 55 services, ranging over all the stakeholders of an assisted living platform dedicated to aging in place. The resulting services are expressed at a high level and are effective in performing the tasks of the stakeholders.
+{\em Validation} re-définition de 55 services, couvrant les besoins de tous les intervenants d'une plate-forme d'assistance pour le maintien à domicile de personnes âgées.
 }
 
 
@@ -113,74 +112,46 @@ We now present the outcomes of this analysis that take the form of high-level, d
 
 \myparagraph{Variabilités} Les mesures environnementales peuvent être réalisées par une variété d'entités, matérielles ({\em e.g.,} capteurs), logicielles ({\em e.g.,} agenda), locales ({\em e.g.,} porte), distante ({\em e.g.,} nouvel email), {\em etc.} Le niveau d'abstraction énormément selon les mesures environnementales. Par exemple, un évènement peut être produit par un capteur, sitôt qu'un mouvement est détecté dans une pièce. Parallèlement, un capteur peut détecter l'état d'une pièce occupée, en excluant les transferts d'une pièce à l'autre.
 
-En ce qui concerne la composition, plusieurs contraintes d'ordre ont été observées en ce qui concerne les interactions. Une interaction peut en {\em précéder} une autre, une interaction arrive {\em durant} une autre, et une interaction en {\em chevauche} une autre. Cependant toutes ces contraintes ne sont pas applicables à tout types d'interactions ({i.e.,} évènements et états). Par exemple, seulement deux évènements peuvent se chevaucher, alors que les évènements ne peuvent pas. 
+En ce qui concerne la composition, plusieurs contraintes d'ordre ont été observées pour les interactions. Une interaction peut en {\em précéder} une autre, une interaction arrive {\em durant} une autre, et une interaction en {\em chevauche} une autre. Cependant toutes ces contraintes ne sont pas applicables à tout types d'interactions ({i.e.,} évènements et états). Par exemple, seulement deux évènements peuvent se chevaucher, alors que les évènements ne peuvent pas. 
 %Indeed, in practical scenarios, events are viewed as occurring sequentially, not simultaneously.
 
-\section{Un langage spécifique dédié aux services sensibles au contextes}\label{sec:dsl}
+\section{Maloya: Un langage spécifique dédié aux services sensibles au contextes}\label{sec:dsl}
 
-In this section, we introduce our DSL for developing context-aware services. This DSL is dedicated to describing contexts in terms of states and events, and operators to combine them. Figure~\ref{fig:operators}  presents the syntax of our DSL, as well as its informal semantics. Each construct of the language is presented on the left-hand side; its corresponding graphical representation is displayed on the right-hand side. This graphical representation visualizes events and states, and how operators combine them. A state is represented as a rectangle-shaped signal, visualizing the starting and ending points of the occurrence of an event. An event is represented as a spike signal, with merged starting and ending points. Underneath each DSL construct is its translation into a core DSL, which can be viewed as an abstract syntax.
-
-Nous présentons également les étapes principales de notre approche spécifique au domaine pour développer des services sensibles au contexte dédié au maintien à domicile des personnes âgées. Cette approche est décrite en Figure~\ref{fig:functionalarchi}.
-
-\begin{figure}[h]
-\centering
-  \includegraphics[scale=0.2]{gfx/approach}
-\caption{Overall view of our domain-specific approach}
-\label{fig:functionalarchi}
-\end{figure}
-
-\subsubsection{Définition du service}
-La première étape est initiée avec les intervenants qui expriment les scénarios de services, comme illustré plus tôt. Ces scénarios sont directement écrit dans notre langage dédié par l'intervenant, si ils ont le bagage nécessaire ou par un développeur de services.
-
-\subsubsection{Compilation du service}
-Les services de haut niveau sont compilés dans des règles de plus bas niveau dans un langage de traitement d'évènement. Ces règles rendent explicite les concepts spécifiques au domaine, tels que les états qui sont compilés vers des combinaisons d'évènements et les opérations relatives.
-
-\subsubsection{Exécution du service}
-Pour être déployées, les règles sont ajoutés à un moteur de traitement d'évènement complexe (CEP). Notre moteur d'exécution de règle est basé sur Esper, un CEP open-source développé par EsperTech\footnote{http://www.espertech.com/esper/}. Esper propose des interface Java et C\# pour développer des programmes événementiels. Nous avons choisis Esper parce qu'il s'agit d'un moteur CRP populaire utilisé à la fois dans l'industrie et dans la recherche. Esper fournie un langage specifique et déclaratif pour le traitement d'évènement complexes, appelé EPL (pour Event Processing Language). EPL permet de décrire des motifs d'évènements à identifier dans un flux d'évènements temps réel, en utilisant des opérateurs pour ordonner les évènnements, des contraintes temporelles, {\em etc.} Esper ne permet pas de manipuler le concept d'état; il permet uniquement de traiter des évènements et nécessite donc quelques manipulations pour gérer un état. Dans notre implémentation, nous utilisons Esper avec règles EPL, compilées depuis des règles écrites en langage Maloya, et un flux d'évènement issue de domiciles sensibles au contexte, formattés en une forme canonique.
-
-\subsubsection{Forme canonique}
-La forme canonique de données produites par un domiciles sensibles au contexte permet de faire les traitement de façon uniforme, indépendemment de leur format hétérogène original. Dans notre implémetation, la forme canonique de données, appelée {\em StreamEvent}, est introduite comme couche d'abstraction sur le flux d'évènements de données. Dans cette représentation, chaque évènement est un 4-tuple du type d'évènements, sa localisation, sa valeur, et l'horodatage de son occurrence.
-
-
+Cette section introduit notre langage dédié pour développé des services sensibles au contexte. Ce langage permet de décrire des contextes en terme d'états et d'évènements, avec des opérateurs pur les combiner. La Figure~\ref{fig:operators} présente la syntaxe de notre langage, ainsi que sa sémantique informelle. La construction du langage est présentée sur la partie gauche; sa représentation graphique, sur la partie droite. Cette représentation graphique permet de visualiser les évènements et les états, la façon dont les opérateurs les combines. 
+% A state is represented as a rectangle-shaped signal, visualizing the starting and ending points of the occurrence of an event. An event is represented as a spike signal, with merged starting and ending points. Underneath each DSL construct is its translation into a core DSL, which can be viewed as an abstract syntax.
 \input{body/extern/operators} 
 
-\subsection{Events and States}
-In our DSL, testing an event or a state is expressed as follows: for an event, {\ttfamily p {\em becomes} v} ; for a state, {\ttfamily p {\em is} v}. Where, in both cases, {\ttfamily p} is a sensor name (hardware or software) and {\ttfamily v} is a value in the range of the sensor.  The event {\ttfamily p {\em becomes} v} occurs when the sensor {\ttfamily p} signals a value {\ttfamily v}, if its previous value was different. The state {\ttfamily p {\em is} v} starts precisely when the event {\ttfamily p {\em becomes} v} occurs; it ends when the event {\ttfamily p {\em becomes} v'} occurs, where {\ttfamily v'} $\neq$ {\ttfamily v}. We view the period during which a state holds as the {\em time interval} of a state. This notion is generalized for events by viewing them as defining a zero-length time interval. The notion of time interval is used to define operators and their semantics.
-% Note that every sensor {\tt p} is assumed to have an initial value {\tt v$_0$}.
+Notre langage a pour but d'être exploité par tous types d'intervenant. Il existe sous deux formes; une forme textuelle qui permet d'exprimer des règles simplement sous forme d'un phrase extrêmement contrainte, et une forme coeur, qui constitue la base de notre langage. Ce langage coeur est la socle sur lequel pourrons s'appuyer de futurs travaux pour fournir aux intervenant une forme d'expression de règles qui leur conviendra en fonction de leurs besoins. En effet le langage coeur permet d'exprimer les concepts d'évènements et d'états, ainsi que leurs opérateurs de compositions, propres au domaine des domiciles sensibles au contexte pour le maintien à domicile des personnes âgées.
 
-A {\em rule} in our DSL consists of an operator applied to states and/or events. All operators return an event.
-More precisely, an operator yields a success event when the context described by the application of an operator is detected. 
-%A rule yields a success event, or no event if the context described is not detected. 
-Because operators return events, operators taking an event as a given argument can call a nested operator instead.
-On the other hand, operators taking a state as a given argument cannot call a nested operator instead.
-Thus, the nesting of operators is not arbitrary; it follows the results of our domain analysis. Operators are further discussed next.
+\subsection{Évènements et États}
+Dans notre langage, un évènement est exprimé ainsi: {\ttfamily p {\em becomes} v} en langage textuel et  $p=>v$ en langage coeur. Un état est exprimé comme suit: {\ttfamily p {\em is} v} en langage textuel et $p=v$ en langage coeur. Dans chaque cas, {\ttfamily p} est le nom du capteur (matériel ou logiciel) et {\ttfamily v} est la valeur dans le champ de valeurs applicables au capteur. L'évènement {\ttfamily p {\em becomes} v} survient quand le capteur {\ttfamily p} signale une valeur {\ttfamily v}, si sa précédente valeur était différente. L'état {\ttfamily p {\em is} v} commence précisément quand l'évènement {\ttfamily p {\em becomes} v} se produit; il se termine quand l'évènement {\ttfamily p {\em becomes} v'} se produit, où {\ttfamily v'} $\neq$ {\ttfamily v}. Nous voyons la période durant laquelle un état se maintien comme l'{\em intervalle de temps} d'un état. Cette notion est généralisée pour les évènement en les considérant comme des intervalles de temps nuls. La notion d'intervalle de temps est utilisée pour définir les opérateurs et leur sémantique.
 
-\subsection{Operators}
-Our operators, listed in Figure~\ref{fig:operators}, are based on the operators in Allen's time interval algebra~\cite{Allen}, viewing states and events as time intervals, as explained earlier. Specifically, Allen's operators model all possible relations between two time intervals, such as {\em preceding}, {\em during}, or {\em overlapping}. However, in our domain, since a context-aware home produces in principles an infinite stream of events, it may contain several occurrences of the same event. For example, an event such as lunch activity may occur many times in the stream of events produced by a home; typically, every day. Thus, a rule checking whether the lunch activity is performed during lunch time is tested repeatedly: for each occurrence of the lunch time slot. To account for this situation, we generalized Allen's operators between two intervals to account for their multiple occurrences. Allen's operators take non-empty time intervals; we generalized them to accept events, when appropriate.
+Une {\em règle} dans notre langage est constituée d'opérateurs appliqués sur des états et/ou des évènements. Tous les opérateurs retournent des évènements.
+Plus précisément, un opérateur produits un évènement de succès quand le contexte décrit par l'application d'un opérateur est détecté.
+Parce qu'un opérateur retourne un évènement, les opérateurs qui prennent un évènement comme argument peuvent prendre un opérateur comme argument.
+D'un autre coté, les opérateurs qui prennent un état comme argument ne peuvent pas prendre d'opérateur comme argument.
+L'imbrication des opérateur n'est pas arbitraire et suit notre étude de domaine.
+
+\subsection{Les opérateurs}
+Nos opérateurs, listés dans la Figure~\ref{fig:operators}, sont basés sur les opérateurs de l'algèbre d'Allen sur les intervalles de temps~\cite{Allen}, représentant les états et les évènements en tant qu'intervalles de temps, comme expliqué précédemment. Spécifiquement, les opérateurs d'Allen modélisent toutes les relations possibles entre deux intervalles de temps, telles que la relation de {\em précédence}, un intervalle qui arrive {\em durant} un autre, ou un intervalle qui en {\em chevauche} un autre. Toutefois, dans notre domaine, un domicile sensible au contexte produit un flux avec infinité d'évènements, qui peut contenir plusieurs occurrences d'un même évènement. Par exemple, un évènement comme l'activité de déjeuné peut se produire de multiples fois dans le flux d'évènements produit par le domicile; typiquement, tous les jours. Par conséquent, une règle vérifiant que l'activité a en effet été faite durant la période de déjeuné est testée de manière récurrente: pour chaque occurrence de la période du déjeuné. 
+Nous avons généralisé les opérateur d'Allen entre deux intervalles pour prendre en compte les multiples occurrences de ces intervalles. De plus les opérateurs d'Allen ne prennent pas d'intervalles non-vide; nous les avons donc généralisés, quand nécessaire, pour accepter les évènements.
+
 
 %  Also, for each operator, we defined variants taking an optional time constraint. Although, the semantics of this time constraint depends on the operator, conceptually it amounts to refine the relationship tested by an operator on two time intervals. This is properly introduced 
 
-% The result of all our operators are the events marking a successful recognition of the corresponding relationship on two interval instances.
-% We also generalized Allen's relations to accept events as some operands, seen as time intervals of length zero.
+%Étudions en détails les opérateur utilisés en exemple. 
 
-Let us now review in detail the operators used in the examples of this paper. In the rule {\ttfamily e$_1$ {\bf precedes} e$_2$}, the operator yields success every time the occurrence of event {\ttfamily e$_1$} {\em immediately} precedes the occurrence of event {\ttfamily e$_2$}. This means that there must be no other occurrence of either {\ttfamily e$_1$} or {\ttfamily e$_2$} in between. To cover existing scenarios, we need to expand the expressiveness of this operator (and others) with optional time constraints. More precisely, we introduce two variants of {\ttfamily \bf precedes}: {\ttfamily e$_1$ {\bf precedes} e$_2$ {\bf within/by} t}. The time constraint is defined by the parameter {\ttfamily t}. These variants specify an upper/lower bound on the time between the occurrences of its event operands.
+La règle {\ttfamily e$_1$ {\bf precedes} e$_2$}, rapporte tous les succès pour chaque occurrence de l'évènement {\ttfamily e$_1$} qui précède {\em immédiatement} une occurrence de l'évènement {\ttfamily e$_2$}. Il ne doit pas y avoir d'autres occurrence de {\ttfamily e$_1$} ou {\ttfamily e$_2$} entre les occurrences identifiées. Pour couvrir les scénarios existant, nous devons étendre l'expressivité de cet opérateur, et des autres, avec des contraintes temporelles optionnelles. Plus précisément, nous introduisons deux variantes de {\ttfamily \bf precedes}: {\ttfamily e$_1$ {\bf precedes} e$_2$ {\bf within/by} t}. La contrainte temporelle est définie par le paramètre {\ttfamily t}. Ces variantes définissent les limites hautes et basses des durées entre les occurrences des opérandes évènements.
 
-% The success event is produced precisely when the relationship is detected, that is, when the matching E2 instance occurs.
+La règle {\ttfamily e {\bf during} s} réussie chaque fois que l'évènement {\ttfamily e} se produit durant l'état {\ttfamily s}. Il n'y a pas de versions de cet opérateur avec des contraintes temporelle.
 
-The rule {\ttfamily e {\bf during} s} succeeds every time event {\ttfamily e} occurs during state {\ttfamily s}. There are no time-constrained versions of this operator.
+La règles {\ttfamily s$_1$ {\bf overlapping} s$_2$} réussie chaque fois que l'état {\ttfamily s$_1$} chevauche l'autre état {\ttfamily s$_2$}. L'état {\ttfamily s$_1$} commence avant le début de l'état {\ttfamily s$_2$}, et termine durant {\ttfamily s$_2$}, comme montré en Figure~\ref{fig:operators}. Les versions avec contraintes temporelles définissent les limites hautes et basses de la durée de chevauchement des occurrences de ces états.
 
-The rule {\ttfamily s$_1$ {\bf overlapping} s$_2$} succeeds every time state {\ttfamily s$_1$} overlaps with state {\ttfamily s$_2$}.  This means that state {\ttfamily s$_1$} starts before the beginning of state {\ttfamily s$_2$}, and ends during {\ttfamily s$_2$}, as shown in the Figure~\ref{fig:operators}.  The time-constrained versions define an upper/lower bound on the overlapping time of the occurrence of these states.
+La règle {\ttfamily e {\bf occurs while} s} est similaire à la règle {\ttfamily e {\bf during} s}, mais réussie seulement pour la première occurrence de l'évènement {\ttfamily e} durant l'état {\ttfamily s}. Une variante de cette règle est {\ttfamily s$_1$ {\bf occurs while} s$_2$}. Dans ce cas, la règle réussie la première fois que l'état {\ttfamily s$_1$} superpose au moins partiellement {\ttfamily s$_2$}. Les versions avec contraintes temporelles donnes les limites hautes et basses sur la superposition des états.
 
-The rule {\ttfamily e {\bf occurs while} s} is similar to the rule {\ttfamily e {\bf during} s}, but succeeds only for the first occurrence of event {\ttfamily e} during state {\ttfamily s}. A variant of the previous rule is {\ttfamily s$_1$ {\bf occurs while} s$_2$}. In this case, the rule succeeds the first time state {\ttfamily s$_1$} superposes at least partially with {\ttfamily s$_2$}. The time-constrained versions put an upper/lower time bound on the superposition of the states.
+Bien que les opérateurs d'Allen expriment un large éventail de situation, ils ne couvrent pas tous les besoins révélés par notre analyse de domaine; plus d'opérateurs sont requis. En particulier, une disjonction d'événements est nécessaire pour permettre l'expression de contextes alternatifs. Une règle disjonctive est de la forme {\ttfamily \{e$_1$ {\bf or} \ldots~{\bf or} e$_n$\}}; elle réussie quand n'importe quel des {\ttfamily e$_i$} se produit. Également, nous introduisons une règle de conjonction de la forme {\ttfamily \{e$_1$ {\bf and} \ldots~{\bf and} e$_n$\}}. Cette règle réussie lorsque chacun des {\ttfamily e$_i$} s'est produit.
 
-Even though Allen's operators express a range of situations, they do not cover all the needs revealed by our domain analysis; more operators are required. In particular, a disjunction of events is needed to enable alternative contexts to be expressed. A disjunctive rule is of the form {\ttfamily \{e$_1$ {\bf or} \ldots~ {\bf or}~ e$_n$\}}; it succeeds whenever any {\ttfamily e$_i$} occurs. Dually, we introduced a conjunction rule of the form {\ttfamily \{e$_1$ {\bf and} \ldots~ {\bf and} e$_n$\}}. This rule succeeds when every {\ttfamily e$_i$} occurred. 
-% \cc{Je propose de dropper:
-% The variant ``\{E1, ... En, S1\} All S2'' \nv{check syntax!}  additionally requires that an instance of state S1 superposes at least partially with the matching instance of state S2.}  
-% \cc{There are no time-constrained variants of the All operator. \nv{Is it so?}  \nv{Delete the defs in the figure in terms of Occurs, as there is no And operator!}  \nv{Add the textual form of  Or, All, All} \nv{Delete the braces in the signature of All, All}}
-
-%As can be seen in Figure \ref{fig:operators}, every operator of our DSL has a textual, usually infix. \cc{Why is this useful information?, syntax which is used in the DSL and a term syntax which is used in our compiler, called the ``core DSL''.}
-
-Let us now illustrate the use of our DSL operators by writing the rule for the ``Lunch Reheat'' activity, described earlier (Section~\ref{domain:scenario}). 
+Nous illustrons maintenant l'utilisation de nos opérateurs en écrivant la règle en Maloya pour l'activité ``Lunch Reheat'', décrite précédemment (Section~\ref{domain:scenario}). 
 %It is used as a running example throughout this section to further introduce our DSL and its implementation.
 
 \footnotesize
@@ -193,13 +164,17 @@ Let us now illustrate the use of our DSL operators by writing the rule for the `
 \end{alltt}
 \normalsize
 
-Note how this specification concisely encodes two scenario variants: (1) taking a meal from the freezer, and then turning on the stove;
-(2) taking a meal from the freezer to put it in the stove, which is already running.
+Notons que cette spécification encode deux variantes de scénario: (1) prendre un repas depuis le frigidaire, ensuite allumer le four; (2) prendre un repas depuis le frigidaire pour le mettre dans le four, qui est déjà allumé.
 
-\subsection{Compilation}\label{dsl:compilation}
-Compilation is done in three main steps. The first step translates the text of DSL rules into the core DSL; this translation is defined as a one-to-one correspondence. 
+\subsection{Étapes de compilation}\label{dsl:compilation}
+La compilation est faite en trois étape. 
+
+\subsubsection{Langage Coeur}
+
+La première étape est de retranscrire le texte de la règle en langage dédié vers le coeur du langage Maloya; Cette traduction est définie par une correspondance biunivoque.
+Par exemple, dans le coeur de Maloya la forme de l'opérateur {\ttfamily e {\bf during} s} devient $During(e,s)$. 
+Ainsi, la traduction de notre exemple vers le coeur de Maloya correspond à ce qui suit.
 % As shown in Figure~\ref{fig:operators}, there is a one-to-one correspondence between our DSL and core DSL. 
-For instance, the core DSL form of the operator {\ttfamily e {\bf during} s} is $During(e,s)$. The translation of our running example into core DSL is as follows.
 
 %\myparagraph{Core DSL}
 %Operators on states and events
@@ -215,29 +190,33 @@ For instance, the core DSL form of the operator {\ttfamily e {\bf during} s} is 
 \end{equation*}
 \normalsize
 \noindent
-Where ``{\em =$>$}'' denotes an event that occurs and ``{\em =}'' denotes a state that holds.
+Où ``{\em =$>$}'' désigne un évènement qui se produit et ``{\em =}'' désigne un état qui se maintien.
 
-The next compilation step consists of generating EPL pseudo-code. This pseudo-code uses only valid EPL operators, but does not yet instantiate the attributes of each event; this is done subsequently.  This step involves several transformations.  Firstly, as EPL does not support the notion of state, each state in a rule is translated into the sequence of corresponding events that mark the beginning and the end of the state, ordered by standard EPL operators. For instance, the state of the stove being on is translated in an EPL sequence of the stove being turned on, followed by any event of interest but not the stove being turned off. Hence, the operator ``{\em Occurs(\dots, stove = on)}'' is translated in EPL as 
-\begin{quote} {\em stove $\Rightarrow$ on $\rightarrow$ \dots\ and\ not\ (stove $\Rightarrow$ off)} \end{quote}
+\subsubsection{Pseudo-code EPL}
+
+L'étape de compilation suivante génère un pseudo-code EPL. Ce pseudo-code utilise seulement des opérateur EPL, mais n'instancie pas les attributs des évènements; cette instanciation est faite ultérieurement. Cette étape implique plusieurs transformations. Premièrement, comme EPL ne supporte pas la notion d'état, chaque état dans une règle est traduit vers une séquence correspondants aux évènements qui marquent le début et la fin de l'état, ordonné avec des opérateurs EPL standards. De cette façon, l'état exprimant le four comme étant allumé est traduit en une séquence EPL correspondant au four devenant allumé, suivi par n'importe quel évènement d'intérêt mais sans que le fous n'ait été éteint. Par conséquent, l'opérateur ``{\em Occurs(\dots, stove = on)}'' est traduit en EPL par 
+\begin{quote} {\em stove $=>$ on $=>$ \dots\ and\ not\ (stove $=>$ off)} \end{quote}
 \noindent 
-using the EPL operators ``{\em and}'', ``{\em or}'' and ``$\rightarrow$'', which means {\em followed by}.  Also in this compilation phase, time constraints in the rules are translated by explicit uses of the ``{\em timer:within}'' construct in EPL for enforcing upper time bounds, and explicit uses of ``{\em timer:interval}'' EPL construct for enforcing lower time bounds.  The result of this phase is the following EPL pseudo-code:
+utilisant les opérateurs EPL ``{\em and}'', ``{\em or}'' et ``$\rightarrow$'', qui veut dire {\em followed by} (suivi de). De plus, dans cette phase de compilation, les contraites temporelles sont traduites par l'utilisation explicite de construction EPL de ``{\em timer:within}'' pour exprimer la limite haute, et l'utilisation explicite de ``{\em timer:interval}'' pour exprimer la limite temporelle basse. Suivant notre exemple, le résultat de cette phase de compilation en pseudo-code EPL se retrouve ainsi:
 
 % \myparagraph{EPL pseudo-code}
 % sequence of events resulting on operator compilation
 \footnotesize
 \begin{equation*}
   \begin{split}
-&lunchTime\Rightarrow begin \rightarrow\\
-&\quad\quad ( ( freezer\Rightarrow open \rightarrow  stove\Rightarrow on\ and\\ 
-&\quad\quad not\ ( freezer\Rightarrow open )\ where\ timer:within(10min) )\\ 
+&lunchTime=> begin \rightarrow\\
+&\quad\quad ( ( freezer=> open \rightarrow  stove=> on\ and\\ 
+&\quad\quad not\ ( freezer=> open )\ where\ timer:within(10min) )\\ 
 &\quad\quad or\\  
-&\quad\quad ( stove\Rightarrow on \rightarrow  ( freezer\Rightarrow open )\ and\ not\ ( stove\Rightarrow off ) ) )  \\
-&and\ not\ ( lunchTime\Rightarrow end )
+&\quad\quad ( stove=> on \rightarrow  ( freezer=> open )\ and\ not\ ( stove=> off ) ) )  \\
+&and\ not\ ( lunchTime=> end )
   \end{split}
 \end{equation*}
 \normalsize
 
-The final step is to obtain the EPL Esper form from the EPL pseudo-code, by completely instantiating the event attributes as necessary in the stream of canonical events ({\em i.e.,} in StreamEvent form). To do so, we use a static table giving the attributes of each sensor in a given home:
+\subsubsection{EPL Esper}
+
+L'étape finale consiste à obtemir la forme EPL Esper depuis le pseudo-code EPL, en complétant l'instanciation des attributs nécessaire dans le flux d'événements canoniques ({\em i.e.,} dans la forme StreamEvent). Pour ce faire, nous utilisons une tables statique définissant les attributs de chaques capteurs dans un domicile donné:
 
 \begin{figure}[h]
 \begin{footnotesize}
@@ -251,7 +230,7 @@ The final step is to obtain the EPL Esper form from the EPL pseudo-code, by comp
 \end{footnotesize}
 \end{figure}
 
-Moreover, this step binds all events in an EPL formula as originating from the same home (as can be seen in the EPL constraint ``{\ttfamily user=$X$.user}'' below).  Also, this step introduces ``{\em every}'' and ``{\em every-distinct}'' EPL constructs to deal with multiple occurrences of an event. As a result of these transformations, we obtain the final EPL Esper rule that is executed by the Esper engine:
+De plus, cette étape lie tous les évènements dans la formule EPL à un domicile (avec la contrainte EPL ``{\ttfamily user=$X$.user}''). Cette étape introduit également ``{\em every}'' et ``{\em every-distinct}'', des constructions EPL pour gérer les occurrences multiples d'un évènement. Les résultat de ces transformations nous permet d'obtenir la forme finale de la règle en EPL Esper qui est exécutée pas le moteur Esper:
 
 % \myparagraph{EPL Esper}
 % data used to recognize events.
@@ -298,42 +277,61 @@ select Cal_L_b,Fre_K_o,Sto_K_o from pattern [
 %\end{figure}
 \end{footnotesize}
 
-Note that, even though these transformation steps may seem straightforward, there are several subtleties involved, such as the complex operator compositions, which require introducing new stream variables (``named windows'' in EPL). The details of our compiler scheme are outside the scope of this paper, and will be described elsewhere.
+Notons que, même si ces étapes de transformations peuvent paraître simples, elles impliquent divers subtilités, tels que la composition d'opérateurs complexes. Ces compositions requièrent l'introduction de nouvelles variables de flux (appelées ``fenêtres'' en EPL). Les détails seront exprimé dans la section suivante.
+
+\section{Une approche spécialisée au domaine}
+Nous présentons les étapes principales de notre approche spécifique au domaine pour développer des services sensibles au contexte dédié au maintien à domicile des personnes âgées. Cette approche est décrite en Figure~\ref{fig:functionalarchi}.
+
+\begin{figure}[h]
+\centering
+  \includegraphics[scale=0.2]{gfx/approach}
+\caption{Overall view of our domain-specific approach}
+\label{fig:functionalarchi}
+\end{figure}
+
+\subsection{Définition du service}
+La première étape est initiée avec les intervenants qui expriment les scénarios de services, comme illustré plus tôt. Ces scénarios sont directement écrit dans notre langage dédié par l'intervenant, si ils ont le bagage nécessaire ou par un développeur de services.
+
+\subsection{Compilation du service}
+Les services de haut niveau sont compilés dans des règles de plus bas niveau dans un langage de traitement d'évènement. Ces règles rendent explicite les concepts spécifiques au domaine, tels que les états qui sont compilés vers des combinaisons d'évènements et les opérations relatives.
+
+\subsection{Exécution du service}
+Pour être déployées, les règles sont ajoutés à un moteur de traitement d'évènement complexe (CEP). Notre moteur d'exécution de règle est basé sur Esper, un CEP open-source développé par EsperTech\footnote{http://www.espertech.com/esper/}. Esper propose des interface Java et C\# pour développer des programmes événementiels. Nous avons choisis Esper parce qu'il s'agit d'un moteur CRP populaire utilisé à la fois dans l'industrie et dans la recherche. Esper fournie un langage spécifique et déclaratif pour le traitement d'évènement complexes, appelé EPL (pour Event Processing Language). EPL permet de décrire des motifs d'évènements à identifier dans un flux d'évènements temps réel, en utilisant des opérateurs pour ordonner les évènements, des contraintes temporelles, {\em etc.} Esper ne permet pas de manipuler le concept d'état; il permet uniquement de traiter des évènements et nécessite donc quelques manipulations pour gérer un état. Dans notre implémentation, nous utilisons Esper avec règles EPL, compilées depuis des règles écrites en langage Maloya, et un flux d'évènement issue de domiciles sensibles au contexte, formattés en une forme canonique.
+
+\subsection{Forme canonique}
+La forme canonique de données produites par un domiciles sensibles au contexte permet de faire les traitement de façon uniforme, indépendemment de leur format hétérogène original. Dans notre implémetation, la forme canonique de données, appelée {\em StreamEvent}, est introduite comme couche d'abstraction sur le flux d'évènements de données. Dans cette représentation, chaque évènement est un 4-tuple du type d'évènements, sa localisation, sa valeur, et l'horodatage de son occurrence.
 
 \section{Validation}\label{sec:validation}
-This section presents the validation of our approach on the HomeAssist platform.  The expressiveness of our DSL is validated by re-defining existing services in it. The correctness of our compiler is validated by comparing the results of executing the compiled rules with the results of existing services deployed in the platform. Finally, the efficiency of our DSL is validated by measuring some performance figures of our running implementation.
+
+Cette section présente la validation de notre approche sur la plate-forme DomAssist. L'expressivité de notre langage est validé en redéfinissant des services existant sur cette plate-forme. La justesse de notre compilateur est validée en comparant les résultats de l'exécution de nos règles compilées avec des services existants et déployés sur la plate-forme. Enfin, l'efficacité de notre langage est validé en mesurant certains les performances pertinentes pour le domaine de notre implémentation.
 
 \input{body/extern/appexampletab}
 
-\subsection{Expressiveness}\label{validation:expressiveness}
-To validate the expressiveness of our DSL, we re-implemented 55 services already deployed in HomeAssist. These services are variations of 13 families of rules, which are listed in Figure~\ref{app_examples}. Variations within each family were required to match the specificities of older adults. For example, detecting daily activities, such as meal preparation and sleep/wa\-keup, have to be customized for each user with respect to sensing capabilities to detect environment interactions, time slots of activities, and time delays between sequences of interactions. For example, to prepare breakfast, an older adult may use an electric juicer and take a glass from a specific cupboard, whereas another one may turn on a kettle and opens the fridge to take the milk bottle.
+\subsection{Expressivité}\label{validation:expressiveness}
+Pour validé l'expressivité de notre langage, nous avons réimplanté 55 services déjà déployés dans DomAssist. Ces services sont les variation des 13 familles de règles listés en Figure~\ref{app_examples}. Des variations sont requises pour satisfaire les spécificités des personnes âgées. Par exemples, la détection des activités du quotidien comme la préparation du repas et le lever/coucher, doit être personnalisée pour chaque utilisateur dans le respect des capacités de mesures des interactions l'environnement, périodes de reconnaissance des activités, et des périodes de temps entre les séquences d'intéractions. Par exemple, pour préparer le petit déjeuner, une personne âgée peut utiliser un presse agrume électrique et prendre un verre dans un placard spécifique, alors qu'un autre peut utiliser une bouilloire et ouvrir le frigidaire our prendre du lait.
 
-Rewriting an extended range of services allowed us to validate that our DSL and its underlying concepts (event, state, Allen's operators) are expressive enough to cover realistic services in the domain of aging in place.
-
+Réécrire une éventail de service nous permet de valider que notre langage et ses concepts sous-jacents (évènements, états, opérateurs d'Allen) sont suffisamment expressif pour couvrir des cas réels de services dans le domaine du maintien à domicile de personnes âgées.
 
 %\subsection{Compilation}\label{validation:compilation}
-\subsection{Correctness}\label{validation:results}
+\subsection{Exactitude}\label{validation:results}
+%We did not attempt to prove the correctness of our DSL compiler with respect to a formal semantics of its operators, although this work would be of interest. Instead, we empirically validated the correctness of the compiled services by a combination of visual code inspection and extensive testing. We performed manual inspection of all the intermediate forms described earlier (core DSL, EPL pseudo-code, Esper EPL) to ensure that they remain consistent with their original counterparts.
 
-We did not attempt to prove the correctness of our DSL compiler with respect to a formal semantics of its operators, although this work would be of interest. Instead, we empirically validated the correctness of the compiled services by a combination of visual code inspection and extensive testing. We performed manual inspection of all the intermediate forms described earlier (core DSL, EPL pseudo-code, Esper EPL) to ensure that they remain consistent with their original counterparts.
+Nous avons validé empiriquement l'exactitude de nos services compilé par des inspections visuels et des tests étendu. Nous avons inspecté manuellement les formes intermédiaires décrites précédemment (pseudo-code EPL, EPL Esper) pour nous assurer de la cohérence des résultats des différentes étapes de compilation.
 
-% More specifically, the services written in our DSL were compiled in several steps, as discussed in Section~\ref{dsl:compilation}: core DSL, EPL pseudo-code, Esper EPL.
+Ensuite, nous avons validé la sortie du compilateur ({\em i.e.,} règle EPL résultante) en deux phases. Premièrement, nous avons testé les règles en les exécutant sur des fichiers de logs provenant du projet DomAssist. Ces logs contiennent des évènements horodatés produits par tous les capteurs de l'infrastructure, qu'ils soient matériels ou logiciels. Les résultats ont été automatiquement vérifié par des scripts Perl, implantant les même spécifications de service. Ces scripts sont plus simple à écrire que les vrais applications puisqu'ils exécutent les logs de données, ils n'ont ainsi pas à traiter les résultats en temps réel, et n'ont pas à traiter avec l'infrastructure de capteurs.
 
-Then, we validated the compiler output ({\em i.e.,} resulting EPL rules) in two phases. First, we tested the rules by executing them on log files from the HomeAssist project. These logs contain the timestamped events produced by all the sensors in the infrastructure, whether hardware or software. The results were checked automatically for correctness using Perl scripts, implementing the same service specifications. Note that these scripts are much simpler to write than the real applications, as they execute on log histories of sensed data, so they do not have to compute results online, and must not deal with the sensor infrastructure.
+%We repeatedly compared the results produced by the compiled DSL services and the scripted specifications on extended log histories. This iterative process allowed us to refine our compilation schemas until it produced the same results as the scripted specifications.
 
-We repeatedly compared the results produced by the compiled DSL services and the scripted specifications on extended log histories. This iterative process allowed us to refine our compilation schemas until it produced the same results as the scripted specifications.
-
-In a second phase, we connected the compiled DSL services to the online stream of events in the production platform for 9 users during 1 month, in parallel with the existing services written in Java. No difference was observed between the results of both systems (Java and DSL). Furthermore, this phase allowed us to assess the runtime performance of our approach, as discussed next.
+Dans une seconde phase, nous avons connecté nos services au flux d'évènements temps réel sur la plate-forme de production pour neuf utilisateurs pendant un mois, en parallèle des services existants écrits en Java. Aucune différences n'ont été observées dans les résultats entre les deux systèmes (Java et règles compilées depuis notre langage). De plus cette phase nous à permis d'évaluer les performances à l'exécution de notre approche.
 
 
-\subsection{Performance}\label{validation:performance}
-To validate the applicability of our DSL approach in practice, we measured in real conditions the performance of the EPL rules produced by our DSL compiler with respect to two indicators: the response time to online events, and the memory consumption of our execution engine. The rules were executed on the production server of the platform, which is a quad-core Intel(R) Xeon(R) E5-2407 v2 2.4 GHz CPU and 125GB RAM.
+\subsection{Performances}\label{validation:performance}
+Pour valider l'utilisabilité de notre approche à base de langage dédié en pratique, nous avons mesuré en conditions réelles, les performances des règles EPL produites par notre compilateur avec deux indicateurs: la latence de détection, et la consommation mémoire de notre moteur d'exécution. Les règles sont exécutées sur notre serveur de production (quad-core Intel(R) Xeon(R) E5-2407 v2 2.4 GHz CPU et 125GB RAM).
 
-The response time of a rule indicates the time between the last event that should trigger a rule, and its effective triggering. A low response time means that the rule is sufficiently reactive for practical use. According to our measurements, the response time of all our rules were always less than a second. This order of magnitude is perfectly compatible with the kind of rules that are implemented in this platform for aging in place.
+La latence de détection d'une règle donne le temps entre le dernier évènement qui déclenche une règle, et sont déclanchement effectif. Une latence faible indique que la règle est suffisamment réactive pour un usage pratique. D'après nos mesures, cette latence pour nos règles est toujours inférieur à une seconde. Cet ordre de grandeur est parfaitement compatible avec le type de règle qui sont implanté dans la plate-forme pour le maintien à domicile des personnes âgées.
 
-We also measured the memory consumption of our implementation to ensure that it can scale up to hundreds of users and to tens of implemented services. According to our measurements, the memory consumption was found to be 352MB on average, for 55 rules, processing data from 129 homes, and running 24/7 for one month. Encouraged by these figures, we further explored the applicability of our DSL by testing it on a smaller-scale architecture that is commonly used in pervasive computing environments, namely a Raspberry Pi 3 with a quad-core ARM Cortex-A53 1.2 GHz CPU and 1GB RAM. In this experiment, we ran the same 55 rules on the same 129 installations, online during 5 days. Memory consumption was found to be 173MB on average. 
-The lower memory consumption on the Raspberry Pi is due to the fact that it is a 32-bit architecture.
-These measurements indicate that our approach is both applicable for processing in the cloud 
-and for embedded processing within the homes.
+Nous avons également mesuré la consommation mémoire de notre implémentation pour nous assurer qu'elle peut passer à l'échelle pour des centaines d'utilisateurs et des dizaines de services. D'après nos mesures, la consommation mémoire est de 352MB en moyenne pour 55 règles, traitant les données de 129 domiciles pendant un mois 24 heures sur 24. Encouragés par ces résultats, nous avons entrepris d'explorer la possibilité d'appliquer notre approche et notre implantation sur une architecture plus limitée, mais plus accessible et fréquemment utilisée en informatique ubiquitaire, un Raspberry Pi 3 (quad-core ARM Cortex-A53 1.2 GHz CPU et 1GB RAM). Durant cette expérimentation, nous avons exécuté les même 55 règles avec les mêmes 129 installations pendant un mois. La consommation mémoire constatée est de 173MB en moyenne. Cette moindre consommation mémoire sur le Raspberry Pi s'explique par son architecture 32-bit.
+Ces mesures nous montre que notre apporche est applicable tant sur une infrastructure cloud que sur une infrastructure embarquée directement à l'intérieur du domicile.
 
 \section{Discussion}
 

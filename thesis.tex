@@ -18,6 +18,63 @@
 \newcommand\tabhead[1]{\small\textbf{#1}}
 \newcommand{\college}{\emph{Collège+}\xspace}
 
+
+\lstdefinelanguage{MaloyaText}{  
+  morekeywords={precedes, during, occurs, while, or, and, overlapping},
+  keywordstyle=\bf
+}
+\lstnewenvironment{mtext}
+{
+  \lstset{
+    emph={becomes,is,for,within},
+    emphstyle=\it,
+    mathescape=true,
+    autogobble=true,
+    language=MaloyaText,
+    %basicstyle=\ttfamily,
+    breaklines=true,
+    columns=fullflexible}
+}
+{
+}
+
+\lstdefinelanguage{MaloyaCode}{  
+  morekeywords={Precedes, During, Occurs, Or, And, Overlapping, less, greater},
+  keywordstyle=\textit{\bf}
+}
+\lstnewenvironment{mcore}
+{
+  \lstset{
+    mathescape=true,
+    autogobble=true,
+    language=MaloyaCode,
+    basicstyle=\itshape,
+    columns=fullflexible}
+}
+{
+}
+\lstdefinelanguage{EPLPseudoCode}{  
+  morekeywords={timer, within, interval, and, or, not, every, WindowIfComplex,distinct,timestamp,Becomes,CreateWindow,Precedes, During, Occurs, Or, And, Overlapping},
+  keywordstyle=\it
+}
+\lstnewenvironment{eplpseudocode}
+{
+  \lstset{
+    mathescape=true,
+    autogobble=true,
+    language=EPLPseudoCode,
+    basicstyle=\ttfamily,
+    columns=fullflexible}
+}
+{
+}
+
+\lstset{
+    mathescape=true,
+    autogobble=true,
+    basicstyle=\ttfamily,
+    columns=fullflexible}
+
 \title{Une approche événementielle pour le développement de services multi-métiers dédiés à l'assistance domiciliaire}
 \subtitle{}
 \author{Adrien Carteron}
