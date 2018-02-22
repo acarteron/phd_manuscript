@@ -1,0 +1,43 @@
+% lifted from tufte-common.def
+\newcommand{\smalltitle}[1]{%
+  \fontsize{14}{16}\selectfont\par\noindent\allcaps{#1}%
+}
+\newcommand{\largetitle}[1]{%
+  \fontsize{26}{40}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{#1}}%
+}
+\newcommand{\mediumtitle}[1]{%
+  \fontsize{18}{20}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{#1}}%
+}
+\newcommand{\Mediumtitle}[1]{%
+  \fontsize{22}{34}\selectfont\par\noindent\textcolor{darkgray}{\allcaps{#1}}%
+}
+
+\renewcommand{\maketitlepage}[0]{%
+  \cleardoublepage%
+  {%
+  \sffamily%
+  \mediumtitle{\thanklessauthor}%
+  \vspace{11.5pc}\\ %
+  \noindent\begin{minipage}{\fullwidthlength}\strut%
+  \Mediumtitle{\nohyphens{\thanklesstitle}}%
+  \strut\end{minipage}%
+  \vfill%
+  \noindent\begin{minipage}{\fullwidthlength}\strut%
+  \smalltitle{\nohyphens{%
+      INRIA Bordeaux Sud-Ouest, France}}%
+      % Doctoral school of mathematics and computer science, %
+      % University of Bordeaux, France}}%
+  \strut\end{minipage}%
+  }
+  \thispagestyle{empty}%
+  \clearpage%
+}
+
+\title[\myshorttitle]{\montitre}
+\author{\myauthor}
+% Date is \today by default.
+
+
+% Put the minimalistic version here. The "required"/official one precedes it.
+\maketitlepage
+\clearpage

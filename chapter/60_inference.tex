@@ -1,0 +1,181 @@
+\section{Sémantique et compilation des opérateurs Maloya}
+Dans la Section~\ref{sec:dsl:operator}, nous avons introduit les opérateurs du langage Maloya et présenté de manière informelle leur comportement. Nous décrivons maintenant leur compilation en pseudo-code EPL, c'est-à-dire en séquence d'évènements, ainsi que leur sémantique formelle. La sémantique est présentée avant la règle de compilation de chaque opérateur et est formalisée sous forme d'une fonction booléenne du temps~\paulcite{chakravarthy1994composite}. Nous notons $\llangle X\rrangle$ la fonction booléenne donnant la sémantique d'une expression Maloya $X$.  Cette fonction booléenne renvoie la valeur vrai exactement dans les moments où l'expression $X$ doit réussir.
+
+Pour un évènement élémentaire, la fonction $\llangle e\rrangle$ renvoie vrai pour tous les moments où l'évènement $e$ se produit. Pour un état, la fonction $\llangle s=v\rrangle$ renvoie vrai à tous les moments où la dernière valeur fournie par le capteur $s$ est $v$.
+La notation utilisée pour notre formalisation ne traitant que des évènements, nous exprimons les états en fonction de leurs évènements de début et de fin. Nous notons ainsi $[$E$_{sb},$E$_{se}]$ les évènements de début et de fin de l'état S.% (possiblement indicé).
+
+Enfin, pour définir le schéma de compilation des opérateurs, nous notons $\llbracket X\rrbracket$, le code EPL produit pour une expression $X$ du langage Maloya.
+
+Notons que pour chaque évènement de base, c'est-à-dire les évènements d'interactions exprimés dans une règle Maloya, le code de cet évènement correspond à l'expression de cette interaction que nous notons $\llbracket e\rrbracket=e$. Les états étant décomposés en évènements à la compilation, ils ne sont pas concernés.
+
+\subsection*{Precedes(e$_1$,e$_2$)}
+{\em Precedes} décrit la séquence de deux évènements E$_1$ et E$_2$. 
+$\operatorname{Precedes}(E_1,E_2)$ est reconnu lorsqu'une occurrence de E$_2$ succède immédiatement à une occurrence de E$_1$. Ceci implique qu'il n'existe pas d'autres occurrences de E$_1$ ou de E$_2$ entre ces deux instants. Cet opérateur est défini ainsi~:
+\begin{small}
+\begin{equation*}
+\begin{split}
+\llangle\operatorname{Precedes}(E_1,E_2)\rrangle(t)=(\exists t_1)(\forall t_2)(&E_2(t)\wedge \\
+&(t_1<t)\wedge\\
+&E_1(t_1)\wedge\\
+&((t_1<t_2<t)\rightarrow \thicksim (E_1(t_2)\vee E_2(t_2))))
+\end{split}
+\end{equation*}
+\end{small}
+
+La séquence d'évènements résultant de la compilation de l'opérateur {\em Precedes} spécifie qu'un évènement {\tt e$_1$} doit être suivi par un évènement {\tt e$_2$}, en respectant la définition de l'opérateur Esper ``followed-by'', avec la condition supplémentaire qu'aucun autre évènement {\tt e$_1$} ne doit se produire entre temps. La clause {\bf every} permet de tester la règle pour chaque occurrence de {\tt e$_1$}. Notons que les fonctions auxiliaires de compilation telles que ``WindowIfComplex'' sont décrites dans la Section suivante.
+\begin{figure}
+\begin{lstlisting}[language=EPLPseudoCodeCompile]
+$\llbracket$Precedes(e$_1$,e$_2$)$\rrbracket$=
+  every WindowIfComplex(e$_1$) $\rightarrow$ 
+    WindowIfComplex(e$_2$) 
+      and not WindowIfComplex(e$_1$) 
+\end{lstlisting}
+\end{figure}
+
+\subsection*{During(e,s)}
+{\em During} filtre toutes les occurrences d'un évènement durant la persistance d'un état donné. Plus précisément, soient E, E$_{sb}$ et E$_{se}$ trois évènements, où $[$E$_{sb}$,E$_{se}]$ décrit les évènements de début et de fin d'un état S. L'opérateur signale toutes les occurrences de E qui se produisent pendant l'intervalle démarré par E$_{sb}$ et terminé par E$_{se}$. Plus précisément~:
+\begin{small}
+\begin{equation*}
+\begin{split}
+\llangle\operatorname{During}(E,[E_{sb},E_{se}])\rrangle(t)=(\exists t_1)(\forall t_2)(&E(t)\wedge   \\
+&(t_1<t)\wedge\\
+&E_{sb}(t_1)\wedge\\
+&((t_1<t_2< t)\rightarrow \thicksim E_{se}(t_2)))
+\end{split}
+\end{equation*}
+\end{small}
+
+La compilation de l'opérateur {\em During} décrit une occurrence d'un évènement correspondant au début de l'état {\tt s} (\ie la mesure d'interaction qui donne la valeur {\tt v$_{sb}$}), suivie de toutes les occurrences de l'évènement {\tt e}, sans qu'il n'y ait eu d'occurrence de l'évènement correspondant à la fin de l'état {\tt s} (\ie la mesure d'interaction qui donne la valeur {\tt v$_{se}$}). La clause {\em every} permet de tester la règle pour chaque occurrence de l'état {\tt s}. La fonction ``BoundedWindowIfComplex'' garantit que si {\tt e} est issue d'une séquence d'évènements fenêtrée, cette séquence à commencé après le début de l'état {\tt s}.
+\begin{figure}
+\begin{lstlisting}[language=EPLPseudoCodeCompile]
+$\llbracket$During(e,s)$\rrbracket$=
+  every Becomes(s,1) $\rightarrow$ 
+    every BoundedWindowIfComplex(e,Becomes(s,1)) 
+    and not Becomes(s,0)
+\end{lstlisting}
+\end{figure}
+
+
+\subsection*{Occurs(e,s)}
+{\em Occurs} a une sémantique similaire à {\em During}, excepté qu'il reconnaît seulement la première occurrence d'un évènement durant la persistance d'un état donné.
+Soient E, E$_{sb}$ et E$_{se}$ trois évènements, où $[$E$_{sb}$,E$_{se}]$ décrit les évènements de début et de fin d'un état S. L'opérateur signale un évènement au moment de la première occurrence de E, qui se produit pendant l'intervalle démarré par E$_{sb}$ et terminé par E$_{se}$. 
+Plus précisément,
+\begin{small}
+\begin{equation*}
+\begin{split}
+\llangle\operatorname{Occurs}(E,[E_{sb},E_{se}])\rrangle(t)=(\exists t_1)(\forall t_2)(&E(t)\wedge \\
+&(t_1<t) \wedge\\
+&E_{sb}(t_1)\wedge \\
+&((t_1<t_2<t)\rightarrow \thicksim (E_{se}(t_2) \vee E(t_2))))
+\end{split}
+\end{equation*}
+\end{small}
+
+La compilation de l'opérateur {\em Occurs} est semblable à celle de l'opérateur {\em During}, excepté que seule la première occurrence de l'évènement {\tt e} déclenche un évènement. 
+\begin{figure}
+\begin{lstlisting}[language=EPLPseudoCodeCompile]
+$\llbracket$Occurs(e,s)$\rrbracket$= 
+  every Becomes(s,1) $\rightarrow$ 
+    BoundedWindowIfComplex(e,Becomes(s,1))
+    and not Becomes(s,0)
+\end{lstlisting}
+\end{figure}
+
+
+\subsection*{Occurs(s$_1$,s$_2$)}
+Cette version de l'opérateur {\em Occurs} exprime la superposition partielle de deux états persistants. Il s'agit d'une disjonction de deux évènements {\em Occurs(e,s)}.
+Soient $[$E$_{s_{1}b}$,E$_{s_{1}e}]$ les évènements de début et de fin d'un état S$_1$ et, $[$E$_{s_{2}b}$,E$_{s_{2}e}]$ les évènements de début et de fin d'un état S$_2$. 
+\begin{small}
+\begin{equation*}
+\begin{split}
+\llangle\operatorname{Occurs}([E_{s_{1}b},E_{s_{1}e}],[E_{s_{2}b},E_{s_{2}e}])\rrangle(t)=&\llangle Occurs(E_{s_{2}b},E_{s_{1}b},E_{s_{1}e})\rrangle(t)\vee\\
+& \llangle Occurs(E_{s_{1}b},E_{s_{2}b},E_{s_{2}e})\rrangle(t)
+\end{split}
+\end{equation*}
+\end{small}
+
+La compilation de l'opérateur {\em Occurs} prenant deux états en argument définit une disjonction sur la version de {\em Occurs} qui reçoit un évènement et un état en argument.
+Pour que l'opérateur déclenche un évènement, l'état {\tt s$_2$} doit commencer durant l'état {\tt s$_1$} ou l'état {\tt s$_1$} doit commencer durant l'état {\tt s$_2$}.
+\begin{figure}
+\begin{lstlisting}[language=EPLPseudoCodeCompile]
+$\llbracket$Occurs(s$_1$,s$_2$)$\rrbracket$=
+  $\llbracket$Occurs(Becomes(s$_2$,1),s$_1$)$\rrbracket$
+  or 
+  $\llbracket$Occurs(Becomes(s$_1$,1),s$_2$)$\rrbracket$
+\end{lstlisting}
+\end{figure}
+
+\subsection*{Overlapping(s$_1$,s$_2$)}
+{\em Overlapping} décrit le chevauchement de deux états S$_1$,S$_2$, où S$_1$ commence avant S$_2$. 
+Soient $[$E$_{s_{1}b}$,E$_{s_{1}e}]$ les évènements de début et de fin d'un 
+état S$_1$ et,  $[$E$_{s_{2}b}$,E$_{s_{2}e}]$ les évènements de début et de 
+fin d'un état S$_2$. 
+Cet opérateur signale un évènement lorsqu'une occurrence de E$_{s_{1}b}$ est suivie d'une occurrence de E$_{s_{2}b}$, elle-même suivie d'une occurrence de E$_{s_{1}e}$.
+De plus, il n'existe pas d'instant entre E$_{s_{1}b}$ et E$_{s_{2}b}$ pendant lequel se produit E$_{s_{1}e}$. Enfin, il n'existe pas d'instant entre E$_{s_{2}b}$ et E$_{s_{1}e}$ pendant lequel se produit E$_{s_{2}e}$. Plus spécifiquement,
+\begin{small}
+\begin{equation*}
+\begin{split}
+\llangle\operatorname{Overlapping}([E_{s_{1}b},E_{s_{1}e}],[E_{s_{2}b},E_{s_{2}e}])\rrangle(t)=&\\
+(\exists t_1)(\exists t_2)(\forall t_3)(& E_{s_{1}e}(t)\wedge \\
+&(t_1<t_2<t)\wedge \\
+&E_{s_{1}b}(t_1)\wedge\\
+&E_{s_{2}b}(t_2)\wedge\\
+&((t_1<t_3 < t)\rightarrow  \thicksim E_{s_{1}e}(t_3)) \wedge \\
+&((t_2<t_3 < t)\rightarrow  \thicksim E_{s_{2}e}(t_3)))%\\
+\end{split}
+\end{equation*}
+\end{small}
+
+La séquence d'évènements de l'opérateur {\em Overlapping} reconnaît une occurrence de l'évènement de début de {\tt s$_1$}, suivie d'une occurrence de l'évènement de début de {\tt s$_2$}, sans qu'il n'y ait eu d'occurrence de fin de {\tt s$_1$}, suivie d'une occurrence de fin de {\tt s$_1$}, sans qu'il n'y ait eu d'occurrence de fin de {\tt s$_2$}.
+\begin{figure}
+\begin{lstlisting}[language=EPLPseudoCodeCompile]
+$\llbracket$Overlapping(s$_1$,s$_2$)$\rrbracket$ = 
+  every Becomes(s$_1$,1) $\rightarrow$ 
+    Becomes(s$_2$,1) 
+    and not Becomes(s$_1$,0) $\rightarrow$ 
+      Becomes(s$_1$,0) 
+      and not Becomes(s$_2$,0) 
+\end{lstlisting}
+\end{figure}
+
+\subsection*{And(e$_0$,$\dots$,e$_n$)}
+{\em And} exprime la conjonction d'un ensemble d'évènements {E$_1$,$\dots$,E$_n$}. 
+L'opérateur signale un évènement la première fois que tous les évènements E$_i$ se sont produits. 
+Cela implique que le denier évènement manquant, E$_{i_0}$, vient de se produire pour la première fois.
+Cet opérateur est défini comme suit.
+\begin{small}
+\begin{equation*}
+\begin{split}
+\llangle\operatorname{And}(E_1, \dots , E_n)\rrangle(t)=(\exists t_{i=1;n})(\exists i_0)(\forall t')(& (t_1\leq t)\wedge \dots \wedge (t_n\leq t) \wedge \\
+& E_1(t_1)\wedge \dots \wedge E_n(t_n)\wedge \\
+& (t_{i_0}=t) \wedge \\
+&((t'<t)\rightarrow \thicksim E_{i_0}(t')))
+\end{split}
+\end{equation*}
+\end{small}
+Pour que l'opérateur {\tt And} déclenche un évènement, il faut qu'une occurrence de chaque évènement qu'il prend en argument se soit produit.
+\begin{figure}
+\begin{lstlisting}[language=EPLPseudoCodeCompile]
+$\llbracket$And(e$_1$, $\dots$ ,e$_n$)$\rrbracket$=
+  WindowIfComplex(e$_1$) and $\dots$ and WindowIfComplex(e$_n$)
+\end{lstlisting}
+\end{figure}
+
+\subsection*{Or(e$_0$,$\dots$,e$_n$)}
+{\em Or} exprime la disjonction d'un ensemble d'évènements {E$_1$,$\dots$,E$_n$}. L'opérateur signale un évènement quand un évènement de cet ensemble se produit. 
+La définition de cet opérateur est la suivante~:
+\begin{small}
+\begin{equation*}
+\begin{split}
+\llangle\operatorname{Or}(E_1, \dots , E_n)\rrangle(t)=E_1(t)\vee \dots \vee E_n(t)
+\end{split}
+\end{equation*}
+\end{small}
+
+{\em Or} définit une disjonction normale et déclenche à chaque occurrence d'un évènement {\tt e$_i$}. 
+\begin{figure}
+\begin{lstlisting}[language=EPLPseudoCodeCompile]
+$\llbracket$Or(e$_1$, $\dots$ ,e$_n$)$\rrbracket$=
+  EveryIfLeaf(e$_1$) or $\dots$ or EveryIfLeaf(e$_n$)
+\end{lstlisting}
+\end{figure}

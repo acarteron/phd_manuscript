@@ -34,9 +34,256 @@
 \newcommand{\mathleft}{\@fleqntrue\@mathmargin0pt}
 \newcommand{\mathcenter}{\@fleqnfalse}
 
+\newcommand{\myparagraph}[1]{\vspace{0.3\baselineskip}\noindent{\itshape{#1}}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Pied de page pour les versions non finales
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \renewcommand\footnotesize{%
+%    \@setfontsize\normalsize{9}{12}%
+%    %\abovedisplayskip 10pt \@plus 2pt \@minus 5pt
+% }
+\renewcommand\small{%
+   \@setfontsize\normalsize{10}{14}%
+   %\abovedisplayskip 10pt \@plus 2pt \@minus 5pt
+}
+\renewcommand\normalsize{%
+   \@setfontsize\normalsize{11}{15}%
+   %\abovedisplayskip 10pt \@plus 2pt \@minus 5pt
+}
+\renewcommand\large{%
+   \@setfontsize\normalsize{12}{16}%
+   %\abovedisplayskip 10pt \@plus 2pt \@minus 5pt
+}
+\renewcommand\Large{%
+   \@setfontsize\normalsize{14}{18}%
+   %\abovedisplayskip 10pt \@plus 2pt \@minus 5pt
+}
 
-\input{thesis.ver}
-\addtodef{\draftmark}{}{~---~Version \@idnumber}
+\newcommand{\CodeSymbolBold}[1]{\textbf{#1}}
+\newcommand{\CodeSymbolIt}[1]{\textit{#1}}
+\usepackage{textcomp}
+
+\lstdefinelanguage{MaloyaText}{  
+  morekeywords={precedes, during, occurs, while, or, and, overlapping},
+  keywordstyle=\textbf,
+  emph={becomes,is,for,within,less,than,least,by},
+  emphstyle=\textit,
+  mathescape=true,
+  autogobble=true,
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  columns=fullflexible,
+  literate={\{}{{\CodeSymbolBold{\{}}}1
+  {\}}{{\CodeSymbolBold{\}}}}1
+  % {(}{{\CodeSymbol{(}}}1
+  % {)}{{\CodeSymbol{)}}}1
+  % {>}{{\CodeSymbol{$>$}}}1
+  % {=}{{\CodeSymbol{$=$}}}1
+  % {;}{{\CodeSymbol{$;$}}}1
+%,    % ,
+  % captionpos=b,
+}
+\lstnewenvironment{mtext}
+{
+  \lstset{
+    language=MaloyaText,
+    basicstyle=\ttfamily\scriptsize
+  }
+}
+{
+}
+
+\lstdefinelanguage{Maloya}{  
+  morekeywords={Precedes, During, Occurs, Or, And, Overlapping, Precedes_less, During_less, Occurs_less, Overlapping_less, Precedes _greater, During _greater, Occurs _greater, Overlapping _greater},
+  keywordstyle=\bf,
+  emph={=,>},
+  emphstyle=\it,
+  mathescape=true,
+  autogobble=true,
+  basicstyle=\itshape\small,
+  captionpos=b,
+  columns=fullflexible,
+  frame=bt
+}
+\lstnewenvironment{mcore}
+{
+  \lstset{
+    mathescape=true,
+    autogobble=true,
+    language=Maloya,
+    basicstyle=\itshape,
+    columns=fullflexible}
+}
+{
+}
+\lstdefinelanguage{EPLPseudoCode}{  
+  morekeywords={timer, where, within, interval, and, or, not, every,distinct,timestamp,Precedes, During, Occurs, Or, And, Overlapping},
+  keywordstyle=\it,
+  basicstyle=\ttfamily\small,
+  morecomment=[l]{//},
+  commentstyle=\color{gray}\ttfamily,
+  mathescape=true,
+  autogobble=true,
+  columns=fullflexible,
+  captionpos=b,
+   numbers=left,               % activate numbering
+    stepnumber=1,               % numbering every three lines
+    numberfirstline=true,       %
+    numbersep=5pt,              % margin between the numbering and the code
+    numberblanklines=false,     %
+    numberstyle=\tiny\ttfamily\color{gray}, % small line numbers
+  %framexleftmargin=1.5em,
+  frame=bt
+}
+\lstdefinelanguage{EPLPseudoCodeCompile}{  
+  morekeywords={timer, where, within, interval, and, or, not, every,distinct,timestamp,Precedes, During, Occurs, Or, And, Overlapping},
+  keywordstyle=\it,
+  basicstyle=\ttfamily\small,
+  morecomment=[l]{//},
+  commentstyle=\color{gray}\ttfamily,
+  mathescape=true,
+  autogobble=true,
+  columns=fullflexible,
+  captionpos=b,
+  frame=bt
+}
+
+
+\lstnewenvironment{eplpseudocode}
+{
+  \lstset{
+    mathescape=true,
+    autogobble=true,
+    language=EPLPseudoCode,
+    %basicstyle=\ttfamily,
+    columns=fullflexible}
+}
+{
+}
+
+\lstdefinelanguage{EPL}{  
+  morekeywords={timer, within, interval, and, or, not, every,distinct,select,pattern,from,where,insert,into,window,create,std,unique },
+  keywordstyle=\bf,
+  emph={StreamEvent,role,location,kind,status,user},
+  emphstyle=\it,
+  literate={[}{{\CodeSymbolBold{[}}}1
+  {]}{{\CodeSymbolBold{]}}}1,
+  basicstyle=\ttfamily\small,
+  morecomment=[l]{//},
+  commentstyle=\color{gray}\ttfamily,
+  mathescape=true,
+  autogobble=true,
+  columns=fullflexible,
+  captionpos=b,
+ numbers=left,               % activate numbering
+    stepnumber=1,               % numbering every three lines
+    numberfirstline=true,       %
+    numbersep=5pt,              % margin between the numbering and the code
+    numberblanklines=false,     %
+    numberstyle=\tiny\ttfamily\color{gray}, % small line numbers
+  %framexleftmargin=1.5em,
+  frame=bt
+}
+\lstnewenvironment{epl}
+{
+  \lstset{
+    mathescape=true,
+    autogobble=true,
+    language=EPL,
+    %basicstyle=\ttfamily,
+    columns=fullflexible}
+}
+{
+}
+
+\lstdefinelanguage{SnoopEPL}{  
+  morekeywords={timer, within, interval, and, or, not, every, distinct, select, pattern, from, where },
+  keywordstyle=\bf,
+  emph={StreamEvent,role,location,kind,status,user},
+  emphstyle=\it,
+  literate={[}{{\CodeSymbolBold{[}}}1
+  {]}{{\CodeSymbolBold{]}}}1,
+  basicstyle=\rmfamily\small,
+  mathescape=true,
+  autogobble=true,
+  columns=fullflexible,
+  captionpos=b,
+  %framexleftmargin=1.5em,
+  frame=bt
+}
+
+
+\lstset{
+    mathescape=true,
+    autogobble=true,
+    basicstyle=\ttfamily\small,
+    morecomment=[l]{//},
+    commentstyle=\color{gray}\ttfamily,
+    keepspaces=true,
+    columns=fullflexible
+}
+
+\newcommand{\ie}{\emph{i.e.,}\xspace}
+\newcommand{\etc}{\emph{etc.}\xspace}
+\newcommand{\eg}{\emph{e.g.,}\xspace}
+\newcommand{\etal}{\emph{et al.}\xspace}
+\newcommand{\insitu}{\emph{in situ}\xspace}
+\newcommand{\apriori}{\emph{a priori}\xspace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{xparse}
+\usepackage[nohints,loose,french,tight]{minitoc}
+\nomtcrule
+\dominitoc[n]
+\usepackage{tocloft}
+
+
+\mtcsettitle{minitoc}{}
+\setlength{\mtcindent}{0pt}
+\mtcsetfeature{minitoc}{open}{\vspace{0ex}} % Setting vertical space between the empty contents title and the actual table of contents
+\mtcsetfeature{minitoc}{before}{\vspace{-3ex}}
+\definecolor{dark-gray}{gray}{0.3}
+
+\setcounter{minitocdepth}{1}
+
+\newcounter{todo}[chapter]
+\newcommand{\todo}[1]{%
+  \stepcounter{todo}%
+  \mydraftblock{\textbf{À faire (\arabic{chapter}.\arabic{todo}) :} \textit{#1}}%
+  \addcontentsline{todolist}{todolistentry}{#1}}
+
+
+\newlength{\myhspace}
+\addtolength{\myhspace}{4em}
+
+\newcommand\crulefill[1][1ex]{\leavevmode\leaders\hrule depth \dimexpr-#1+0.4pt height #1\hfill\kern0pt}
+\newcommand\ornline[2][1ex]{\trivlist\item\crulefill[#1]{\quad\textcolor{dark-gray}{\textbf{#2}}\quad}\crulefill[#1]\endtrivlist}
+
+% Contribution list command
+\NewDocumentCommand\synopsis{> {\SplitList{;}} m m}
+{
+  \hspace{\myhspace}\parbox[t]{\hsize-10em}{\ornline{#2}}
+  \vspace{-1.5ex}
+  \begin{itemize}
+    \setlength\itemsep{1ex}
+    \ProcessList{#1}{\insertitem}
+  \end{itemize}
+}
+\newcommand\insertitem[1]{\item\textcolor{dark-gray}{#1}}
+\newcommand{\preambleend}{
+  \hspace{\myhspace}\parbox[t]{\hsize-10em}{\ornline{Sommaire}}
+  \pdfbookmark[1]{Table of Contents}{toc-contents}
+  \minitoc
+}
+\newcommand{\preamblestyle}{}
+\newcommand{\preamblebegin}{}
+\newenvironment{preamble}{\preamblebegin\bgroup\preamblestyle\list{}{}\item[]}{\endlist\egroup}
+\newcommand{\chpsummary}[2]{
+  \vspace{-3ex}
+  \preambleend
+  \vspace{-5ex}
+  \synopsis{#2}{#1}
+  \newpage
+}
+

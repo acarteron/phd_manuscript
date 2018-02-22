@@ -1,0 +1,77 @@
+\chapter{Compilateur}
+\begin{preamble}
+Nous avons présenté dans le chapitre précédent les étapes de 
+compilation de manière succincte afin d'illustrer le résultat 
+de la compilation globale d'une règle Maloya. Dans ce chapitre 
+nous nous attachons à présenter les mécanismes de compilation 
+détaillés et leur spécificités.
+\end{preamble}
+\chpsummary{Aperçu
+}
+{
+Présentation de la sémantique des opérateurs EPL utilisés à l'issue de la compilation d'une règle en Maloya.;
+Description de la sémantique des opérateurs Maloya et de leur schéma de compilation.
+}
+
+Notre langage repose sur des opérateurs couvrant le domaine des services sensibles au contexte. Ces opérateurs permettent de manipuler des concepts d'états et d'évènements et peuvent être composés afin de formuler des services couvrant les besoins des intervenants du domaine du maintien à domicile des personnes âgées.
+Nous présentons le schéma de compilation pour chacun des opérateurs ainsi que leur sémantique formelle.
+
+Puisque nos opérateurs sont traduits dans des formules EPL, nous devons expliquer tout d'abord la sémantique d'EPL.
+
+\input{chapter/60_esperoperators}
+\input{chapter/60_inference}
+\input{chapter/60_internfunctions}
+
+\section{Compilation finale vers EPL}
+L'étape finale de compilation du pseudo-code EPL vers la représentation finale EPL peut survenir en deux circonstances~: (1) une fois sur l'expression complète à compiler~;
+(2) pour chaque fenêtre créée par la fonction ``CreateWindow'', expliquée précédemment. 
+
+Ainsi, la construction 
+%\newline
+{\em ``select~from~pattern~[$\llbracket$e$\rrbracket$]''} est générée pour l'expression complète.
+De la même manière, pour chaque fenêtre ``window\_id$_e$'', cette étape génère le code EPL implantant la fenêtre en utilisant les constructions EPL: %\newline
+%\begin{itemize}
+%\item
+
+{\em ``create~window~window\_id$_e$''} 
+
+%\item
+{\em ``insert~into~window\_id$_e$''} 
+
+%\item
+{\em ``select~from~pattern~[code$_e$]''}
+
+%\end{itemize} 
+\noindent
+De cette façon, le ``pattern'' contient le code calculé par l'étape de compilation précédente.
+
+Cette étape de compilation instancie également les évènements dans le pseudo-code EPL selon la forme {\em StreamEvent} en utilisant la fonction TranslateEvent~\ref{listing:translateevent}.
+De plus, cette fonction lie tous les évènements dans la formule EPL à un même domicile, ou spécifie un domicile. Ce lien avec un domicile peut être fait de deux manières~: (1) si un domicile particulier est spécifié dans la règle, alors l'identification du domicile est transmise à l'attribut ``user'' de chacun des évènements (\eg ``user=userId'')~; (2) si aucun domicile n'est spécifié, alors, pour lier toute la séquence à un même domicile, chaque évènement de la séquence prend l'attribut ``user'' du premier évènement de la séquence (\eg ``user=X.user'', X correspondant à l'identifiant du premier évènement de la séquence).
+
+\subsection*{TranslateEvent}
+Cette fonction traduit les évènements pseudo-code EPL en évènements structurés EPL à partir
+des informations présentes dans la tables statique~\ref{listing:table_static_generique}.
+\begin{figure}[!h]
+\begin{lstlisting}[frame=bt]
+  $TranslateEvent(p=>v,e)\rightarrow$ 
+    p=StreamEvent(location=p.location,
+                  kind=p.kind,
+                  value=`v',
+                  user=e`.user')
+  $TranslateEvent(p=>v,userId)\rightarrow$ 
+    p=StreamEvent(location=p.location,
+                  kind=p.kind,
+                  value=`v',
+                  user=userId)
+\end{lstlisting}
+\caption{Fonction TranslateEvent. Cette fonction transforme les évènements en pseudo-code EPL vers des évènements structurés EPL.}
+\label{listing:translateevent}
+\end{figure}
+
+\section{Synthèse}
+La compilation d'une règle en langage Maloya s'effectue en deux étapes: depuis la représentation interne vers le pseudo-code EPL, et depuis le pseudo-code vers le code EPL final. 
+La première étape constitue l'étape principale de la compilation. Elle consiste à appliquer le schéma de compilation de chacun des opérateurs suivant leur sémantique afin de compiler les concepts d'états, d'évènements, et les contraintes temporelles en une séquence d'évènements. 
+La compilation vers le code final EPL permet principalement d'instancier les évènements de cette séquence en respectant la forme canonique {\em StreamEvent} et de lier chacune de ces informations de contexte à un même domicile.
+
+On constate que tous nos opérateurs peuvent, en principe, être programmés directement dans le langage EPL. Cependant, on constate également que les formules dans ce langage peuvent s'avérer complexes. Ainsi, la ré-implantation récurrente des motifs représentés par des opérateurs comme {\em Occurs} ou {\em Overlapping} peut être une source importante d'erreurs. Au contraire, la compilation automatique de nos opérateurs depuis le langage Maloya rend ces motifs prédictibles dans leur fonctionnement et simplifie la programmation.
+

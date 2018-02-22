@@ -1,0 +1,298 @@
+% omigod i stole this hack from Pengfei's thesis, but i do not at all
+% endorse it.  Heed all ye who tread here, hither be dragons.
+%
+%                    -- Paul, 21/9/2015
+
+\newcommand{\BXed}{}
+\newcommand{\BXspe}{}
+\newcommand{\BXannee}{}
+
+\newcommand{\logoUB}{\includegraphics[height=56pt]{gfx/UniversiteBordeauxCMYK-01.pdf}}
+
+\newcommand{\@UHPhe@d}{{\UseEntryFont{ThesisFirstPageHead}\noindent
+   \logoLaBRI \hfill \logoUB %\hspace*{-32pt} \\
+        }}
+\newcommand{\@ThesisFirstPageHead}{\@UHPhe@d}
+\newcommand\ThesisFirstPageHead[1]%
+        {\renewcommand{\@ThesisFirstPageHead}{{#1}}}
+\newcommand{\@ThesisTitle}%
+        {\Large {\bf ThesisTitle}}
+\newcommand\ThesisTitle[1]%
+        {\renewcommand{\@ThesisTitle}{\huge {\bf #1}}}
+\newcommand{\@ThesisKind}{\Huge {\bf TH\`ESE}}
+\newcommand{\@ThesisPresented}{\Large PR\'ESENT\'EE \`A}
+\newcommand{\@ThesisYear}{ \rule[0.2em]{0.5em}{1pt} ~{\Large \BXannee}~ \rule[0.2em]{0.5em}{1pt}}
+\newcommand{\@ThesisLocation}{\huge {\bf L'UNIVERSIT\'E DE BORDEAUX}}
+\newcommand{\@ThesisEd}{\Large \'ECOLE DOCTORALE {\BXed}}
+\newcommand{\@ThesisDate}{\fbox{{\tt\char`\\ThesisDate}}}
+\newcommand\ThesisDate[1]{\renewcommand{\@ThesisDate}{#1}}
+\newcommand{\@ThesisPresentedThe}{{\large Soutenue le \@ThesisDate , devant le jury compos\'e de~:}}
+\newcommand\ThesisPresentedThe[1]%
+ {\renewcommand{\@ThesisPresentedThe}{{\UseEntryFont{ThesisPresentedThe}#1}}}
+\newcommand{\@ThesisInOrderToGet}
+       {\Large POUR OBTENIR LE GRADE DE}
+\newcommand{\@ThesisGrade}	
+       {\LARGE {\bf DOCTEUR}}
+\newcommand{\@ThesisSpeciality}%
+       {{\UseEntryFont{ThesisInOrderToGet}}\large SP\'ECIALIT\'E : {\BXspe} }
+\newcommand{\@ThesisPresentedBy}{\Large par~}
+
+\newcommand{\@ThesisAuthor}%
+       {{\UseEntryFont{ThesisAuthor}%
+           \fbox{\'ecrire \tt\char`\\ThesisAuthor\{ l'auteur \}}}}
+\newcommand\ThesisAuthor[1]%
+       {\renewcommand{\@ThesisAuthor}{\Large {\bf #1}}}
+\newcommand{\@ThesisJuryTitle}%
+   {{\UseEntryFont{ThesisJuryTitle}Composition du jury}}
+\newcommand\ThesisJuryTitle[1]%
+   {\renewcommand{\@ThesisJuryTitle}{{\bf #1}}}
+
+\newcommand\SetEntryFont[2]{\expandafter\def\csname @#1font\endcsname{#2}}
+\newcommand\SetTLFont[7]{\expandafter\def\csname @#1font\endcsname
+                        {\TLusefont{#2}{#3}{#4}{#5}{#6}{#7}}}
+\newcommand\UseEntryFont[1]{\csname @#1font\endcsname}
+\newcommand{\TLusefont}[6]{\fontsize{#5}{#6}\usefont{#1}{#2}{#3}{#4}}
+%\newcommand{\TitlePageFontFamily}{cmr}
+\newcommand{\TitlePageFontFamily}{cmss}
+\newcommand{\TitlePageFontEncoding}{OT1}
+\SetTLFont{ThesisTitle}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{bx}{n}{25}{30}%
+\SetTLFont{ThesisKind}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{bx}{n}{20.74}{25}%
+\SetTLFont{ThesisPresentedThe}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{m}{n}{10.95}{13}%
+\SetTLFont{ThesisInOrderToGet}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{m}{n}{10.95}{13}%
+\SetTLFont{ThesisDiploma}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{bx}{n}{14}{18}%
+\SetTLFont{ThesisSpecialty}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{bx}{n}{10.95}{13}%
+\SetTLFont{ThesisPresentedBy}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{m}{n}{10.95}{13}%
+\SetTLFont{ThesisAuthor}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{m}{n}{14}{18}%
+\SetTLFont{ThesisJuryTitle}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{bx}{n}{10.95}{13}%
+\SetTLFont{ThesisJury}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{m}{n}{10.95}{13}%
+\SetTLFont{ThesisFirstPageFoot}%
+            {\TitlePageFontEncoding}{\TitlePageFontFamily}{bx}{n}{10}{14}%
+\newtoks\@jury@tokI
+\newtoks\@jury@tokII
+\newcommand\@tokc@t[3]{%
+   \edef\@tokconc@t{\the#1\the#2}%
+   #3=\expandafter{\@tokconc@t}%
+   }
+\newtoks\@thesis@jury
+\newcommand{\NewJuryCategory}[3]{%
+ \expandafter\newtoks\csname#1\endcsname
+ \csname#1\endcsname={}%
+ \expandafter\def\csname#1@title\endcsname{{#2}{#3}}%
+ \@jury@tokI=\expandafter{\csname#1\endcsname}%
+ \@tokc@t\@thesis@jury\@jury@tokI\@thesis@jury
+ \@jury@tokI=\expandafter{\csname#1@title\endcsname}%
+ \@tokc@t\@thesis@jury\@jury@tokI\@thesis@jury
+ }
+
+\newcommand{\ClearJury}{\@thesis@jury={}}
+\ClearJury
+\NewJuryCategory{President}{\textit{Pr\'esident du jury~:}}{\textit{Pr\'esident du jury~:}}
+\NewJuryCategory{Directeur}{\textit{Directeur de th\`ese~:}}{\textit{Directeur de thèse~:}}
+\NewJuryCategory{CoDirecteur}{\textit{Co-Directeur de th\`ese~:}}{\textit{Co-Directeur de thèse~:}}
+\NewJuryCategory{Rapporteurs}{\textit{Rapporteur~:}}{\textit{Rapporteurs~:}}
+\NewJuryCategory{Examinateurs}{\textit{Examinateur~:}}{\textit{Examinateurs~:}}
+\NewJuryCategory{Directeurs}{\textit{Directeur~:}}{\textit{Directeurs~:}}
+\NewJuryCategory{Invites}{\textit{Invit\'e~:}}{\textit{Invit\'es~:}}
+\def\@selecti#1{\expandafter\@@selecti#1}
+\def\@@selecti#1#2{{#1}}
+\def\@selectii#1{\expandafter\@@selectii#1}
+\def\@@selectii#1#2{{#2}}
+\newcommand\@buildjury[1]{%
+  \@jury@tokI={\bgroup\normalsize \begin{tabular}{lll}}%
+  \expandafter\@@buildjury\the#1/%
+  \@jury@tokII={\end{tabular}\egroup}%
+  \@tokc@t\@jury@tokI\@jury@tokII\@jury@tokI
+  \the\@jury@tokI
+  }
+\def\@@buildjury#1#2#3/{%
+   \def\@tmpa{#3}%
+   \ifx\@tmpa\@empty
+      \def\@tmpa{#1}%
+      \ifx\@tmpa\@empty
+      \else\@buildentry#1#2%
+      \fi
+   \else
+      \@buildentry#1#2%
+      \@@buildjury#3/%
+   \fi
+   }
+\newcommand\@buildentry[2]{\expandafter\@buildtable\the#1\\/#2}
+\def\@buildtable#1\\#2/#3{%
+   \def\@tmpa{#1}%
+   \ifx\@tmpa\@empty
+   \else
+     \def\@tmpa{#2}%
+     \ifx\@tmpa\@empty
+        \@jury@tokII={\@selecti#3&#1\\}%
+        \@tokc@t\@jury@tokI\@jury@tokII\@jury@tokI
+     \else
+        \@jury@tokII={\@selectii#3&#1\\}%
+        \@tokc@t\@jury@tokI\@jury@tokII\@jury@tokI
+        \@@buildtable#2/%
+     \fi
+     \@jury@tokII={[3mm]}%
+     \@tokc@t\@jury@tokI\@jury@tokII\@jury@tokI
+   \fi
+   }
+\def\@@buildtable#1\\#2/{%
+   \@jury@tokII={&#1\\}%
+   \@tokc@t\@jury@tokI\@jury@tokII\@jury@tokI
+   \def\@tmpa{#2}%
+   \ifx\@tmpa\@empty
+   \else\@@buildtable#2/%
+   \fi
+   }
+\newcommand\@ThesisJury{\@buildjury\@thesis@jury}
+\newlength\@bindingshift
+\setlength\@bindingshift{0pt}
+\newcommand\SetBinding[1]{%
+   \setlength\@bindingshift{#1}%
+   \divide\@bindingshift2\relax
+   }
+\let\SetBounding\SetBinding % compatibilite'
+\newcommand\@titlepage@height{24.5cm}
+\newcommand\@titlepage@width{17cm}
+\newlength\@htitlepageshift
+\newcommand{\@cover@hook}{}
+\newcommand{\MakeThesisTitlePage}%
+   {%
+   \newpage
+   \@cover@hook
+   \setlength\@htitlepageshift{\paperwidth}%
+   \addtolength\@htitlepageshift{-\@titlepage@width}%
+   \divide\@htitlepageshift2
+   \addtolength\@htitlepageshift{-1in}%
+   \thispagestyle{empty}%
+   \vglue-\topmargin
+   \vglue-\headheight
+   \vglue-\headsep
+   \vglue-5mm
+   \hglue-\ifodd\c@page\oddsidemargin\else\evensidemargin\fi
+   \hglue\@htitlepageshift
+   \hglue-\parindent
+   \hglue\@bindingshift
+   \rlap{\vbox to0pt{
+             \vbox to\@titlepage@height
+                {\hsize\@titlepage@width
+                 \fontencoding{OT1}\fontsize{10}{12}\selectfont
+                 \@thesis@titlep@gebody
+                }
+             \vss
+            }%
+        }\par
+   \newpage
+   \if@twoside
+      \thispagestyle{empty}
+      \hbox{}
+      \par\vfill\@p@ndor@
+      \newpage
+      \addtocounter{page}{-2}%
+   \else
+      \addtocounter{page}{-1}%
+   \fi
+   }%
+\newcommand\@thesis@titlep@gebody{%
+   %---------------------------------------------------
+  \vspace*{-40pt}
+                            \@ThesisFirstPageHead
+      \vskip10mm plus2fil
+      \begin{center}
+                               \@ThesisKind
+      \vskip5mm plus2fil
+                            \@ThesisPresented
+      \vskip5mm plus2fil
+                            \@ThesisLocation
+      \vskip5mm plus2fil
+                            \@ThesisEd
+      \vskip5mm plus2fil
+      \@ThesisPresentedBy
+      \@ThesisAuthor
+      \vskip3mm plus1fil
+                            \@ThesisInOrderToGet
+      \vskip3mm plus1fil
+                            \@ThesisGrade
+      \vskip3mm plus1fil
+                            \@ThesisSpeciality
+      \vskip10mm plus2fil
+      \rule{4em}{1pt}\vfill
+                              \@ThesisTitle
+\vfill
+      \rule{4em}{1pt}
+      \vskip5mm plus2fil
+                            \@ThesisPresentedThe
+      % \vskip5mm plus1fil
+      %                          \@ThesisDiploma
+   \end{center}
+      \vskip5mm plus2fil
+                \hskip1cm%\@ThesisJuryTitle
+   \begin{center}
+                               \@ThesisJury
+  
+      \vskip5mm plus2fil
+      \@ThesisYear
+ \end{center}
+      % Commenté par Damien parce que les logos des labos ne doivent
+      % pas apparaître sur la première page %
+      % \@ThesisFirstPageFoot
+      % ---------------------------------------------------
+ }%
+{\catcode\lq\`=12
+\gdef\@p@ndor@{\ } %Mis en page avec \LaTeX
+}
+
+
+\newcommand{\logoLaBRI}{
+	\begin{tikzpicture}[scale=.06]
+	\pgfmathsetmacro\bleulabriR{0/255}
+	\pgfmathsetmacro\bleulabriG{114/255}
+	\pgfmathsetmacro\bleulabriB{185/255}
+	
+	\pgfmathsetmacro\vertlabriR{10/255}
+	\pgfmathsetmacro\vertlabriG{177/255}
+	\pgfmathsetmacro\vertlabriB{134/255}
+
+	\pgfmathsetmacro\rougelabritopR{162/255}
+	\pgfmathsetmacro\rougelabritopG{47/255}
+	\pgfmathsetmacro\rougelabritopB{50/255}
+	
+	\pgfmathsetmacro\rougelabrimiddleR{178/255}
+	\pgfmathsetmacro\rougelabrimiddleG{117/255}
+	\pgfmathsetmacro\rougelabrimiddleB{99/255}
+	
+	\pgfmathsetmacro\rougelabribottomR{230/255}
+	\pgfmathsetmacro\rougelabribottomG{206/255}
+	\pgfmathsetmacro\rougelabribottomB{196/255}
+	
+	
+	\definecolor{bleulabri}{rgb}{\bleulabriR, \bleulabriG, \bleulabriB}
+	\definecolor{vertlabri}{rgb}{\vertlabriR, \vertlabriG, \vertlabriB}
+	\definecolor{rougetoplabri}{rgb}{\rougelabritopR, \rougelabritopG,
+	\rougelabritopB}
+	\definecolor{rougemiddlelabri}{rgb}{\rougelabrimiddleR,
+	\rougelabrimiddleG, \rougelabrimiddleB}
+	\definecolor{rougebottomlabri}{rgb}{\rougelabribottomR,
+	\rougelabribottomG, \rougelabribottomB}
+	
+	\def\rectanglepath{-- ++(0cm,38.5cm)-- ++(10cm,0cm)--
+	++(0cm,-30.3cm)-- ++(13cm,0cm)-- ++(-2cm,-8.2cm)-- cycle}
+	
+	
+	\shade[top color=rougetoplabri!95!black,bottom
+	color=rougebottomlabri!15!white!95!black,middle
+	color=rougemiddlelabri!90!white!98!black,shading=axis,
+	shading angle=-135] (19.25, 19.25) circle (6.75cm);
+	
+	\fill[fill=bleulabri] (0,0) \rectanglepath;
+	\fill[rotate=180,fill=vertlabri] (-38.5,-38.5) \rectanglepath;
+	\end{tikzpicture}
+}

@@ -1,0 +1,671 @@
+\chapter{\'Etat de l'Art}
+\begin{preamble}
+La recherche en informatique ubiquitaire est indissociablement liée à la notion de contexte. Il existe de nombreuses approches pour capturer le contexte et définir des services sensibles au contexte. Dans ce chapitre, nous examinons le domaine de l'implantation de services sensibles au contexte pour le maintien à domicile.
+\end{preamble}
+\chpsummary{Aperçu}
+{
+Une analyse des approches de la capture du contexte.;
+Une analyse des méthodes pour concevoir des services sensibles au contexte.;
+Une analyse des enjeux de la sensibilité au contexte dans le maintien à domicile des personnes âgées.
+}
+% There are many works aiming to simplify and support the development of context-aware applications in smart homes. Let us classify them with respect to how they approach service development: user-oriented domain-specific languages, automata-oriented event processing approaches, and middleware-oriented approaches.
+
+\section{Informatique Ubiquitaire}
+
+La notion d'informatique ubiquitaire a été décrite pour la première fois
+par Weiser~\parencite{weiser1993some} dans une définition que nous traduisons comme suit.
+\begin{quote}
+L'objectif est de réaliser le type de technologie le plus efficace, celui qui 
+est essentiellement invisible pour l'utilisateur. Pour amener les ordinateurs à 
+ce point tout en conservant leur puissance, il faudra des types d'ordinateurs 
+radicalement nouveaux, de toutes tailles et formes, à la disposition de chaque 
+personne. J'appelle ce monde futur ``l'informatique ubiquitaire''
+\end{quote}
+Cette notion d'informatique ubiquitaire est définie par la composition 
+d'éléments matériels et logiciels~; il doit être invisible pour les utilisateurs 
+dans leur quotidien. Dans cette relation entre l'utilisateur et l'ordinateur, 
+ce dernier doit être capable d'assurer toutes ses fonctionnalités tout en 
+restant à l'écart. Pour compenser le manque d'interactions explicites avec
+l'utilisateur, il est nécessaire de prendre en compte des informations
+implicites, regroupées sous le terme de {\em contexte}.
+
+\subsection{La notion de contexte}
+Depuis cette première définition de l'informatique ubiquitaire, les
+progrès technologiques (miniaturisation, fiabilité de capteurs), ont
+permis de préciser la vision de Mark Weiser. Les ordinateurs peuvent
+être à la fois physiquement cachés à l'utilisateur et les capteurs
+permettent aux ordinateurs d'interagir avec l'utilisateur sans son
+intervention directe. Dès lors, le contexte prend une dimension
+centrale dans l'informatique ubiquitaire et sa définition évolue,
+comme le montre celle proposée par Anind Dey~\parencite{dey2001understanding}.
+
+\begin{quote}
+  Le contexte correspond à n’importe quelle information qui peut être
+  utilisée pour caractériser l’état d’une entité. Une entité est une
+  personne, un lieu, ou un objet. Cette entité est considérée comme
+  pertinente pour l’interaction entre un utilisateur et une
+  application, incluant l’utilisateur et l’application eux-mêmes.
+\end{quote}
+
+Cependant, Coutaz~\etal apportent une nuance à la
+définition de contexte en expliquant que {\it``le contexte n'est pas
+  seulement l'état d'un environnement prédéfini par un ensemble fixe
+  de ressources d'interaction. Il fait partie d'un processus
+  d'interaction avec un environnement en constante évolution composé
+  de ressources reconfigurables, migratoires, distribuées et
+  multi-échelles''}~\parencite{coutaz2005context}. 
+
+Cette vision présente le contexte comme une situation qui se produit
+et peut évoluer, il ne peut donc pas être caractérisé comme une entité
+fixe. Son exploitation est alors soumise à des techniques de
+machine-learning.  Bien que différentes, ces deux visions du contextes
+peuvent être complémentaires, notamment dans le domaine de
+l'assistance domiciliaire, où les informations contextuelles peuvent
+varier au cours du temps en fonction de l'évolution des capacités
+cognitives de l'utilisateur.
+%Impliquant que le contexte est vu comme une situation qui se produit, faisant appel, pour utiliser ce contexte à des techniques de machine-learning. \\
+%approche complémentaire\\
+%Cette définition pose un problème majeur dans le domaine du vieillissement à domicile en terme d'acceptabilité. En effet, une phase d'apprentissage est nécessaire pour avoir un système pleinement opérationnel. Or pour être accepté par un utilisateur dans un environnement écologique, le système doit être opérationnel le plus rapidement possible \parencite{?}.
+%
+%Concernant la définition de services exploitants le contexte
+Ainsi, la définition proposée par Anind Dey, comme source
+d'information d'une situation qui se produit, permet aux concepteurs
+de services de définir des services utilisant explicitement le
+contexte comme source d'information, pour prendre des décisions d'une
+manière déterministe, selon les besoins précis d'un utilisateur à un moment
+donné. La notion de contexte évolutif peut être utilisée pour
+concevoir des services moins déterministes, qui s'adaptent par exemple
+à l'évolution de ses besoins dans le temps.  Néanmoins, le
+déterminisme d'une application d'assistance peut être un critère
+influant sur son acceptabilité par des personnes âgées, qui sont
+souvent fortement routinisées \parencite{caroux2014verification}.
+%
+%La définition de Anind Dey d'un contexte déterministe permet aux concepteurs définir un service en avec le contexte comme source d'information d'une situation qui se produit.
+
+\subsection{Sensibilité au contexte}
+Pour être sensible au contexte, un système doit {\it ``utiliser le contexte pour 
+fournir des informations pertinentes et/ou des services à l'utilisateur, où la 
+pertinence dépend de la tâche de l'utilisateur''}~\parencite{dey2001understanding}. Par exemple 
+si à la fin d'une période définie de petit déjeuner, les informations de 
+contexte relatif à la préparation de celui-ci n'ont pas été détectées, alors le 
+système peut envoyer un message à l'utilisateur pour lui rappeler de prendre 
+son petit déjeuner. En d'autres termes, un système est dit ``sensible au 
+contexte'' si il est capable d'utiliser le contexte~\parencite{alegre2016engineering}. 
+
+Pour être accepté par l'utilisateur, tout en étant intégré dans son
+environnement, Barkhuus et Dey proposent trois principes
+d'interaction d'un système sensible au contexte~\parencite{barkhuus2003is}~; (1) personnalisation~:
+l'utilisateur doit pouvoir définir manuellement ses préférences et
+attentes~; (2) sensibilité passive au contexte~: le système surveille
+continuellement l'environnement et offre le choix à l'utilisateur
+d'agir~; (3) sensibilité active au contexte~: le système surveille
+continuellement l'environnement et agit automatiquement.
+%...
+De ces trois principes, nous retenons l'importance de pouvoir
+spécifier facilement et finement des services de détection de
+contextes. En effet, l'existence même de tels services sous-tend à la
+fois la sensibilité passive et active.  De plus, leurs précision et
+facilité de développement est une condition cruciale pour la
+personnalisation des services contextuels. L 'approche que nous présenterons
+par la suite tâchera donc de
+répondre à ces besoins, à travers un langage dédié de haut niveau et
+suffisamment expressif.
+
+Dans une analyse de commonalités sur 13 méta modèles de contexte formalisés dans la
+littérature, et environ 300 publications sur les applications d'informatique 
+ubiquitaire, Bauer a identifié six niveaux de 
+{\em dimensions contextuelles} largement utilisées dans l'informatique 
+ubiquitaire~\parencite{bauer2012comparison}~: le monde physique, le monde logiciel, l'utilisateur, ses activités, 
+le contexte social et leurs dynamiques. 
+Pour être sensible au contexte, un système doit être capable de capturer ces dimensions contextuelles et de les traiter pour fournir un service.
+%...
+Nous retenons ici la nécessité d'une large expressivité, couvrant toutes ces dimensions, pour une approche visant le développement
+de services contextuels.
+
+Perera~\etal~\parencite{perera2014context} ont classé le cycle de vie de l'information de contexte en quatre séquences~;
+(1) l'acquisition, qui définit la façon dont la donnée est acquise, selon cinq facteurs (\eg fréquence de l'évènement, source, type de capteur, \etc)~;
+(2) la modélisation, qui correspond à la technique choisie pour la modélisation du contexte (\eg graphique, orientée objet, ontologie, \etc)~;
+(3) le raisonnement, qui exprime la façon dont va être créé un nouveau ``savoir'' à partir des données de contexte (\eg apprentissage, règles, probabilités, \etc)~;
+et (4) la diffusion, qui est la manière dont l'information obtenue va être livrée à son consommateur (\eg requête ou abonnement).
+%...
+Le modèle d'infrastructure de capteurs que nous introduirons, constitué de règles de surveillance, tâchera de répondre aux points (2) et (3) ci-dessus, pour le cas particulier où les informations de contexte concernent la fiabilité d'une maison connectée.
+
+% Ces dimensions contextuelles sont le 
+% résultat d'une analyse de commonalité sur 13 méta modèles de contexte formalisés dans littérature, et environ 300 publication sur les applications d'informatique ubiquitaire.
+% Les capteurs permettent de capturer le contexte à différents niveaux et de fournir un service en conséquences. 
+
+%Conceptuellement, un cas intéressant d'approche descendante de sensibilité au contexte est l'identification de 6 niveaux élevés 
+
+\section{Acquisition du contexte}
+
+L'acquisition du contexte repose sur la collecte d'informations de mesure d'environnement à partir de capteurs de tous types. Pour fournir un service, un système ubiquitaire doit être capable de composer avec des capteurs hétérogènes. Pour ce faire il existe des approches fournissant une abstraction sur le réseau de capteurs, et d'autres définissant une sémantiques aux capteurs aussi uniforme que possible, malgré leur hétérogénéité. Par ailleurs, le placement des capteurs étant un élément central pour la mesure d'un contexte, d'autres approches se concentrent sur la modélisation du placement des capteurs. 
+
+\subsection{Réseaux de capteurs}
+%Beaucoup de recherches sont dédiées à simplifier la programation des applications sur les infrastructures de capteurs, en définissant des modèles de programmation adaptés. 
+%%Alegre et al~\parencite{} présentent un ressencement complet de ces approches. 
+%%Sugihara and Gupta
+% ~\parencite{sugihara-gupta-08} présentent un recensement complet de ces approches. Des modèles bas niveaux simplifient la programmation de chaque n\oe ud du réseau, séparément utilisant des mini systèmes d'exploitations ou des supports de visualisation. Des modèles de haut niveau permettent de programmer l'ensemble du réseau de capteur en un système global. Dans chaque cas (1) en utilisant des langages de requêtes, similaires à celles utilisée dans les base de données, pour interroger les données de capteurs, (2) écrire des programmes fonctionnels pour masquer la manipulation des état des n\oe uds, ou (3) étendre les langages de programmation existants pour prendre en compte la nature distribuée des capteurs.
+
+Un réseau de capteurs est un système composé de différents appareils aux 
+capacités de calcul plus ou moins limitées, capable de mesurer l'environnement et 
+éventuellement d'agir sur ce dernier. Ces capteurs communiquent le plus souvent 
+par ondes et sont alimentés par batteries. Beaucoup de recherches visent à 
+simplifier la programmation d'applications destinées à l'infrastructure de capteurs, en 
+définissant des modèles de programmation adaptés. Sugihara et Gupta~\parencite{sugihara2008programming} 
+présentent un recensement complet de ces approches. Les auteurs définissent une 
+taxonomie de modèles de programmation en fonction de leur niveau d'abstraction. 
+Ils classent les approches de programmation de réseaux de capteurs en modèles de 
+bas niveau et haut niveau.
+
+\paragraph{Modèles de bas niveau}
+Ces modèles de programmation permettent de s'abstraire des préoccupations 
+matérielles de chaque n{\oe}ud de capteur pour en simplifier la programmation. 
+Par exemple, 
+le système d'exploitation TinyOs~\parencite{hill2000system} fournit un support de 
+programmation via nesC, un langage dédié au domaine des réseaux de 
+capteurs~\parencite{gay2003the} dérivé du C. Greenstein~\etal~\parencite{greenstein2004sensor}, avec SNACK 
+fournissent aux développeurs un langage de composition et une bibliothèque. Cet 
+ensemble permet le développement de bibliothèques de services à combiner 
+directement dans les applications.
+
+\paragraph{Modèles de haut niveau}
+Ces modèles offrent un point de vue centré sur l'application pour programmer les 
+réseaux de capteurs. Les approches de haut niveau se concentrent sur la façon dont les n{\oe}uds 
+collaborent pour partager, agréger et traiter les données mesurées. Ces 
+approches peuvent être organisées en fonction du niveau auquel les n{\oe}uds 
+collaborent (\ie groupe, réseau)~\parencite{sugihara2008programming}. 
+Ces approches offrent la possibilité de programmer le réseau de capteurs (1) en 
+utilisant des langages de requêtes~\parencite{madden2003design}, similaires à 
+celles utilisées dans les bases de données, pour interroger les données de 
+capteurs, (2) écrire des programmes fonctionnels pour masquer la manipulation 
+des états des n{\oe}uds~\parencite{whitehouse2004hood}, ou (3) étendre les 
+langages de programmation existants pour prendre en compte la nature distribuée 
+des capteurs~\parencite{gummadi2005macro}.
+
+Ces approches simplifient la programmation de la couche applicative sur une 
+infrastructure de réseau de capteurs, en proposant des abstractions à différents 
+niveaux de ce réseau.
+%...
+Ces abstractions fournissent des supports efficaces pour orchestrer un
+système distribué hétérogène, en aidant dans la répartition des
+calculs, la communication et la synchronisation entre les n{\oe}uds, et
+en cachant les différences entre des capteurs physiques.  Dans le cas
+d'un domicile connecté, ces aspects sont habituellement gérés par une
+boîte (``Box'') domotique.  Par ailleurs, les travaux concernant les
+réseaux de capteurs fournissent peu de support pour décrire la logique
+applicative. Notamment, il manque des abstractions de haut niveau,
+telles que des relations temporelles entre les évènements et états des
+différents capteurs. Ainsi, implanter des conditions complexes
+impliquant plusieurs capteurs (e.g. le frigidaire est ouvert pendant
+que le four est allumé, le tout pendant le créneau du petit déjeuner)
+peut s'avérer difficile en l'absence d'un support adéquat.
+
+% Ces approches permettent essentiellement de fournir une abstraction sur la 
+% couche matérielle de l'infrastructure de capteurs afin de permettre au 
+% programmeur de ne pas avoir à prendre en compte les préoccupations concernant 
+% cette infrastructure.
+
+\subsection{Sémantique des capteurs}
+D'autres approches permettent d'abstraire, 
+dans les applications sensibles au contexte utilisant des capteurs,
+les détails concernant les capteurs, comme
+la gestion de mesures bas niveau ou le traitement des dysfonctionnements. 
+%pour abstraire les applications des détails concernant les capteurs, comme le traitement des dysfonctionnements ou la gestion de mesures bas niveau, fournissent une abstraction de plus haut niveau sur les capteurs.
+%Une autre approche courante dont le but est d'abstraire les détails des capteurs aux applications, comme le traitement des dysfonctionnements ou la gestion de mesures bas niveau, vise à fournir des abstractions de plus haut niveau sur les capteur.
+La sémantique de flux, proposée par Whitehouse~\etal~\parencite{whitehouse2006semantic} permet aux 
+applications d'effectuer des requêtes sémantiques, telles que 
+``détecter un véhicule'', plutôt que d'interroger directement un magnétomètre 
+bas niveau et de vérifier si sa valeur excède un certain seuil. L'implantation 
+est basée sur Prolog et permet de composer des capteurs et des unités d'inférence.
+Issus du génie logiciel, les capteurs logiciels
+offrent une abstraction sur chaque capteur matériel. Dans la proposition 
+de Lin~\parencite{lin2004software} ces capteurs logiciels décrivent des services 
+implantés dans un middleware sur Jini, une architecture distribuée basée sur 
+Java. Cette approche permet de combiner de multiples capteurs de manière 
+flexible. Il existe également des standards exposant les capteurs en tant que 
+services Web, comme le standard Sensor Web Enablement (SWE), porté par le 
+consortium OGC~\parencite{botts2008ogc}. Ce standard permet d'améliorer 
+l'interopérabilité des services sur de nombreux aspects (représentation des 
+mesures, découverte des capteurs, flux de données des capteurs, \etc).
+%These semantic sensor abstractions conceptually correspond to roles in our framework. We also recognize the importance of an abstraction layer over raw sensor measurements and characteristics, building our model at this level of abstraction. In effect, any of the semantic sensor abstractions can be used to implement our notion of role. When retrofitting HomeAssist in our approach, we simulated the semantic sensor layer using Prolog rules, similar to the implementation of Semantic Streams~\parencite{whitehouse-semantic-wireless2006}, discussed earlier.\\
+Au-dessus du standard SWE, La Semantic Sensor Web~\parencite{sheth2008semantic} ajoute une 
+sémantique de méta données, exploitant des ontologies et des règles d'inférences 
+(également standardisée par la W3C). Par exemple, une règle d'inférence 
+déclarative, exprimée dans le Semantic Web Rule Language peut définir un 
+capteur pour les conditions de tempête, construit à partir de capteurs 
+de température, de vent, et de précipitation.
+%Our approach also uses declarative inference rules over abstracted sensors (our roles), but with a different goal: verifying the coherence between different sensors data.  To the best of our knowledge, this approach has not been used for conformance checking with respect to a model of sensors.
+
+Nous retenons de ces travaux l'importance que peut jouer une couche d'abstractions sémantique
+pour faciliter le développement de services contextuels. En conséquence, nous reprendrons la
+vue des mesures fournis pas les capteurs comme un flux d'évènements, le plus uniforme possible.
+Il reste à trouver un niveau adéquat d'abstraction pour une maison connectée. Par exemple, il est évident que le développement
+de services sera plus simple si on considère des évènements du type ``cafetière utilisée pendant 3 minutes'' plutôt que la
+séquence correspondante des consommations électriques.
+
+\subsection{Placement de capteurs}
+Des efforts de recherche ont été déployés pour systématiser et vérifier le placement
+de capteurs. Hong~\etal~\parencite{hong2013toward} proposent une
+méthodologie empirique de décomposition pour suivre automatiquement le
+placement de capteurs dans les pièces d'un immeuble et déterminer si
+les capteurs peuvent être déplacés et si la configuration physique du
+bâtiment peut évoluer. 
+%Malgré la différence d'échelle entre une maison et un bâtiment,
+%cette méthode peut être utile pour construire un modèle des capteurs dans une 
+%maison qui évolue, mais ne peut pas fournir d'informations sur la conformité 
+%entre les mesures de capteurs et les besoins des applications.
+À l'échelle plus modeste d'une maison connectée, 
+la dynamique des capteurs ne semble pas
+un problème important, 
+%stringent, 
+mais certains enseignements de ce travail peuvent être utiles lorsqu'un
+service doit s'exécuter en même temps dans une grande variété de configurations domiciliaires.
+
+Murao~\etal~\parencite{murao2013evaluation} ont pour but de déterminer le meilleur 
+positionnement de capteurs portés pour surveiller une activité. Ils proposent 
+des fonctions d'évaluation qui permettent d'évaluer la position d'un capteur 
+en terme de précision de reconnaissance et de portabilité du capteur. À cause
+des contraintes qu'ils imposent, de nombreux utilisateurs refusent les capteurs 
+portés pour surveiller les activités du quotidien.
+Surie~\etal~\parencite{surie2008wireless} valident la capacité de reconnaissance 
+d'activités d'un réseau de capteurs en comparant les résultats d'identification 
+de l'activité avec la capture des images de cette activité par une caméra portée 
+par l'utilisateur. 
+Même si cette approche fournit des informations sur la fiabilité de 
+l'infrastructure, le temps nécessaire à l'analyse vidéo empêche tout passage à 
+l'échelle. De plus, les caméras sont perçues comme étant trop intrusives pour être 
+utilisées dans les domiciles des personnes, particulièrement à des endroits comme
+une chambre ou une salle de bain. 
+L'approche présentée par Philipose~\etal~\parencite{philipose2004infering} pour la 
+reconnaissance d'activités consiste à placer des tags RFID sur les objets du 
+quotidien qui sont pertinents pour l'activité. La reconnaissance d'interaction se fait 
+donc par l'utilisation de gants intégrant un lecteur RFID. Cette approche évite les problèmes de 
+positionnement de capteurs, mais peut introduire des faux positifs causés par 
+la portée d'émission du gant RFID et la distance entre les objets tagués.
+
+À la différence de ces approches implémentatoires, Beckmann~\etal~\parencite{beckmann2004some} 
+définissent cinq principes de conception pour guider l'installation de 
+capteurs dans un domicile.
+\begin{itemize} 
+\item Utiliser une technologie familière, de façon appropriée par rapport à la 
+vision conceptuelle qu'en a l'utilisateur. Par exemple il est plus aisé pour un 
+utilisateur de concevoir qu'une ouverture de porte est détectée en plaçant un 
+capteur de contact, plutôt que d'utiliser une caméra.
+\item Prendre en compte l'usage du domicile dans les choix 
+d'implantation de capteurs. Le placement de capteurs dans un environnement 
+soulève des questions à la fois esthétiques et des questions sur la durabilité 
+de leur positionnement sur le long terme en fonction de l'environnement 
+(\eg présence d'animaux, d'enfants \etc).
+\item Éviter l'utilisation de capteurs trop sensibles à la direction de leur 
+placement. En effet, des capteurs comme des caméras et des microphones, mis à 
+part les questions de vie privée qu'ils peuvent soulever, sont des capteurs dont 
+l'efficacité de la mesure est extrêmement sensible à la façon dont ils sont 
+orientés. Ces capteurs demandent donc une grande précision dans la façon dont 
+ils sont placés, ce qui augmente les risques d'un mauvais positionnement à 
+l'installation.
+\item Détecter la mauvaise installation de composants et fournir un résultat 
+même pour une installation partielle. Le résultat de services sensibles au 
+contexte dépend des mesures d'interaction~; il est donc indispensable de pouvoir 
+détecter une installation de capteurs incorrecte, pour la rectifier et pouvoir 
+fournir ces services. De plus, des problèmes d'installation (défaillante ou 
+incomplète) ne doivent pas empêcher les services de fonctionner, même si cela 
+peut impliquer un mode dégradé.
+\item Informer l'utilisateur sur la façon dont les données sont collectées, 
+stockées et transmises. Cette étape permet à l'utilisateur de comprendre comment 
+ses interactions avec son environnement sont mesurées. Cette phase d'éducation 
+permet de démystifier le système ubiquitaire, facilitant son appropriation par 
+l'utilisateur. 
+\end{itemize}
+%...
+Nous considérons ces principes comme très pertinents pour faciliter l'acceptation et pour assurer le bon fonctionnement
+d'une plateforme d'assistance domiciliaire.
+Cependant, ce ne sont là que des principes. Pour les mettre en {\oe}uvre, il reste à fournir un support concret pendant
+le cycle de vie des applications d'assistance, tel qu'un modèle explicite de l'infrastructure, et des services de surveillance
+continuelle de ce modèle pendant l'exécution des applications déployées.
+
+Beaucoup de travaux de recherche qui se concentrent sur des plates-formes de 
+domiciles connectés visent à impliquer l'utilisateur final dans les étapes 
+d'installation et/ou de maintenance de l'infrastructure de capteurs.
+En particulier, Kawsar~\etal~\parencite{kawsar2088deploy} proposent un cadre de 
+développement pour supporter le déploiement de capteurs par un utilisateur final 
+dans un domicile ubiquitaire. Combiner ce cadre de développement avec les cinq 
+principes de Beckmann~\etal~\parencite{beckmann2004some} facilite le positionnement des 
+capteurs et leur configuration individuelle par l'utilisateur. Cependant, aucun 
+outil n'est fourni pour contrôler le bon positionnement effectif des capteurs 
+et vérifier leur fiabilité.
+Sadoun~\etal~\parencite{sadoun2011ontology} partent d'une description en langage naturel de 
+l'installation et des scénarios pour en déduire un modèle d'environnement. Ce 
+modèle est une ontologie OWL accompagnée de règles d'inférence en SWRL. 
+Utilisant des règles d'inférence automatique, la cohérence du modèle et la 
+conformité des scénarios décrits avec le modèle peuvent être vérifiées. Cette 
+vérification peut signaler à la fois les scénarios incohérents et les 
+incohérences dans la description de l'installation. Cependant, cette approche ne 
+vérifie que le placement de l'installation (notamment les problèmes de couvertures), 
+et non son fonctionnement écologique.
+En particulier, leurs règles d'inférences ne raisonnent pas en terme d'intervalles de temps, 
+ce qui est une notion clé pour beaucoup d'applications d'assistance.
+
+\section{Définition de services}
+Un service sensible au contexte traite différentes informations de contexte pour fournir une information de plus haut niveau. Il existe plusieurs types d'approches permettant d'effectuer ce traitement~:
+\begin{itemize}
+\item De type middleware~;
+\item Basées sur des automates~;
+\item Par traitement d'évènements.
+\end{itemize}
+Mis à part ces approches de programmation de services, destinées aux programmeurs professionnels, plusieurs travaux proposent des techniques permettant à l'utilisateur final de définir lui-même des services.
+
+% pas grand chose concernat directement les intervenants
+
+% *\\
+% on s'occupe de fournir des services pour les utilisateurs et particulièrement les personnes agées, on s'occupe pas de la maintenance.
+
+% La définition de services peut être traitée de différents points de vue. \parencite{SCHMIDT-METHODS-PERCOM2007}
+
+\subsection{Approches de type middleware}
+% Le middleware est la structure la plus utilisée pour collecter les informations 
+% de contexte, supporter le déploiement de capteurs et masquer l'hétérogénéité.
+Certaines approches pour développer des applications sensibles au contexte 
+reposent sur un middleware pour fournir aux programmeurs, utilisant un langage 
+de programmation général, des abstractions pour opérer et gérer des équipements 
+(\eg découverte de capteurs) et des services sensibles au contexte.
+Avec FedNet,  Kawsar~\etal~\parencite{kawsar2088deploy} proposent un framework permettant 
+aux applications d'être exprimées comme des collections de tâches indépendantes 
+de l'implantation. HomeOS, de Rosen~\etal~\parencite{rosen2004homeos}, permet de définir des interfaces 
+pour s'abstraire d'appareils connectés spécifiques. 
+%Ces interfaces permettent de définir des applications en Java en facilitant la communication avec les appareils. 
+Román~\etal~\parencite{roman2002middleware} avec Gaia et Ballesteros~\etal~\parencite{ballesteros2006planb} avec Plan B, 
+proposent des approches basées sur des systèmes de fichiers, en prolongeant
+la philosophie des systèmes Unix au delà des périphériques habituels d'entrée/sortie,
+pour couvrir aussi les capteurs/actionneurs.
+Ranganathan~\etal~\parencite{ranganathan2005olympus} avec Olympus, présentent une approche séparant les 
+préoccupations relatives à la gestion d'un environnement ubiquitaire dynamique. Ainsi, un administrateur a la 
+possibilité de définir des règles Prolog pour gérer la politique relative à 
+l'environnement. Le développeur, quant à lui, peut définir ses services sans se soucier de certaines 
+contraintes de l'environnement.
+
+Augmentant le niveau d'abstraction, d'autres approches introduisent un processus 
+de développement déclaratif rigoureux, dédié aux services sensibles au contexte. 
+Des exemples d'approches de développement 
+outillées sont DiaSuite~\parencite{bertran2014diasuite,cassou2012toward} et IoTSuite~\parencite{patel2015enabling}.\\
+Ces approches automatisent certaines parties routinières de la tâche de programmation 
+en générant un cadre de programmation spécialisé pour un environnement donné, décrit par une
+hiérarchie de capteurs/actionneurs avec leurs interfaces de programmation respectives. 
+
+Toutes ces approches orientées middleware ont pour but de fournir une abstraction sur la gestion des détails de 
+l'infrastructure de capteurs. En cela, elle fournissent une bonne base pour le développement de services contextuels
+mais ne supporter pas les besoins de programmation applicative,
+à savoir la reconnaissance des interactions avec l'environnement et de leurs combinaisons. 
+%Le c\oe ur du traitement contextuel tourne autour de la reconnaissance de motifs spécifiques d'états et d'évènements. Sans support spécifique, cette programmation est bas niveau, fastidieuse, sujette aux erreurs, même pour des programmeurs aguerris. Our approach provides the programmer with this specific support.
+
+\subsection{Approches orientées automates}
+Plusieurs types d'approches exploitent des modèles d'automates et leurs outils associés. 
+En effet, les contextes peuvent être représentés par des séquences 
+particulières d'évènements dans l'environnement, contraintes dans leur ordre et 
+dans leurs temporisation. Par exemple, la situation de porte non surveillée 
+peut être identifiée par un automate acceptant un évènement de porte ouverte et 
+un évènement de porte fermée, séparés par un délai temporel supérieur à une 
+certaine valeur. De tels modèles d'exécution de reconnaissance de contextes 
+peuvent être exprimés avec des langages dédiés pour modéliser les automates.
+Ces langages 
+peuvent être visuels (StateCharts, SyncCharts) ou textuels (langages 
+synchrones)~\parencite{gamatie2010synchronous}. Les délais temporels, dans ces modèles, 
+doivent être gérés explicitement en utilisant des minuteries externes pour 
+générer des évènements d'expiration de délais. Les automates temporels \parencite{bengtsson2004timed} 
+ajoutent l'expression native des délais temporels dans le modèle. Ces modèles 
+à base d'automates sont habituellement accompagnés par des outils formels pour 
+prouver des propriétés temporelles utiles au modèle, tels que l'atteignabilité 
+d'un état. Ils sont assez expressifs pour manipuler tous les cas requis par les 
+services d'un domicile sensible au contexte, mais imposent aux
+développeurs d'implanter des motifs communs comme le séquençage d'évènements, 
+la reconnaissance d'un ensemble d'événements au cours d'un état, \etc Lorsqu'ils
+implantent ces motifs de base sous forme d'automates temporels, les développeurs
+peuvent introduire de subtiles erreurs ou de légères variations dans le 
+comportement qui devrait être identifié. Ce problème est amplifié quand les 
+modèles sont écrits par les intervenants avec différents niveaux d'expertise.
+
+\subsection{Approches de traitement événementiel}\label{sec:cep}
+%c'est quoi le CEP, ça marche
+D'autres approches conceptualisent également les informations de
+capteurs comme un flux de données d'évènements temporels, dans lequel
+des séquences peuvent être identifiées~\parencite{krishnan2014activity}. Ces
+approches cherchent à offrir des modèles plus haut niveau que les
+automates pour décrire des séquences d'évènements d'intérêt. C'est le
+cas du langage IFTTT~\parencite{augusto2004the}, qui intégre des opérateurs
+temporels sur des événements d'environnement.
+
+Plus généralement, il existe un domaine qui, historiquement, n'est pas
+lié à l'informatique ubiquitaire et offre un paradigme de traitement
+de flux d'évènements~: le traitement d'événements
+complexes~\parencite{cugola2012processing} (CEP comme {\it
+  Complex Event Processing}). Ce domaine
+introduit des opérateurs de composition qui implantent des motifs
+d'événements fréquents, comme des séquences ordonnées dans un laps de
+temps, des évènements alternatifs, \etc Certains CEP associent à un
+évènement complexe, l'intervalle de temps comprenant tous les
+évènements y contribuant, et utilisent l'algèbre d'intervalles d'Allen~\parencite{allen1983maintaining} pour combiner les évènements entre
+eux~\parencite{anicic2010rule, li2011complex, helmer2016highlevel,
+  hausmann2014language}.  Cette approche permet de prendre en
+considération des évènements non ponctuels, ayant une certaine durée.
+Toutefois, cette sémantique d'intervalle ne fournit pas pour autant
+une notion d'état associée à des objets physiques courant d'un
+domicile connecté.  Par exemple, l'état d'une porte qui est ouverte
+doit être implantée avec un évènement complexe commençant par
+l'ouverture d'une porte et finissant par la fermeture d'une porte,
+sans autre évènement de porte entre les deux. Ce type d'encodage est
+sujet aux erreurs et a tendance à complexifier les formules CEP.
+%(Comme illustré par nos exemples)
+%Cet encodage est exactement ce que notre compilateur génère automatiquement, de façon uniforme et prévisible, fournissant donc un ensemble fiable d'opérateur commun d'états et d'événements.
+Néanmoins, les CEP peuvent constituer une excellente base pour une approche
+introduisant les bonnes abstractions du domaine de l'assistance domiciliaire, tout
+en assurant leur encodage uniforme et prévisible par des formules CEP.
+
+%\subsection{Conception orientée utilisateurs}
+% c'est pas du tout user-centered development, mais plutot end-user programming (languages/systems)
+\subsection{Programmation par les utilisateurs}
+Ces approches partent des besoins de l'utilisateur final du domicile 
+ubiquitaire, et lui fournissent des langages dédiés pour développer des applications 
+sensibles au contexte par lui-même. Ces langages dédiés sont habituellement complétés par un 
+environnement de développement dédié. Ces approches de programmation dédiées à 
+l'utilisateur final ont abouti à des langages textuels et visuels. Scratch, 
+présenté par Resnick~\etal~\parencite{resnick2009scratch}, offre des notations de 
+programmation visuelle, couvrant la plupart des usages d'un langage de 
+programmation général. En principe, ce langage permet à l'utilisateur d'écrire 
+une variété de programmes dans le domaine des domiciles ubiquitaires mais cette 
+approche n'autorise pas des abstractions spécifiques au domaine de l'assistance 
+domiciliaire. IFTTT (If This Then That)\footnote{\url{https://ifttt.com}} offre des 
+notations graphiques plus spécialisées pour automatiser des processus simples 
+impliquant des services web, des capteurs et des actionneurs. Cette approche 
+réduit l'effort conceptuel de l'utilisateur final au détriment d'une réduction 
+drastique de l'expressivité du langage. Par exemple, les conditions permettent 
+l'utilisation d'un unique capteur ou service, et ne peuvent pas être composées. 
+De plus, l'absence de distinction possible entre les états et les évènements, 
+peut rendre leur utilisation confuse~\parencite{Huang2015supporting}.
+Améliorant IFTTT, Coutaz et Crowley~\parencite{coutaz2016first}, présentent AppsGate qui contient un 
+langage textuel dédié. Ce langage permet de faire une distinction claire entre 
+les états et les évènements, et permet quelques compositions limitées des conditions 
+dans les règles. AppsGate propose également un environnement de développement pour 
+l'utilisateur final dédié aux domiciles ubiquitaires. Il a été validé par des expériences avec des
+utilisateurs portant sur des règles simples d'automatisation dédiées au confort. Même si 
+cette extension d'IFTTT est prometteuse, elle n'est cependant pas satisfaisante 
+pour couvrir les besoins d'applications d'assistance domiciliaire. Par exemple, 
+les auteurs expliquent qu'{\it``exprimer des conditions composées [impliquant de 
+multiples états ou évènements] est difficile''}~\parencite{coutaz2016first}.
+De plus, même de simples compositions temporelles telles que ``A précède 
+immédiatement B'' ne peuvent pas être exprimées dans ce langage, dû à
+l'absence de connecteurs booléens dans les conditions.
+
+La plate-forme Casensa~\parencite{criel2011deconstructing}, utilise une ontologie, 
+appelée CAEMP, qui permet à l'utilisateur d'instancier des entités, dans le sens
+que l'utilisateur crée une représentation virtuelle d'une entité physique en 
+définissant diverses propriétés. À partir de ces entités il peut leur attribuer 
+des {\em comportements intelligents} à partir d'un catalogue disponible en 
+ligne. Cependant, cette approche reste centrée sur les développeurs pour ce qui 
+est de la création de ces comportements intelligents.
+
+
+% \subsection{Domicile ubiquitaire Do-it-yourself}
+% Beaucoup de travaux de recherche se concentrent sur des plates-formes de domiciles ubiquitaire. Les approches les plus pertinentes en ce qui concerne notre travail impliquent les aspects utilisateurs finaux concernant les étapes d'installation et/ou de maintenance dans le cycle de vie du système. En particulier,~\parencite{KAWSAR-DEPLOY-UBICOMP2008} proposent un cadre de développement pour supporter le déploiement de capteurs par un utilisateur final dans une domicile ubuquitaire. Combiner ce cadre de développement avec les cinq principes de conceptions pour supporter l'installation des capteurs explicités par~\parencite{BECKMANN-SOME-UBICOMP2004} facilite le positionnement des capteurs et leur configuration individuelle par l'utilisateur. Cependant, aucun outils n'est fourni pour contrôler le bon positionnement effectif des capteurs et vérifier leur fiabilité.\\
+% ~\parencite{SADOUN-ONTOLOGY-MICAI2011} part d'une description en langage naturel de l'installation et des scénarios pour en déduire un modèle d'environnement. Ce modèle est un modèle d'ontologie OWL et des règles d'inférence en SWRL. Utilisant des règles d'inférences automatiques, la cohérence du modèle et la conformité des scénarios décris avec le modèle peuvent être vérifié. Cette vérification peut signaler à la fois les scénarios incohérents et les incohérences dans la description de l'installation. Cependant cette approche ne vérifie que la description de l'installation, et non son fonctionnement écologique.
+% %La principale différence avec notre travail est que leur approche ne vérifie que la description de l'installation, et non son fonctionnement écologique. 
+% Donc leur règles d'inférences ne raisonent pas en terme d'intervals de temps, ce qui est une notion clé pour beaucoup de nos règles, comme la non omniprésence et l'inclusion de présence. 
+
+\section{Autonomie domiciliaire des personnes agées}
+
+Veillir chez soi est à la fois une solution permettant de diminuer le
+coût pour la société d'une population vieillissante, et un confort
+pour la personne. Cependant, plusieurs facteurs peuvent compromettre
+le maintien à domicile d'une personne agée~: d'une part, les pertes
+d'autonomie dues au vieillissement~; d'autre part, le fardeau pour
+l'entourage ou les aidants professionnels avec les risques
+psychosociaux associés. Dans ce contexte, un domicile équipé
+d'informatique ubiquitaire sensible au contexte peut favoriser le
+maintien à domicile des personnes âgées et réduire le fardeau des
+aidants.
+
+Il existe de nombreuses plates-formes d'assistance domiciliaire dédiées au 
+vieillissement à domicile qui ont été développées ces dernières années
+%, comme étudiées par
+~\parencite{chan2008review,rashidi2013survey}. 
+Ces plates-formes répondent à des besoins d'assistance que l'on peut classer en 
+trois catégories~\parencite{nehmer2006living}~: 
+\begin{itemize}
+\item Les traitements d'urgences, relatifs aux situations de danger pour l'utilisateur. Il s'agit de détecter les situations anormales~\parencite{hoque2015holmes}.
+\item Le renfort de l'autonomie. Il s'agit de tous les services qui vont compenser la perte d'autonomie de l'utilisateur. Le renfort d'autonomie passe souvent par l'observation des activités du quotidien~\parencite{lee2015sensor}.
+\item Le confort. Ces services sont relatifs au lien social~\parencite{baecker2014technology}. 
+\end{itemize}
+Cependant, la plupart des approches sont dédiées à la résolution d'un
+problème donné parmi ce spectre de besoins. Or une assistance
+domiciliaire efficace requiert que l'ensemble des problèmes soit
+couvert. Pour une utilisation in-vivo, il est difficile de concevoir
+le déploiement d'une technologie par problème à adresser, ne serait ce
+que pour en assurer la maintenance.
+%~\parencite{fabbricatore2011toward} proposent une architecture unifiée pour les solution d'assistance domiciliaire reposant sur OSGi. Les services sont implanté sous forme de programme Java et exécutes en tant que bundles dans un middleware OSGi. 
+
+Une autre limitation quasi-générale des travaux de recherche existants est que la plupart de ces systèmes sont validés uniquement par
+des expériences en environnement contrôlé~: les participants se rendent dans un appartement de recherche pour effectuer des tâches 
+spécifiques~\parencite{rashidi2013survey,rantz2011using}. 
+Les conclusions de ces études sont ainsi difficile à généraliser pour prédire le
+fonctionnement de la plate-forme et de ses services dans un environnement 
+naturel à long terme.
+
+\section{Synthèse}
+
+Le développement de systèmes sensibles au contexte suit quatre étapes explicitées par Alegre~\etal~\parencite{alegre2016engineering}.
+\begin{enumerate}
+\item Le {\bf recueil des besoins} dépend du domaine dans lequel
+  s'intègre le système sensible au contexte. S'il est admis que
+  l'utilisateur final doit être impliqué dans la conception des
+  services, l'ensemble des intervenants gravitant autour du système
+  n'est pas encore pris en compte dans la
+  conception~\parencite{alegre2016engineering}. L'intégration de l'ensemble des
+  intervenants est critique dans le domaine du maintien à
+  domicile. Par exemple les aidants naturels et professionnels sont
+  des sources d'informations indispensables sur l'assistance à fournir
+  à l'utilisateur, et les techniciens de maintenance sont
+  indispensables à la fiabilité de l'infrastructure.
+
+\item L'{\bf analyse et la conception} se font selon les besoins recueillis. 
+%... 
+  Cette étape inclut principalement la définition d'une architecture
+  logicielle et/ou le choix de modèles de conception (design patterns)
+  adaptés au développement de services contextuels. La littérature
+  recense déjà des modèles de conceptions adaptés aux services
+  orchestrant des capteurs et actionneurs, tels que le modèle SCC,
+  utilisé avec succès dans le passé dans plusieurs domaines, y compris
+  l'assistance domiciliaire. Notons que ce modèle est même supporté
+  par des outils de développement~\parencite{bertran2014diasuite}. Le
+  choix d'une architecture est plus spécifique au domaine cible, mais
+  il existe des principes architecturaux comme les architectures
+  centrées données~\parencite{qin2016when} ou les architectures
+  dirigées par les données~\parencite{chen2012knowledge}, qui semblent
+  bien adaptés à une maison connectée.
+
+\item L'{\bf implantation} de services est largement couverte par la
+  littérature. De nombreuses approches proposent même des méthodes
+  destinées aux utilisateurs finaux. Cependant, ces approches sont soit
+  (1) trop générales par rapport au domaine de l'informatique
+  ubiquitaire, et n'offrent pas les abstractions ou l'expressivité
+  nécessaires~; soit (2) trop spécifiques pour couvrir le spectre des besoins
+  d'assistance du domaine ciblé.\\
+  Cette étape inclut aussi le choix des capteurs pour mesurer
+  l'environnement, et le choix de la plate-forme.
+%Ce choix de plate-forme est crucial car l'implantation des services en dépend directement.
+%De plus, la généralité dans les possibilités d'exprimer un service implique que le concepteur, si il n'est pas nécessairement programmeur, doit tout de même avoir une certaine culture technologique, sa seule culture du domaine de l'assistance ne lui permet pas d'exprimer des services. 
+
+\item Le {\bf déploiement} est une étape clé. En effet, c'est à cette
+  étape que les capteurs sont installés~; il faut donc s'assurer de
+  leur bon positionnement. Or il n'existe à l'heure actuelle que peu
+  de travaux couvrant ce besoin. La {\bf maintenance} est également
+  une étape importante. Si certaines plates-formes intègrent des
+  mécanismes de qualité de services, peu d'approches intègrent
+  directement la possibilité d'exprimer des services de maintenance de
+  l'infrastructure. Cela s'explique par le fait qu'il existe encore
+  peu d'expérimentations écologiques à large échelle et la fiabilité
+  de l'infrastructure mise en place sur le long terme n'y est donc pas
+  encore primordiale.
+\end{enumerate}
+
+La spécification de services sensibles au contexte doit pouvoir être
+proche du domaine auquel ses services sont appliqués, pour qu'ils
+correspondent aux besoins des intervenants.  En outre, les services
+doivent pouvoir utiliser des contextes exprimés de façon suffisamment
+large pour prendre en compte tous les besoins de contextes. En
+particulier, cette expressivité doit permettre également d'exprimer
+un modèle d'infrastructure, où les informations de contexte concernent
+la fiabilité continue d'une maison connectée.
+
+Dans un domaine comme l'assistance domiciliaire des personnes âgées,
+où l'acceptabilité de la technologie est parfois critique, il est
+indispensable que tous les intervenants soient impliqués, et qu'ils
+puissent s'approprier au mieux la technologie en leur permettant
+d'exprimer eux même des services grâce à leur culture du domaine de
+l'assistance et en limitant le besoin de culture informatique dans
+cette conception.
+
+%  il est admit que les utilisateurs finaux doivent être impliqué dans la conception de domicile sensibles au contexte, il y encore peut d'implication de l'ensemble des intervenants, notamment les aidants professionnels comme le montrent \parencite{Blaschke et al., 2009}.
+% De plus, les aspects de fiabilité de l'infrastructure de capteurs sont souvent traités à part.
+
+
+
+
+
+
+
+% La conception de services sensibles au contexte d'assistance domiciliaire permet d'exprimer les besoins des personnes âgées sont la plupart du temps limités à cette composante, n'impliquant pas l'ensemble des intervenants à la conception et à l'exploitation de ces services.
+
+%In fact, this compilation approach sets apart our work from most works in CEP, typically introducing a
+%new CEP language with its standalone implementation, rather than translating in an existing, standard CEP language.
+
+%\section{Related work}
+
+%according to the angle of attacking the problem in three categories: top-down, bottom-up, and middleware (see Figure \ref{fig:approaches}).
+%
+%\begin{figure}[H]
+%\centering\includegraphics[scale=0.4]{gfx/schema.png}
+%\caption{Approaches to the development of smart home services}
+%\label{fig:approaches}
+%\end{figure}
+
+
+
+
+
+
+%A notable
+%exception is a scheme for translating between different CEP languages \parencite{Cep2Cep}; however, this scheme is only 
+%semi-automated and sometimes produce translations which are not fully equivalent, as opposed to the present work.
+
+%\subsection{Temporal composition requests}
+%Temporal composition 
+%\begin{itemize}
+%\item CEP
+%\item temporal db
+%\item temporal automaton
+%\item synchronous language
+%\end{itemize}
+
+
+
+
+%\section{Related work}\label{sec:relatedwork}
+

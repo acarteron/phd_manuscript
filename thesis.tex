@@ -1,143 +1,341 @@
-\documentclass[final,submitted,screen,nolof,nolol,nolot,oldfontcommands]{mythesis}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tufte-Style Book (Minimal Template)
+% LaTeX Template
+% Version 1.0 (5/1/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+% IMPORTANT NOTE:
+% In addition to running BibTeX to compile the reference list from the .bib
+% file, you will need to run MakeIndex to compile the index at the end of the
+% document.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[a4paper,french,nobib,twoside,justified]{tufte-book} % Use the tufte-book class which in turn uses the tufte-common class
+%\special{papersize=210mm,297mm}
+\newcommand*\cleartoleftpage{%
+  \clearpage
+  \ifodd\value{page}\hbox{}\newpage\fi
+}
+%\usepackage{textcomp}
+\hypersetup{colorlinks} % Comment this line if you don't wish to have colored links
+\usepackage{microtype} % Improves character and word spacing
+
+\usepackage{booktabs} % Better horizontal rules in tables
+\usepackage{graphicx} % Needed to insert images into the document
+\graphicspath{{graphics/}} % Sets the default location of pictures
+%\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio} % Improves figure scaling
+
+\usepackage{fancyvrb} % Allows customization of verbatim environments
+\fvset{fontsize=\normalsize} % The font size of all verbatim text can be changed here
+
+% this is a local hack, to get the fancy UBdx page
+\usepackage{first-page}
+
+\usepackage{makeidx} % Used to generate the index
+\makeindex % Generate the index which is printed at the end of the document
+
+\usepackage[utf8]{inputenc}
+\usepackage{listings,lstautogobble}
+%\usepackage{luatextra}
 \usepackage{mymacros}
-\usepackage[french]{babel}
-\usepackage{graphicx} % for EPS, load graphicx instead
+%\usepackage{fontspec}
+%\usepackage{polyglossia}
+\usepackage{babel}
 \usepackage{multirow}
-\usepackage{lscape}
-\usepackage{caption}
-\usepackage{float}
-\usepackage{xspace}
-\usepackage{pdfpages}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{dsfont}
+\usepackage{mathrsfs}
+\usepackage[normalem]{ulem} 
+\usepackage{alltt}
+\usepackage{stmaryrd} % for \llbracket ⟦ in math mode
+\usepackage{MnSymbol} % for \llangle << in math mode
+\usepackage{color, colortbl}
+%\usepackage{enumerate}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows,automata,positioning}
 
-\newcommand{\ie}{\emph{i.e.,}\xspace}
-\newcommand{\etc}{\emph{etc.}\xspace}
-\newcommand{\eg}{\emph{e.g.,}\xspace}
-\newcommand{\etal}{\emph{et al.}\xspace}
-\newcommand{\insitu}{\emph{in situ}\xspace}
-\newcommand{\apriori}{\emph{a priori}\xspace}
-\newcommand\tabhead[1]{\small\textbf{#1}}
-\newcommand{\college}{\emph{Collège+}\xspace}
+%\usepackage[rounded]{syntax}
+
+% \usepackage{lscape}
+% \usepackage{caption}
+% \usepackage{float}
+% \usepackage{pdfpages}
 
 
-\lstdefinelanguage{MaloyaText}{  
-  morekeywords={precedes, during, occurs, while, or, and, overlapping},
-  keywordstyle=\bf
-}
-\lstnewenvironment{mtext}
-{
-  \lstset{
-    emph={becomes,is,for,within},
-    emphstyle=\it,
-    mathescape=true,
-    autogobble=true,
-    language=MaloyaText,
-    %basicstyle=\ttfamily,
-    breaklines=true,
-    columns=fullflexible}
-}
-{
-}
+% \usepackage{subfigure}
+% \usepackage{calc}
+% \usepackage{amstext}
+% \usepackage{amsthm}
+% \usepackage{multicol}
+% \usepackage{pslatex}
 
-\lstdefinelanguage{MaloyaCode}{  
-  morekeywords={Precedes, During, Occurs, Or, And, Overlapping, less, greater},
-  keywordstyle=\textit{\bf}
-}
-\lstnewenvironment{mcore}
-{
-  \lstset{
-    mathescape=true,
-    autogobble=true,
-    language=MaloyaCode,
-    basicstyle=\itshape,
-    columns=fullflexible}
-}
-{
-}
-\lstdefinelanguage{EPLPseudoCode}{  
-  morekeywords={timer, within, interval, and, or, not, every, WindowIfComplex,distinct,timestamp,Becomes,CreateWindow,Precedes, During, Occurs, Or, And, Overlapping},
-  keywordstyle=\it
-}
-\lstnewenvironment{eplpseudocode}
-{
-  \lstset{
-    mathescape=true,
-    autogobble=true,
-    language=EPLPseudoCode,
-    basicstyle=\ttfamily,
-    columns=fullflexible}
-}
-{
+% \usepackage{multicol}
+
+%\usepackage{cite}
+%\usepackage[headheight=25pt]{geometry}
+
+
+% make figure numbering be linear in the document, not per-chapter.
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter}
+%\counterwithout{listing}{chapter}
+% make table numbering be linear in the document, not per-chapter.
+\counterwithout{table}{chapter}
+
+%\input{holes}
+
+%% Tweaking PDF bookmarks
+\usepackage[numbered]{bookmark}
+\hypersetup{%
+  bookmarksdepth=3%
 }
 
-\lstset{
-    mathescape=true,
-    autogobble=true,
-    basicstyle=\ttfamily,
-    columns=fullflexible}
+% "0" would disable section numbering, should i want that... Tufte
+% doesn't like numbers.
+\setcounter{secnumdepth}{1}
+\setcounter{tocdepth}{1}
 
-\title{Une approche événementielle pour le développement de services multi-métiers dédiés à l'assistance domiciliaire}
-\subtitle{}
-\author{Adrien Carteron}
-\date{22 décembre 2017}
-\president{PU-PH Manuel Bouvard}
-\director{Charles Consel . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Professeur à Institut Polytechnique de Bordeaux}
-         {Nic Volanschi . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .  Advanced research position à Inria Bordeaux}
-\reviewer{Sylvain Giroux  . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Professeur à l'Université de Sherbrooke}{Philippe Lalanda . . . . . . . . . . . . . . . . . . . . . . . . . . . . Professeur à l'Université Joseph Fourier de Grenoble }
-\examinator{Nikolaos Georgantas . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . Research Scientist }{}{}
+% have the bib neatly positioned after the rest of the ToC items
+\newlength{\beforebibskip}
+\setlength{\beforebibskip}{0em} % this might need to become 1em or other
+%\selectlanguage{french}
+
+\usepackage{hyphenat}
+% more float registers
+%\usepackage{etex}
+%\reserveinserts{30}
+
+\usepackage[
+backend = biber,
+citereset=none,
+%style = debug,
+style = authoryear,
+dateabbrev = false,
+% dashed = false, % repeat full author names every occurrence
+maxbibnames = 99, % don't use 'et al.' in the Bibliography
+maxcitenames=2,
+citestyle = authoryear,
+language = british
+]{biblatex}
+\addbibresource{bibliography.bib} 
+% DONE really use biblatex, not the citation hack here
+% https://tex.stackexchange.com/questions/45934/can-i-use-biblatex-with-tufte-classes
+\DeclareBibliographyCategory{fullcited}
+
+\newcommand{\mybibexclude}[1]{\addtocategory{fullcited}{#1}}
+
+\DeclareNameAlias{sortname}{first-last} % this makes the names as
+                                        % displayed in the
+                                        % Bibliography consistent, in
+                                        % my case not Last, First
+                                        % followed by First Last,
+                                        % First Last, ...
+\usepackage{booktabs}
+\usepackage{bbding} % for \Checkmark and \XSolidBrush
+
+%\input{holes}
+
+\input{citation-hack.inc.tex}
+
+\newcommand{\hangp}[1]{\makebox[0pt][r]{(}#1\makebox[0pt][l]{)}} % New command to create parentheses around text in tables which take up no horizontal space - this improves column spacing
+\newcommand{\hangstar}{\makebox[0pt][l]{*}} % New command to create asterisks in tables which take up no horizontal space - this improves column spacing
+
+\usepackage{xspace} % Used for printing a trailing space better than using a tilde (~) using the \xspace command
+
+\newcommand{\monthyear}{\ifcase\month\or January\or February\or March\or April\or May\or June\or July\or August\or September\or October\or November\or December\fi\space\number\year} % A command to print the current month and year
+
+% \newcommand{\openepigraph}[2]{ % This block sets up a command for printing an epigraph with 2 arguments - the quote and the author
+% \begin{fullwidth}
+% \sffamily\large
+% \begin{doublespace}
+% \noindent\allcaps{#1}\\ % The quote
+% \noindent\allcaps{#2} % The author
+% \end{doublespace}
+% \end{fullwidth}
+% }
+
+%\newcommand{\blankpage}{\newpage\hbox{}\thispagestyle{empty}\newpage} % Command to insert a blank page
+
+%----------------------------------------------------------------------------------------
+%	BOOK META-INFORMATION
+%----------------------------------------------------------------------------------------
+
+% \title{Une approche événementielle pour le développement de services multi-métiers dédiés à l'assistance domiciliaire}
+% %\subtitle{}
+% \author{Adrien Carteron}
+% \date{22 décembre 2017}
+
+%----------------------------------------------------------------------------------------
+
+\makeatletter
+
+\newrobustcmd*{\parentexttrack}[1]{%
+  \begingroup
+  \blx@blxinit
+  \blx@setsfcodes
+  \blx@bibopenparen#1\blx@bibcloseparen
+  \endgroup}
+
+\AtEveryCite{%
+  \let\parentext=\parentexttrack%
+  \let\bibopenparen=\bibopenbracket%
+  \let\bibcloseparen=\bibclosebracket}
+
+\newlength{\fullwidthlength}
+\AtBeginDocument{\setlength{\fullwidthlength}{\@tufte@fullwidth}}
+\makeatother
 
 
-\thanks{Thank you all !}
-%l'informatique ubiquitaire/omniprésente.
-\resume{
-La notion de contexte est fondamentale dans le champ de l’informatique
-ubiquitaire  et en particulier lorsque des services sont destinés à assister un utilisateur dans ses activités quotidiennes. 
-
-Dans le domaine du maintien à domicile de personne âgées, un tel
-environnement peut  fournir des services d’assistance
-pour pallier les pertes cognitives dues au vieillissement et assurer une
-vie indépendante.
-
-Parce qu’elle  implique plusieurs disciplines, une maison équipée
-d’informatique ubiquitaire et dédiée au maintien à
-domicile de personnes âgées demande l’implication d'une variété
-d’intervenants, tant pour concevoir et développer des services
-d'assistance, que pour déployer et maintenir l'infrastructure
-sous-jacente. Cette grande diversité d’intervenants correspond à une diversité de contextes : les services de chaque intervenant repose sur des contextes spécifiques (état des capteurs pour la maintenance, utilisation du frigidaire pour l’assistance à domicile). Ces différents contextes sont généralement étudiés séparément, empêchant toute synergie.
-
-Cette thèse présente une méthodologie permettant d'unifier la conception
-et le développement de services sensibles au contexte et de répondre aux
-besoins de tout type d'intervenant.
-
-Dans un premier temps, nous traitons les besoins des intervenants
-concernant l’infrastructure de capteurs/actionneurs: installation, maintenance et  exploitation. Ce traitement est défini par le modèle d’infrastructure d’un domicile et un ensemble de règles qui permettent de superviser en continu l’infrastructure et de détecter des dysfonctionnements. Cette supervision continue simplifie le processus de développement d’applications, en faisant abstraction des problèmes d’infrastructure.
-
-Dans un second temps, nous analysons un large éventail de services d’assistance domiciliaire dédié aux personnes âgées, en considérant la variété des besoins des intervenants. Grâce à cette analyse, nous généralisons l’approche développée pour l’infrastructure à tout type de services d’assistance. Ce travail conduit à développer une  méthodologie  qui permet de définir des services de façon unifiée, à travers des règles manipulant les concepts d’états et d’évènements. Pour exprimer ces règles, nous définissons un langage spécifique à ce domaine, appelé Maloya. Nous avons développé un compilateur de notre langage vers  un langage événementiel dont l’exécution s’appuie sur un moteur de traitement d’évènements complexes (CEP).
-
-Nous avons validé notre approche en définissant avec notre langage un large éventail de services d’assistance à la personne, à partir de services existants, déjà déployés, et concernant l’ensemble des intervenants du domaine. Nous avons compilé et exécuté les services Maloya sur un moteur de traitement d’évènements complexes. Les performances obtenues sont satisfaisantes pour le domaine avec une latence de détection inférieure à une seconde et une consommation mémoire compatible avec une exécution 24 heures sur 24 sur le long terme.
-%en ligne/ suffisante pour le domaine, reactivité et execution H24 a long terme
-}
-
-\motsclefs{Context-aware, domain-specific, data-centric,
-data-driven, aging in place}
-%besoin de fiabilité de l'install parallel aux app, aspet pas couvert par les app, model pour que les app reposent sur truc stable
-
-%app pas facile donc si on peut faire la meme chose pour les app c'est cool
 \begin{document}
+\frontmatter
+\pagenumbering{roman}
 
-%Partie introductive
-\input{body/introduction}
-\input{body/etatart}
-\input{body/improving}
-\input{body/domainanalysis}
-\input{body/compiler}
-\input{body/conclusion}
-%\input{test}
-% %Partie Théorique
-% \input{TSA}
-% \input{priseencharge}
-% \input{technologies}
+%\maketitle % Print the title page
+
+\newcommand{\montitre}{Une approche événementielle pour le développement de services multi-métiers dédiés à l'assistance domiciliaire}
+\newcommand{\myshorttitle}{ }
+% \newcommand{\myshorttitle}{\mytitle} %% This is too long, i don't want a line break in the streamer thing.
+\newcommand{\mytitle}{An event-driven approach to developing interdisciplinary services dedicated to aging in place}
+\newcommand{\myauthor}{Adrien Carteron}
+\newcommand{\EDMInumber}{}
 
 
-\bibliography{sample}
+
+
+\hypersetup{ 
+  pdffitwindow=false,    % window fit to page when opened
+  pdfstartview={FitH},   % fits the width of the page to the window
+  pdftitle={\montitre},   % title
+  pdfauthor={\myauthor}  % author
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%% FRONT MATTER
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{frontmatter/official-titlepage}
+\clearpage
+
+\input{frontmatter/adrien-titlepage.tex}
+\input{frontmatter/colophon.tex}
+\input{frontmatter/resume.tex}
+\input{frontmatter/thanks.tex}
+
+
+%----------------------------------------------------------------------------------------
+% \pdfbookmark[1]{Table of Contents}{toc-contents}
+% \tableofcontents % Print the table of contents
+% \newpage
+% %----------------------------------------------------------------------------------------
+
+% \listoffigures % Print a list of figures
+% \newpage
+% %----------------------------------------------------------------------------------------
+
+% \listoftables % Print a list of tables
+
+\cleardoublepage
+\pdfbookmark[1]{Table des matières}{toc-contents}
+\tableofcontents
+
+\cleardoublepage
+\pdfbookmark[1]{Liste des figures}{list-figures}
+\listoffigures 
+
+\cleardoublepage
+\pdfbookmark[1]{Liste des tableaux}{list-tables}
+\listoftables
+
+%----------------------------------------------------------------------------------------
+%	DEDICATION PAGE
+%----------------------------------------------------------------------------------------
+
+% \cleardoublepage
+% ~\vfill
+% \begin{doublespace}
+% \noindent\fontsize{18}{22}\selectfont\itshape
+% \nohyphenation
+% Dedicated to my family and friends.
+% \end{doublespace}
+% \vfill
+% \vfill
+
+%----------------------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------------------
+
+
+\mainmatter
+\pagenumbering{arabic}
+
+\input{chapter/10_introduction}
+
+\input{chapter/20_etatart}
+
+\input{chapter/30_fiabilite}
+\input{chapter/40_analysedomaine}
+\input{chapter/50_dsl}
+\input{chapter/60_compilateur}
+\input{chapter/100_conclusion}
+
+
+%----------------------------------------------------------------------------------------
+
+\backmatter
+
+\cleardoublepage
+\part*{Appendices}
+\appendix % Tell LaTeX we're into Appendix numbering for Chapters (A, B, ...)
+%% The following line prevents ToC containing anything except Chapter
+%% headings for Appendices
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}} 
+
+\bookmarksetup{startatroot}% pop bibliography and code listings up to root level of ToC
+
+\input{appendices/bnf1.tex}
+%\input{appendices/statictable.tex}
+
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+\chapter*{Bibliographie}
+\label{sec:references}
+
+\markboth{\smallcaps{Bibliographie}}{} % work-around to have small caps also
+
+%\manualmark
+%\phantomsection 
+%\refstepcounter{dummy}
+
+\addtocontents{toc}{\protect\vspace{\beforebibskip}} % to have the bib a bit from the rest in the toc
+\addcontentsline{toc}{chapter}{Bibliographie}
+
+% The entries in the bibliography are all sorted by the last name of the
+% primary author.  Dashes signify that the list of authors is the same
+% as the preceding bibliographic entry.
+
+% \renewcommand{\finentrypunct}{\addperiod} % reset to dot after citations...
+\printbibliography[notcategory=fullcited,heading=none]
+
+
+% \bibliography{bibliography} % Use the bibliography.bib file for the bibliography
+% \bibliographystyle{plainnat} % Use the plainnat style of referencing
+
+%----------------------------------------------------------------------------------------
+
+\printindex % Print the index at the very end of the document
 
 \end{document}

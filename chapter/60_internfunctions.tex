@@ -1,0 +1,75 @@
+\section{Fonctions internes au compilateur}
+La compilation des opérateurs vers du pseudo-code EPL utilise certaines fonctions auxiliaires de compilation. Par exemple il peut être nécessaire de vérifier si une fenêtre doit être créée pour une opérande, en fonction de son type~; ou encore d'extraire l'évènement de début ou de fin d'un état.  Ces opérations conditionnelles sont factorisées dans les fonctions suivantes, internes au compilateur.
+
+Notons que toutes ses fonctions acceptent en entrée une expression en représentation interne de Maloya et offrent en sortie une expression en pseudo-code EPL.
+\subsection*{Becomes}%: $\mathds{S}\times\mathds{B}\rightarrow \mathds{E}$}
+Cette fonction traduit un état par l'évènement marquant son début ou sa fin, selon le deuxième argument booléen.
+\begin{figure}[!h]
+\begin{lstlisting}[frame=bt]
+  $Becomes(p=v,1)\rightarrow p=>v$
+  $Becomes(p=v,0)\rightarrow p=>v', v' \neq v$
+\end{lstlisting}
+\caption{Fonction Becomes. Traduit un état en un évènement.}
+\label{listing:becomes}
+\end{figure}
+\subsection*{WindowIfComplex}
+Cette fonction décide si une fenêtre doit être créée, en vérifiant si le fils du n{\oe}ud courant est une séquence d'évènements.
+La fonction retourne l'identifiant de la fenêtre, si elle est crée~; sinon, le code du fils lui-même.
+\begin{figure}[!h]
+\begin{lstlisting}[frame=bt]
+  $WindowIfComplex(e)\rightarrow$
+    if e is leaf
+    then
+      $\llbracket$e$\rrbracket$
+    else
+      createWindow(e)
+\end{lstlisting}
+\caption{Fonction WindowIfComplex. Cette fonction vérifie si une fenêtre doit être créée.}
+\label{listing:windoifcomplex}
+\end{figure}
+
+\subsection*{BoundedWindowIfComplex}
+Cette fonction vérifie si le fils doit être fenêtré, de la même manière que la fonction WindowIfComplex. Si une fenêtre est créée, un argument est ajouté à l'identifiant de la fenêtre afin d'assurer que l'évènement produit par celle-ci est bornée par le n{\oe}ud passé
+en deuxième argument.
+\begin{figure}[!h]
+\begin{lstlisting}[frame=bt]
+  $BoundedWindowIfComplex(e_1,e_2)\rightarrow $
+    if e$_1$ is leaf
+    then
+      $\llbracket$e$_1\rrbracket$
+    else
+      let window_id=createWindow(e$_1$)
+      window_id `(timestamp >' e$_2$ `.timestamp)'
+\end{lstlisting}
+\caption{Fonction BoundedWindowIfComplex. Cette fonction vérifie si une fenêtre dont les évènements seront bornés doit être créée.}
+\label{listing:createwindow}
+\end{figure}
+
+\subsection*{CreateWindow}
+Cette fonction 
+calcule le code de l'évènement complexe {\tt e} et le stocke dans un attribut de {\tt e}. %l'encapsule dans une fenêtre EPL.
+Elle retourne ensuite l'identifiant de la fenêtre nouvellement créée.
+\begin{figure}[!h]
+\begin{lstlisting}[frame=bt]
+  $CreateWindow(e)\rightarrow$ 
+    code$_e\leftarrow \llbracket$e$\rrbracket$;
+    window_id$_e$
+\end{lstlisting}
+\caption{Fonction CreateWindow. Cette fonction calcule le code correspondant à l'évènement complexe qu'il a en argument et retourne l'identifiant de la fenêtre.}
+\label{listing:createwindow}
+\end{figure}
+
+\subsection*{EveryIfLeaf}
+Cette fonction vérifie si le fils est une feuille et dans ce cas, retourne son code précédé de la clause {\em every}~; sinon, elle retourne simplement le code du fils. 
+\begin{figure}[!h]
+\begin{lstlisting}[frame=bt]
+  $EveryIfLeaf(e)\rightarrow $
+    if e is leaf
+    then 
+      `every' $\llbracket$e$\rrbracket$
+    else 
+      $\llbracket$e$\rrbracket$
+\end{lstlisting}
+\caption{Fonction EveryIfLeaf. Cette fonction vérifie la clause {\em every} doit être ajoutée devant le code de l'évènement.}
+\label{listing:windoifcomplex}
+\end{figure}

@@ -1,0 +1,261 @@
+\chapter{Conclusion}
+% \begin{preamble}
+
+% \end{preamble}
+% \chpsummary{Aperçu}
+% {
+% .
+% }
+
+%
+Nous proposons une nouvelle approche pour développer des services sensibles au contexte et spécifique au domicile. Nous avons analysé une variété de couches logicielles existantes dédiées au traitement de données dans le domaine du maintien à domicile de personnes âgées. Cette analyse nous a permis d'identifier des concepts clés et des opérations spécifiques pour les traitements sensibles au contexte. Sur cette base, nous avons développé un langage dédié sensible au contexte et son architecture logicielle. Ces deux composants permettent de mettre en synergie les intervenants du domaine en leur fournissant une approche unifiée pour concevoir et développer des services. Notre approche offre des abstractions et des notations spécifiques au contexte, au sein d'un paradigme orienté et centré données. Nous avons validé notre approche en l'appliquant à une plate-forme d'assistance au maintien à domicile, déployée actuellement chez des personnes âgées. Plus particulièrement, nous avons utilisé notre langage dédié pour redéfinir des services existants sur la plate-forme. Ces nouveaux services ont été déployés et testés avec succès en terme d'efficacité de réalisation des tâches spécifiques aux intervenants: détection des activités du quotidien, détection des risques impliquant les utilisateurs, surveillance des défaillances des capteurs, {\em etc.}
+
+\section{Discussion}
+
+%unification verticale
+%unification des données de contexte
+ Notre langage permet de faire le pont entre des concepts de haut niveau propres au domaine des services sensibles au contexte pour de l'assistance domiciliaire et des mécanismes de gestion d'évènements de bas niveau. Il permet d'exprimer des règles concises et de simplifier leur développement, en encapsulant les détails de gestion d'évènements dans le compilateur. En effet, les applications Java actuellement déployées dans la plate-forme implantent explicitement des automates temporels, qui identifient les séquences d'évènements correspondant à chaque règle de notre langage. Les contraintes temporelles sont explicitement traitées en utilisant un service de minuterie. Ce service produit des évènements de temporisation qui sont insérés dans le flux d'évènements produit par l'infrastructure de capteurs. Dans notre langage, ces détails de bas niveau d'état et de gestion temporelle sont exprimés par des abstractions de haut niveau. Ainsi, le rôle de ces minuteries explicites correspond aux paramètres des variantes de nos opérateurs avec contraintes temporelles. Tout ceci rend nos règles plus simples à écrire et plus précises.  \newline
+
+%Notre langage permet de faire le pont entre des concepts de haut niveau propres au domaine des services sensibles au contexte pour de l'assistance domiciliaire et des mécanismes de gestion d'évènements de bas niveau. Il permet d'exprimer des règles concises et de simplifier leur développement, en encapsulant les détails de gestion d'évènements dans le compilateur. En effet, les applications Java actuellement déployées dans la plate-forme implantent explicitement des automates temporels, qui identifient les séquences d'évènements correspondant à chaque règle de notre langage. Les contraintes temporelles sont explicitement traitées en utilisant un service de minuterie. Ce service produit des évènements de temporisation qui sont insérés dans le flux d'évènements produit par l'infrastructure de capteurs. Dans notre langage, ces détails de bas niveau d'état et de gestion temporelle sont exprimés par des abstractions de haut niveau. Ainsi, le rôle de ces minuteries explicites correspond aux paramètres des variantes de nos opérateurs avec contraintes temporelle. Tout ceci rend nos règles plus simples à écrire et plus précises.  \newline
+
+%Validation
+%unification horizontale
+%La validation de notre langage montre que notre approche permet un passage à l'échelle. En effet, notre langage permet d'unifier la définition de services, de maintenance et d'assistance, pour un domicile sensible au contexte en offrant l'expressivité suffisante pour décrire les concepts d'états et d'évènements propres au domaine.
+
+La validation de notre langage montre que notre approche permet un passage à l'échelle. En effet, notre langage permet d'unifier la définition de services, de maintenance et d'assistance, pour un domicile sensible au contexte en offrant l'expressivité suffisante pour décrire les concepts d'états et d'évènements propres au domaine. 
+Par cette unification, le langage crée une synergie entre les intervenants 
+qui peuvent par exemple partager l'expression de leur expertise. 
+De plus, en simplifiant le développement des différents services, notre approche facilite leur personnalisation ce qui répond à un besoin important dans l'assistance domiciliaire, caractérisée par des fortes variations entre les personnes et entre les domiciles.
+En outre, les performances de notre implantation sont suffisantes pour le domaine.  Effectivement, la latence de détection d'une règle, qui est de l'ordre de la seconde, convient même pour les services critiques comme les services de sécurité de l'utilisateur. Par ailleurs, l'occupation mémoire est relativement faible, et stable sur une longue période d'utilisation avec les flux de plus d'une centaine de domiciles. Par conséquent, il est possible d'exécuter notre approche sur des architectures à ressources limitées. Notre solution devient donc propice \`a un déploiement dans le domaine de l'assistance à domicile.  \newline
+
+
+%La validation de notre langage montre que notre langage permet couvrir le domaine des services sensibles au contexte dans l'assistance domiciliaire en terme d'expressivité pour couvrir l'ensemble des besoins de contexte, qu'en terme de besoins de personnalisation des services.
+%Nous avons évalué les services exprimés dans notre langage en comparant les résultats obtenus avec ces même services implanté en Java
+%Passage à l'échelle, même sur des plates-formes très limitées en ressources
+%Modèle d'infra
+La première brique de notre approche, introduisant un modèle d'infrastructure, adresse des besoins en terme de fiabilité des informations contextuelles. Ce domaine, peu couvert par la littérature est central pour les services sensibles au contexte.  Notre modèle d'infrastructure permet ainsi d'assurer en continu la fiabilité des informations contextuelles alimentant les services, modèle lui-même implanté sous forme de services.  \newline
+
+Dans une première version, ce modèle d'infrastructure de capteurs était implanté par des règles Prolog. Ce modèle d'infrastructure est maintenant décrit à travers des services en langage Maloya.  De cette façon, la méthodologie permettant d'assurer le bon fonctionnement des services sensibles au contexte est implanté comme n'importe quel service sensible au contexte. Ceci démontre la généralité de notre approche.  Si, précédemment, ces services exprimés en Prolog nécessitaient l'intervention d'un programmeur spécialisé, notre langage rend plus accessible l'expression de services.  Au delà de sa représentation textuelle que nous avons présentée, ce langage est destiné à être étendu à d'autres représentations (\eg visuelle) comme nous l'évoquerons plus bas. Cette perspective ouvrira l'acc\`{e}s au développement de services à des non-informaticiens.  D'autre part, la formulation des règles en Prolog nécessitait, pour pouvoir les exécuter, que l'intervalle complet de l'état d'une interaction soit connu, limitant la réactivité dans la reconnaissance des défaillances. Contrairement \`a la formulation en Prolog, Maloya permet à une règle de retourner un résultat dans la seconde qui suit l'évènement déclencheur.
+
+%30 ecrit en prolog, maintenant ecrit en maloya => generalite de lapproche
+%modele infra peut etre exprime comme des service, ces services exprime dans le mm dsl que les services d'assistance
+% comparer prolog dsl, deja vu prolog exprim en positif, dsl en negatif, prolog pour prog aguérie, dsl text visu destiné aux autres intervenants
+% 
+
+
+%\subsection*{Limitations}
+
+\section{Perspectives}
+Notre approche est un premier pas vers la simplification du développement d'applications sensibles au contexte dans le domaine du maintien à domicile des personnes âgées. Toutefois, elle présente un certain nombre de limitations.
+
+\subsection*{Définition de services par les intervenants}
+La première limitation de notre approche, et la plus importante, est que le langage Maloya, bien que plus facile d'accès qu'un langage de programmation général (ne serait-ce que par le petit nombre d'opérateurs), reste un langage difficile d'accès pour un publique non-informaticien. Cependant, il constitue une base idéale pour construire des couches de plus haut niveau. La représentation textuelle de haut niveau présentée dans ce document illustre cette possibilité. Une évaluation est en cours pour déterminer la compréhension du langage par des utilisateurs non-informaticiens. Si les résultats sont encourageants, cette étude sera étendue à la conception de services. Au-del\`a des représentations textuelles, des langages visuels peuvent \^{e}tre explorés.  C'est un travail qui ne peut se faire qu'en collaborant étroitement avec les intervenants qui pourrons exprimer leurs besoins en terme de représentation visuelle des informations et avec des designers qui seront plus à même de traduire ces besoins en constructions d'un futur langage. En outre, un tel travail devrait permettre aux intervenants non-informaticiens de mieux s'approprier la technologie, favorisant ainsi son acceptation.
+%La première limitation de notre approche, et la plus importante, est que Maloya est un langage difficile d'accès pour un publique non-informaticien. Cependant, il constitue une base idéale pour construire des couches de plus haut niveau. La représentation textuelle de haut niveau présentée dans ce document illustre cette possibilité. Une évaluation est en cours pour déterminer la compréhension du langage par des utilisateurs non-informaticiens. Si les résultats sont encourageant, cette étude sera étendue à la conception de services. Au-del\`a des représentations textuelles, des langages visuels peuvent \^{e}tre explorés.  C'est un travail qui ne peut se faire qu'en collaborant étroitement avec les intervenants qui pourrons exprimer leurs besoins en terme de représentation visuelle des informations et avec des designers qui seront plus à même de traduire ces besoins en constructions d'un futur langage.  En outre un tel travail devrait permettre aux intervenants non-informaticiens de mieux s'approprier la technologie, favorisant ainsi son acceptation.
+
+% , et, dans une certaine mesure la sécurité compte tenu du fait que le service traite des informations contextuelles, en donnant le contrôle à l'utilisateur.
+
+
+% études évaluation sur les utilisateurs sur la comprehension du langage, si les res sont encourageants, conception de services.
+\subsection*{Définir des actions}
+Notre langage présente également une limitation par rapport à d'autres approches~: il ne dispose pas de constructions pour effectuer des actions sur l'environnement lorsqu'un contexte est reconnu. À l'heure actuelle les actions doivent être programmées dans un langage de programmation générique. Il serait utile d'étendre notre analyse du domaine pour couvrir également la partie contrôle des applications, et de dériver les concepts et notations nécessaires pour effectuer des actions, dans un esprit similaire au travail effectué sur le langage évènementiel Dura~\paulcite{hausmann2014language}.
+
+\subsection*{Extension à d'autres domaines}
+Notre champs d'application reste limité au domaine du maintien à domicile des personnes âgées. Notre langage a donc été conçu et testé dans ce cadre, avec un ensemble d'opérateurs de composition spécifiques à ce domaine. Malgré tout, notre langage interne permet une expression riche de combinaisons de ces opérateurs. Il pourrait donc être intéressant d'explorer à l'avenir son applicabilité à d'autres domaines de services sensibles au contexte.
+
+\subsection*{Nuance dans la valeur retournée par une règle}
+Nos règles retournent des valeurs booléennes. Toutefois, les informations contextuelles peuvent être plus générales que simplement binaires. Par exemple, une activité telle que la préparation de repas peut être détectée de façon plus nuancée, avec un score d'exécution compris par exemple entre 0 et 1, pour prendre en compte d'éventuelles déviations de la routine de l'utilisateur. Pour le moment, notre langage nécessite que ces variations soient codées dans différentes règles, ce qui n'est pas toujours efficace. Dans le futur, il peut être intéressant de considérer l'extension de notre approche à des opérateurs qui retournent des valeurs non-booléennes.
+% Such fuzzy detectors are sometimes used in the domain of aging in place.
+
+\subsection*{Étendre les cibles de compilation}
+Enfin, notre compilateur reste limité au langage EPL utilisé par le moteur CEP Esper. De nombreux autres moteurs CEP ont été développés, tant à des fins de recherche qu'à des fins plus industrielles.  De même, de nombreuses autres implantations basées sur le traitement de flux d'évènements existent, notamment l'écosystème Apache avec Spark et Flink. Une extension intéressante à fournir à notre langage serait ainsi de proposer une compilation vers différents langages de traitement événementiel.
+%Enfin, notre compilateur reste limité au langage EPL utilisé par le moteur CEP Esper. De nombreux autres moteurs CEP ont été développés, tant à des fins de recherche qu'à des fins plus industrielles.  De même de nombreuses autres implantations basées sur le traitement de flux d'évènements existent, notamment l'écosystème Apache avec Spark et Flink. Une extension intéressante à fournir à notre langage serait ainsi de proposer une compilation vers différents langages de traitement événementiel.
+% \chapter{Conclusion}
+% % \begin{preamble}
+
+% % \end{preamble}
+% % \chpsummary{Aperçu}
+% % {
+% % .
+% % }
+
+% %
+% Nous proposons une nouvelle approche pour développer des services
+% sensibles au contexte pour le domicile. En analysant une variété de
+% couches de traitement de données existantes dans le domaine du
+% maintien à domicile de personnes âgées, nous avons identifié des
+% concepts clés et des opérations spécifiques pour les traitements
+% sensibles au contexte. Sur cette base, nous avons
+% introduit un langage dédié sensible au contexte et son architecture
+% logicielle. 
+% Ils permettent de mettre en synergie les intervenants du
+% domaine en leur fournissant une approche unifiée pour concevoir et
+% développer des services. Notre approche offre des abstractions et des
+% notations spécifiques au contexte, au sein d'un paradigme orienté et
+% centré données. Nous avons validé notre approche en l'appliquant à
+% une plate-forme d'assistance au maintien à domicile, 
+% réellement déployée chez des personnes
+% âgées. Plus particulièrement, nous avons utilisé notre langage dédié
+% pour redéfinir des services existants sur la plate-forme. Ces
+% services ont été déployés et testés avec succès en terme d'efficacité
+% de réalisation des tâches spécifiques aux intervenants: détection des
+% activités du quotidien, détection des risques impliquant les utilisateurs,
+% surveillance des défaillances des capteurs, {\em etc.}
+
+% \section{Discussion}
+
+% %unification verticale
+% %unification des données de contexte
+% Notre langage permet de faire le pont entre des concepts de haut
+% niveau propres au domaine des services sensibles au contexte pour de% contextuels
+% %d'
+% l'assistance domiciliaire et des mécanismes de gestion d'évènements de
+% bas niveau. Il permet de d'exprimer des règles concises et de
+% simplifier leur développement, en encapsulant les détails de gestion
+% d'évènements dans le compilateur. En effet, les applications Java
+% actuellement déployées dans la plate-forme implantent explicitement des automates
+% temporels, qui identifient les séquences d'évènements correspondant à
+% chaque règle de notre langage. Les contraintes temporelles sont
+% explicitement traitées en utilisant un service de minuterie,
+% produisant des évènements de temporisation qui sont insérés dans le
+% flux d'évènements, produits par l'infrastructure de capteurs. Dans
+% notre langage, ces détails de bas niveau d'état et de gestion
+% temporelle sont inclus dans la sémantique des opérateurs. Ainsi, le
+% rôle de ces minuteries explicites correspond aux paramètres des
+% variantes de nos opérateurs avec contraintes temporelle. Tout ceci
+% rend ces règles plus simples à écrire et plus précises.
+% \newline
+
+% %Validation
+% %unification horizontale
+% La validation de notre langage montre que notre approche permet un 
+% passage à l'échelle. En effet notre langage permet d'unifier la 
+% définition de services, de maintenance et d'assistance, pour un 
+% domicile sensible au contexte en offrant l'expressivité suffisante 
+% pour décrire les concepts d'états et d'évènements propres au domaine. 
+% De plus l'unification des abstractions de contexte permet de couvrir 
+% le besoin de personnalisation des services. Il existe ainsi une synergie 
+% entre les intervenants et l'expression de leur expertise. De plus les 
+% performances de notre implantation sont suffisantes pour le domaine. 
+% Effectivement, la latence de détection d'une règle de l'ordre de la 
+% seconde, convient même pour les services critiques comme les services 
+% de sécurité de l'utilisateur. L'occupation mémoire relativement faible 
+% sur une longue période d'utilisation avec les flux de plus d'une centaine 
+% de domiciles, ainsi que la possibilité d'exécuter notre approche sur des 
+% architectures à ressources limitées en font une solution exploitable dans 
+% le domaine de l'assistance à domicile. 
+% \newline
+
+% %La validation de notre langage montre que notre langage permet couvrir le domaine des services sensibles au contexte dans l'assistance domiciliaire en terme d'expressivité pour couvrir l'ensemble des besoins de contexte, qu'en terme de besoins de personnalisation des services.
+% %Nous avons évalué les services exprimés dans notre langage en comparant les résultats obtenus avec ces même services implanté en Java
+% %Passage à l'échelle, même sur des plates-formes très limitées en ressources
+% %Modèle d'infra
+% La première brique de notre approche, introduisant un modèle 
+% d'infrastructure, adresse des besoins en terme de fiabilité 
+% des informations contextuelles. Ce domaine, peu couvert par la 
+% littérature est central pour les services sensibles au contexte. 
+% Notre modèle d'infrastructure permet ainsi d'assurer en continu 
+% la fiabilité des informations contextuelles alimentant les services, 
+% modèle lui-même implanté sous forme de services.
+% \newline
+
+% Dans une première version, ce modèle d'infrastructure de capteurs est exprimé 
+% à travers des règles écrites en Prolog. Ce modèle d'infrastructure 
+% est maintenant décrit à travers des services en langage Maloya. 
+% De cette façon la méthodologie permettant d'assurer le bon 
+% fonctionnement des services sensibles au contexte est implanté 
+% comme n'importe quel service sensible au contexte. Ceci démontre 
+% la généralité de notre approche.
+% Si, précédemment, ces services exprimés en Prolog nécessitaient 
+% l'intervention d'un programmeur spécialisé, notre langage 
+% peut permettre l'expression de services en limitant le besoin d'une culture informatique.
+% Au delà de sa représentation textuelle que nous avons montrée, ce langage est
+% destiné à être étendu à d'autres moyens de formulation (\eg représentation visuelle) 
+% comme nous le verrons dans la suite, ce qui
+% élargira son ouverture à des non informaticiens.
+% D'autre part, la formalisation des règles en Prolog nécessitait, 
+% pour pouvoir exécuter une règle, que l'intervalle complet de l'état d'une interaction soit connu, 
+% limitant la réactivité dans la reconnaissance des défaillances. La formalisation du langage Maloya 
+% en revanche n'a pas cette limitation et permet à une règle de retourner un résultat dans la seconde 
+% qui suit l'évènement déclencheur.
+
+% %30 ecrit en prolog, maintenant ecrit en maloya => generalite de lapproche
+% %modele infra peut etre exprime comme des service, ces services exprime dans le mm dsl que les services d'assistance
+% % comparer prolog dsl, deja vu prolog exprim en positif, dsl en negatif, prolog pour prog aguérie, dsl text visu destiné aux autres intervenants
+% % 
+
+
+% %\subsection*{Limitations}
+
+% \section{Perspectives}
+% Notre approche est un premier pas vers la simplification du développement 
+% d'applications sensibles au contexte dans le domaine du maintien à domicile 
+% des personnes âgées et présente un certain nombre de limitations.
+
+% \subsection*{Définition de services par les intervenants}
+% La première limitation, et la plus importante, bien que notre langage 
+% de part sa nature permette d'exprimer des services en utilisant 
+% uniquement les concepts propres à l'assistance domiciliaire, il reste 
+% difficile d'accès, dans sa représentation interne, à un publique de néophytes 
+% en programmation. Cependant, il constitue une base idéale pour construire 
+% des couches supérieures à notre langage. 
+% La représentation textuelle illustre cette possibilité. Une évaluation 
+% est en cours pour déterminer la compréhension du langage par des 
+% utilisateurs non informaticiens. Si les résultats sont encourageant, 
+% cette étude sera étendu à la conception de services.
+% Quoi qu'il en soit, des extensions peuvent être proposées pour couvrir au mieux les besoins correspondants à l'expertise de chaque intervenant.
+% Ces extensions peuvent se traduire, par exemple, par des langages visuels. 
+% C'est un travail qui ne peut se faire qu'en collaborant 
+% étroitement avec les intervenants qui pourrons exprimer leurs besoins 
+% en terme de représentation visuelle des informations et avec des 
+% designers qui seront plus à même de retranscrire ces besoins. 
+% En outre un tel travail peut permettre de favoriser l'acceptation 
+% de la technologie, et, dans une certaine mesure la sécurité compte 
+% tenu du fait que le service traite des informations contextuelles, 
+% en donnant le contrôle à l'utilisateur.
+
+
+% % études évaluation sur les utilisateurs sur la comprehension du langage, si les res sont encourageants, conception de services.
+% \subsection*{Définir des actions}
+% Notre langage présente également une limitation par rapport à d'autres approches, 
+% ils ne permet que de reconnaître les contextes.
+% %Premièrement, notre langage ne permet que de reconnaître les contextes. 
+% Effectivement, il ne dispose pas de constructions pour effectuer des actions sur l'environnement. 
+% À l'heure actuelle celles-ci doivent être programmées dans un langage de 
+% programmation générique. Il serait utile d'étendre notre analyse du domaine pour 
+% couvrir également la partie contrôle des applications, et de dériver les 
+% concepts et notations pour effectuer aussi des actions.
+
+% \subsection*{Extension à d'autres domaines}
+% Notre champs d'application reste limité au domaine du maintien à
+% domicile des personnes âgées. Notre langage a donc été conçu et testé
+% dans ce cadre avec un ensemble d'opérateurs de composition spécifiques
+% à ce domaine. Malgré tout, notre langage interne permet une expression
+% riche de combinaisons de ces opérateurs. Il pourrait donc être
+% intéressant d'explorer à l'avenir son applicabilité à d'autres
+% domaines de services sensibles au contexte.
+
+% \subsection*{Nuance dans la valeur retournée par une règle}
+% Nos règles retournent des valeurs booléennes. Toutefois, les
+% informations contextuelles peuvent être plus générales que simplement
+% binaires. Par exemple, une activité telle que la préparation de repas
+% peut être détectée de façon plus nuancée, avec un probabilité
+% d'exécution comprise entre 0 et 1, pour prendre en compte
+% d'éventuelles déviations de la routine de l'utilisateur. Pour le
+% moment, notre langage nécessite que ces variations soient codées dans
+% différentes règles, ce qui n'est pas toujours efficace. Dans le futur,
+% il peut être intéressant de considérer l'extension de notre approche à
+% des opérateurs qui retournent des valeurs non booléennes.
+% % Such fuzzy detectors are sometimes used in the domain of aging in place.
+
+% \subsection*{Étendre les cibles de compilation}
+% Enfin, notre compilateur reste limité au langage EPL utilisé par 
+% le moteur CEP Esper. De nombreux autres moteurs CEP ont été développés, 
+% tant à des fins de recherche qu'à des fins plus industrielles. 
+% De même de nombreuses autres implantations basées sur le traitement 
+% de flux d'évènements existent, notamment l'écosystème Apache avec Spark 
+% et Flink. Une extension intéressante à fournir à notre langage serait ainsi 
+% de proposer une compilation vers différents langages de traitement événementiel.
+
+%langage visuel
+%configuration par la simulation
+

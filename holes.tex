@@ -1,0 +1,45 @@
+\usepackage{calc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% holes: stolen from Literate Agda paper.
+%Define a reference depth. 
+%You can choose either relative or absolute.
+%--------------------------
+\newlength{\DepthReference}
+\settodepth{\DepthReference}{g}%relative to a depth of a letter.
+%\setlength{\DepthReference}{6pt}%absolute value.
+
+%Define a reference Height. 
+%You can choose either relative or absolute.
+%--------------------------
+\newlength{\HeightReference}
+\settoheight{\HeightReference}{T}
+%\setlength{\HeightReference}{6pt}
+
+%--------------------------
+\newlength{\Width}%
+
+\newcommand{\MyColorBox}[2][red]%
+{%
+    \settowidth{\Width}{#2}%
+    %\setlength{\fboxsep}{0pt}%
+    \colorbox{#1}%
+    {%      
+        \raisebox{-\DepthReference}%
+        {%
+                \parbox[b][\HeightReference+\DepthReference][c]{\Width}{\centering#2}%
+        }%
+    }%
+}
+\colorlet{Hole}{Dandelion!25!white}
+
+% the hole-in-term symbol for Chapter 3
+% \newcommand{\hole}{\ensuremath{\quad\cdot\quad}}
+\newcommand{\minihole}{\MyColorBox[Hole]{\ensuremath{\{\,\,\}_{?}}}{}}
+\newcommand{\hole}{\ensuremath{\quad}\minihole\ensuremath{\quad}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

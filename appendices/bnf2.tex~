@@ -1,0 +1,7 @@
+\chapter{BNF Maloya~: représentation interne }
+\begin{figure}
+  \centering
+  \includegraphics[width=1.\linewidth]{../grammars/MaloyaText/bnf1-crop.pdf}
+  \caption{bnf1.}
+  \label{fig:bnf1}
+\end{figure}

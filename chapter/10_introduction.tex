@@ -1,0 +1,131 @@
+\chapter{Introduction}
+\begin{quote}
+``Universal law is for lackeys.
+Context... is for kings.''\footnote{Gabriel Lorca: Captain of the U.S.S. Discovery (Star Trek Discovery Season 1 Episode 3)}
+\end{quote}
+
+La notion de {\em contexte} est centrale à une variété de domaines en 
+informatique, comme l'informatique mobile ou l'interaction homme-machine,
+mais tout particulièrement à l’informatique 
+ubiquitaire~\paulciteseparate{coutaz2005context,dey2001understanding,barkhuus2003is}. Le contexte 
+%ubiquitaire~\paulcite{coutaz2005context,dey2001understanding,barkhuus2003is}. Le contexte 
+définit les circonstances dans lesquelles un système informatique est 
+utilisé~\paulcite{coutaz2005context}. Il englobe beaucoup de 
+dimensions~\paulcite{bauer2012comparison}~: connaître les interactions de 
+l’utilisateur avec son environnement ({\em e.g.,} localisation géographique, 
+ouverture de porte), mesurer  ses signes physiologiques ({\em e.g.,} fréquence 
+cardiaque), collecter des informations sur son environnement numérique 
+({\em e.g.,} email, agenda), superviser l’état des composants d’une 
+infrastructure numérique ({\em e.g.,} matériels, logiciels, réseaux). Cette 
+collecte d’informations est réalisée par des capteurs de tout type~: des capteurs 
+portés pour mesurer les activités physiologiques, par exemple~; des capteurs ambiants 
+pour mesurer les interactions de l’utilisateur avec son environnement~; 
+des capteurs logiciels pour mesurer des évènements numériques de l’utilisateur, 
+comme un rendez-vous.
+
+Les informations sur le contexte de l’utilisateur sont fondamentales pour 
+l'informatique ubiquitaire puisqu’elles permettent à des services de s’adapter 
+aux circonstances de leur utilisation. Ainsi, un service d’activités physiques 
+adaptera ses recommandations à l’activité mesurée de 
+l’utilisateur~\paulcite{jovanov2005wireless}.  Un service d’économie d’énergie adaptera 
+l’habitat aux présences et habitudes des occupants~\paulcite{jahn2010energy}. 
+Un service de rappel d’activités du quotidien ne sollicitera l’utilisateur que 
+si une activité d’intérêt n’est pas réalisée~\paulcite{chen2012sensor}. 
+
+Le {\em domicile} a été l’objet d’une attention toute particulière de la part 
+des chercheurs en informatique 
+ubiquitaire~\paulciteseparate{cook2013casas,feminella2014piloteur}. C’est un lieu 
+central pour l’utilisateur qui met en {\oe}uvre tous les aspects de la notion 
+de contexte~: tous les types de capteurs sont pertinents~; un large éventail 
+d’activités y sont réalisées~; et, une infinité de services peuvent être imaginés 
+lorsque l’on prend en compte les spécificités des utilisateurs, leurs besoins et 
+leurs préférences. La notion de contexte permet de déterminer quels services sont 
+pertinents pour un utilisateur à un moment donné~\paulcite{brush2011home}, et plus généralement, 
+de développer des méthodes pour recueillir et analyser ces 
+besoins~\paulcite{coutaz2010disqo}.
+
+Les enjeux du domicile équipé d’informatique ubiquitaire prennent une dimension 
+sociétale lorsque l’on considère le maintien à domicile des personnes âgées. 
+Dans ce domaine, le domicile doit fournir des services d’assistance pour 
+pallier les pertes dues au vieillissement ({\em e.g.,} cognitives) et soutenir 
+une vie indépendante~\paulcite{rashidi2013survey}. Ces services couvrent deux 
+domaines principaux~: (1) superviser les activités du quotidien ({\em e.g.,} 
+préparation de repas, toilette, se coucher) pour maintenir le statut fonctionnel 
+de l'utilisateur~\paulcite{caroux2014verification} et (2) détecter 
+les situations potentiellement dangereuses ({\em e.g.,} cuisinière, porte 
+d'entrée) pour garantir la sécurité de l'utilisateur~\paulcite{rashidi2013survey}. 
+\paragraph{}
+Dans le domaine du maintien à domicile des personnes âgées, une maison équipée 
+d’informatique ubiquitaire repose sur des expertises appartenant à différentes 
+disciplines. Au-delà des personnes âgées elles-mêmes, on trouve les aidants 
+professionnels ou informels, les experts en vieillissement, les professionnels 
+de santé, les développeurs d'applications ainsi que les techniciens de 
+maintenance. Cette grande diversité d’intervenants se reflète par une grande 
+diversité de besoins en matière d’informations contextuelles. Les besoins de 
+services de chaque intervenant reposent sur des contextes spécifiques (état des 
+capteurs pour la maintenance, utilisation du frigidaire pour l’assistance à 
+domicile. etc.). Ces différents contextes sont généralement étudiés séparément, en 
+silo. Typiquement, chaque intervenant développe sa propre approche, pour 
+extraire ses informations contextuelles, empêchant toute synergie. En outre, 
+cette extraction d’informations est généralement programmée avec des couches 
+logicielles génériques (librairies, middleware) qui ne sont pas nécessairement 
+adaptées à cette collecte d’informations et qui ne favorisent pas la 
+réutilisation et la factorisation d’une expertise.
+
+Par conséquent, couvrir l'ensemble des besoins de services pour le maintien à domicile de personnes âgées demande de déployer différentes solutions, dédiées aux différentes problématiques du domaine, pour couvrir les différents intervenants. Cette situation ne permet pas le passage à l'échelle dans un environnement écologique, car une hétérogénéité dans les solutions à déployer complique le déploiement, la maintenance, ainsi que la création de nouveaux services.  L'expression de besoins de services de chaque intervenant dans le domaine de l'assistance domiciliaire pourrait être unifiée par la mutualisation des informations de contexte.
+
+% En conséquences, déployer une technologie d'assistance domiciliaire qui couvre le spectre des besoins du maintien à domicile de personnes âgées impliquerai soit de déployer en parallèle plusieurs plates-formes dédiées aux différentes problématiques du domaine, soit de répondre à la question:
+% {\em Comment mutualiser les informations contextuelles et l'expression des besoins de services de chaque intervenant d'un domicile équipé d’informatique ubiquitaire?}
+
+%de proposer une approche unifiée de définition de contextes et d'expression de services couvrant la diversité des préoccupations des intervenants d’une maison équipée d’informatique ubiquitaire. Une telle approche implique 
+\section{Contributions}
+Nous proposons une approche unifiée de définition de contextes couvrant la 
+diversité des préoccupations des intervenants d’une maison équipée 
+d’informatique ubiquitaire. En particulier, nous étudions notre approche dans le 
+domaine du maintien à domicile et faisons ainsi levier sur une étude 
+expérimentale incluant plus de cent personnes âgées, équipées d’une plate-forme 
+d’assistance domiciliaire. Cette étude nous permet de réaliser une analyse de 
+besoins s’appuyant sur des cas d’usage pratiques, émanant d’un éventail 
+d’expertises, comme par exemple~: l'assistance à la réalisation des activités du quotidien 
+(\eg préparation de repas), la sécurisation du domicile (\eg alerter l'utilisateur 
+lorsqu'une porte d'entrée est ouverte et non surveillée pendant un certain temps), ou bien la
+maintenance de l'infrastructure (\eg alerter l'exploitant en cas d'absence de communication entre le capteur 
+et la passerelle). 
+%... ??
+
+Notre approche unifiée repose sur un paradigme événementiel dédié à la détection de contextes.  %DSL… [Reprendre le résumé en donnant plus de détails]
+
+\subsection{Langage dédié}
+Notre première contribution porte sur 
+%La principale contribution de ce manuscrit est 
+la conception d'un langage dédié à la définition de services dans un domicile sensible au contexte. Ce langage, nommé Maloya, fournit des constructions de haut niveau pour exprimer des services sensibles au contexte avec (1) les concepts relatifs au domaine de l'assistance domiciliaire et (2) des opérateurs de composition permettant de manipuler ces concepts. En outre, Maloya permet de couvrir les besoins de services des intervenants impliqués dans domicile sensible au contexte. Enfin, notre langage fournit à la fois un cadre conceptuel et des outils pour concevoir et développer des services domiciliaires pour les personnes âgées.
+
+\subsection{Implantation}
+Nous avons développé un compilateur de notre langage vers un langage d'évènements. La compilation de Maloya comprend plusieurs étapes pour implanter les abstractions contextuelle du langage, tout en masquant la complexité propre aux traitements d'évènements temporels. L'exécution des règles compilées en langage d'évènements s’appuie sur un moteur existant de traitement d’évènements complexes (CEP) et une architecture logicielle {\em centrée données}, unifiant les sources de données hétérogènes. Des flux d'évènements, produits sous forme canonique, alimentent le moteur CEP qui exécute les règles. Ces règles peuvent être modifiées pendant l'exécution.
+
+%Il permet de restituer les concepts masqués par le langage dédié.
+%\subsection{Validation}
+
+\subsection{Validation}
+Nous avons validé notre approche écrivant dans notre langage 55 services d'assistance existants et couvrant le spectre des besoins des intervenants du maintien à domicile. Les règles écrites dans notre langage sont compilées dans un langage événementiel et déployées pendant une période de temps suffisante pour évaluer la performance des services en conditions réelles d'utilisation.
+% et exécutées par un moteur CEP 
+%alimenté par une forme canonique de flux d'évènements issues de domiciles sensibles au contexte. 
+
+%\subsection{Fiabilité des services contextuels}
+\subsection{Modèle d'infrastructure}
+Une déclinaison de notre approche, particulièrement importante du point de vue pratique, est la supervision en continu d'une infrastructure de capteurs. Celle-ci consiste à factoriser les préoccupations de fiabilité de capteurs entre les différents services contextuels déployés sur une plateforme, sous la forme d'un modèle d'infrastructure. Ce concept peut être formulé complètement dans notre paradigme évènementiel sous la forme d'un ensemble de services de surveillance. Le modèle d'infrastructure permet dès l'étape de déploiement de vérifier le bon positionnement des capteurs, pour fournir ainsi des informations contextuelles fiables aux différents services, et d'assurer par la suite le bon fonctionnement des capteurs, libérant ainsi les autres services de cette préoccupation.
+
+\section{Organisation du manuscrit}
+Ce document est organisé comme suit.\\
+
+Le {\bf Chapitre 2} présente un état de l'art de la sensibilité au contexte dans l'informatique ubiquitaire. Nous discutons des différentes méthodologies d'implantation de services sensibles au contexte.\\
+
+Le {\bf Chapitre 3} présente une première brique de notre approche adressant les besoins de fiabilité d'une infrastructure de capteurs et actionneurs. Elle montre que la définition d'un modèle d'infrastructure permet 1) de s'assurer du bon positionnement des capteurs, dès la phase de déploiement, 2) de superviser en continu l'infrastructure et 3) de faciliter le développement de services.\\
+
+Le {\bf Chapitre 4} procède à une analyse des besoins contextuels dans le domaine de l'assistance domiciliaire de personnes âgées. À travers l'étude de différents scénarios couvrant la variété de besoins d'intervenants, nous isolons les concepts et besoins communs des services d'assistance domiciliaire.\\
+
+Le {\bf Chapitre 5} présente le coeur de notre approche, constituée d'un langage de règles, nommé Maloya, et d'une architecture logicielle sous-jacente. Maloya permet d'exprimer aisément un ensemble de services d'assistance domiciliaire en restreignant son expressivité aux seuls concepts du domaine. Les règles sont exécutées sur un flux continu d'évènements de contexte.\\
+
+Le {\bf Chapitre 6} décrit plus en détail les étapes de compilation de notre langage vers un langage événementiel. Nous validons le langage Maloya et son compilateur par une expérimentation en grandeur réelle dans une plate-forme d'assistance domiciliaire\\
+
+Enfin, le {\bf Chapitre 7} conclut notre étude et détaille des pistes pour de futurs travaux.

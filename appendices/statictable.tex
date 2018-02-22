@@ -1,0 +1,47 @@
+\chapter{Table statique des interactions}
+\begin{figure}[h!]
+%\begin{footnotesize}
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+{       
+        "presence": {"kind": "Presence",
+                "values": ["true", "false"]},
+        "door": {"location": "Entrance","kind": "Door",
+                "values": ["open", "close"]},
+	"cupboard": {"location": "Kitchen", "kind": "Cupboard",
+		"values": ["open", "close"]},
+	"fridge": {"location": "Kitchen", "kind": "Fridge",
+		"values": ["open", "close"]}, 
+	"stove": {"location": "Kitchen", "kind": "Stove",
+		"values": ["on", "off"]},
+	"juicer": {"location": "Kitchen", "kind": "Juicer",
+		"values": ["on", "off"]},
+	"toaster": {"location": "Kitchen", "kind": "Toaster",
+		"values": ["on", "off"]},
+	"meatcleaver": {"location": "Kitchen", "kind": "Meatcleaver",
+		"values": ["on", "off"]},
+	"microwave": {"location": "Kitchen", "kind": "Microwave",
+		"values": ["on", "off"]},
+	"kettle": {"location": "Kitchen", "kind": "Kettle",
+		"values": ["on", "off"]},
+	"coffeeMaker": {"location": "Kitchen", "kind": "CoffeeMaker",
+		"values": ["on", "off"]},
+	"nightTime": {"location": "Night", "kind": "Calendar",
+		"values": ["begin", "end"]},
+	"dinnerTime": {"location": "Dinner", "kind": "Calendar",
+		"values": ["begin", "end"]},
+	"lunchTime": {"location": "Lunch", "kind": "Calendar",
+		"values": ["begin", "end"]},
+	"breakfastTime": {"location": "Breakfast", "kind": "Calendar",
+		"values": ["begin", "end"]},
+	"bedTime": {"location": "Bed", "kind": "Calendar",
+		"values": ["begin", "end"]},
+	"dressingTime": {"location": "Dressing", "kind": "Calendar",
+		"values": ["begin", "end"]},
+	"wakeUpTime": {"location": "WakeUp", "kind": "Calendar",
+		"values": ["begin", "end"]}
+}
+\end{lstlisting}
+\caption{Table statique complète des interactions dans domassist.}
+\label{listing:table_static_complete}
+%\end{footnotesize}
+\end{figure}

@@ -1,0 +1,33 @@
+\section{Sémantique informelle des opérateurs EPL}
+Le langage EPL fournit des opérateurs permettant de décrire des motifs à identifier dans un flux d'évènements. Cette section décrit les clauses fournies par EPL et utilisées dans la compilation finale des règles Maloya. Il n'existe pas, à notre connaissance, une sémantique formelle des opérateurs EPL~; nous décrivons donc de manière informelle la sémantique opérationnelle de chaque opérateur d'après le manuel de référence, enrichi par nos propres tests lorsque celui-ci n'est pas suffisamment détaillé.
+\newline
+
+La clause {\bf pattern} définit l’ensemble des évènements à détecter, ainsi que leurs
+contraintes logiques et temporelles.%  Pour cela, des opérateurs logiques de conjonction et
+\newline
+
+La clause {\bf where} spécifie l’ensemble de contraintes associées à la règle. Il s’agit essentiellement de filtres et de conditions s’appliquant aux attributs des évènements.
+\newline
+
+La clause {\bf timer:within}, utilisée à la suite de la clause ``where'', permet de terminer la sous-expression concernée. Cette clause teste si la sous-expression concernée devient vraie au bout d'une durée donnée. Dans le cas contraire, la sous expression sera considérée comme fausse. Cette clause nous permet de borner la durée d'un état par exemple.
+\newline
+
+L'expression {\bf timer:interval} permet d'attendre une période de temps donnée avant de considérer cette expression comme vraie. Cette construction nous permet d'évaluer la persistance d'un état dans le temps par exemple.
+\newline
+
+La clause {\bf every}, préfixant une expression, indique que l'expression doit redémarrer sitôt évaluée à vrai ou faux. En effet, avec le comportement par défaut d'un motif EPL, sans le mot-clé ``every'', sitôt que la sous expression est évaluée à vrai ou faux, elle s'arrête.
+\newline
+
+La clause {\bf followed-by}, noté ``{\em ->}'', spécifie que l'expression à gauche de l'opérateur doit d'abord être vraie, et seulement après, l'expression de droite est évaluée pour trouver les évènements correspondants~: {\tt X~->~Y}.
+Si l'expression {\tt Y} ne comporte pas de clause {\bf every}, comme expliqué ci-dessus, EPL ne reconnaîtra que sa première occurrence. Autrement dit, il ne peut pas y voir d'autres occurrences de {\tt Y} entre les {\tt X} et {\tt Y} identifiés par cette règle.
+\newline
+
+La clause {\bf not} inverse la valeur attendue pour qu'une expression réussisse. Les motifs d'expressions préfixés avec ``$not$'' sont considérés comme provisoirement vrais au départ, et deviennent définitivement faux quand l'expression incluse devient vraie. Dans les constructions EPL, cet opérateur est généralement utilisé en conjonction avec l'opérateur ``$and$''. Lors de notre compilation, nous utilisons toujours la construction {\tt X~and~not~Y}.
+Cette expression impose qu'il n'y ait pas d'évènements {\tt Y} avant de reconnaître l'évènement {\tt X}.
+\newline
+
+La clause {\bf window}, associée à {\em create} permet de définir des fenêtres.  Les fenêtres sont des constructions qui permettent de définir des évènements utilisateur, identifiables par un nom, et contenant un nombre quelconque d'occurrences.
+\newline
+
+La clause {\bf insert into} insère des occurrences d'un évènement dans une fenêtre.
+
